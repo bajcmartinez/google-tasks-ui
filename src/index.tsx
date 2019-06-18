@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { ThemeProvider } from '@material-ui/styles';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import lightTheme from './themes/light';
+import { initStore } from './stores';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import App from './components/App';
+
+const store = initStore({});
+const theme = lightTheme;
+
+ReactDOM.render(
+    <Provider store={store}>
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>
+    </Provider>, document.getElementById('root'));
