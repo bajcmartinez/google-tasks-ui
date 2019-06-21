@@ -38,20 +38,34 @@ class GoogleTasksService {
     });
   }
 
-  async authorize() {
-    await this.load();
+  authorize() {
+    return new Promise(async (resolve) => {
+      await this.load();
 
-    this.auth = await google.auth2.init({
-      client_id: this.clientId,
-      //ux_mode: 'redirect',
-      //redirect_uri: window.location.href,
-      scope: this.scopes,
-      //cookie_policy: 'single_host_origin'
+      this.auth = await google.auth2.init({
+        client_id: this.clientId,
+        //ux_mode: 'redirect',
+        //redirect_uri: window.location.href,
+        scope: this.scopes,
+        //cookie_policy: 'single_host_origin'
+      });
+
+      resolve();
     });
+  }
 
+  isSignedIn () {
+    if (!this.auth) return false;
+    return this.auth.isSignedIn.get();
+  }
+
+  subscribeSigninStatus (subscriber: (status: boolean) => void) {
+    if (!this.auth) return false;
+    return this.auth.isSignedIn.listen(subscriber);
+  }
+
+  signIn() {
     this.auth.signIn();
-
-    google.client.tasks.tasklists.list().execute();
   }
 }
 

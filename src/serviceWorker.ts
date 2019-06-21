@@ -129,7 +129,7 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
     })
     .catch(() => {
       console.log(
-        'No internet connection found. TitleBar is running in offline mode.'
+        'No internet connection found. Welcome is running in offline mode.'
       );
     });
 }
