@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react'
 import 'typeface-roboto';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Drawer from '@material-ui/core/Drawer';
 import TitleBar from './TitleBar/TitleBar';
 import Hidden from '@material-ui/core/Hidden';
 import useTheme from '@material-ui/core/styles/useTheme';
+
+import GoogleTasksService from '../services/GoogleTasks';
 
 const drawerWidth = 240;
 
@@ -36,6 +38,10 @@ const App: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  useEffect(() => {
+    GoogleTasksService.authorize();
+  });
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
