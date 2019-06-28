@@ -5,9 +5,17 @@ import Hidden from '@material-ui/core/Hidden';
 import useTheme from '@material-ui/core/styles/useTheme';
 
 import TitleBar from '../TitleBar';
-import { taskListsReducer } from '../../reducers/taskLists';
+import Menu from './Menu';
+
+import {
+  initialTaskListsState,
+  taskListsReducer,
+} from '../../reducers/taskLists'
 import { receiveTaskLists } from '../../actions/taskLists'
-import GoogleTasksService, { TaskList } from '../../services/GoogleTasks'
+import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks'
+import { initialTasksState, tasksReducer } from '../../reducers/tasks'
+import { receiveTasks } from '../../actions/tasks'
+import Tasks from './Tasks'
 
 const drawerWidth = 240;
 
@@ -39,31 +47,50 @@ const Home: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [state, dispatch] = useReducer(taskListsReducer, {
-    list: []
-  });
+  const [taskListId, setTaskListId] = React.useState("all");
+
+  const [taskListsState, taskListsDispatch] = useReducer(taskListsReducer, initialTaskListsState);
+  const [tasksState, taskstDispatch] = useReducer(tasksReducer, initialTasksState);
+
+  function refreshData() {
+    GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
+      taskListsDispatch(receiveTaskLists(taskLists));
+
+      const allTasks:Task[] = [];
+      taskLists.forEach((list: TaskList) => {
+        GoogleTasksService.listTasks(list.id).then((tasks: Task[]) => {
+          allTasks.push(...tasks);
+          taskstDispatch(receiveTasks(allTasks));
+        });
+      })
+    });
+  }
 
   useEffect(() => {
-    GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
-      dispatch(receiveTaskLists(taskLists));
-    });
+    refreshData();
   }, []);
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
   }
 
-  const drawer = (
-    <div>Hello World I'm a Drawer!</div>
-  )
+  function handleSelectedTaskListChanged(id: string) {
+    setTaskListId(id);
+  }
 
-  console.log(state);
+  const drawer = (<Menu taskLists={taskListsState.list} selectedTaskListChanged={handleSelectedTaskListChanged} />);
+
+  // Filter tasks on the screen
+  const tasks = tasksState.list.filter((task: Task) =>
+    !task.parent // Tasks without parents
+    && (taskListId === "all" || taskListId === task.listId) // Tasks for the current list
+    && !task.completed // Show only incompleted tasks
+  )
 
   return (
     <div className={classes.root}>
       <TitleBar
-        title="Google Tasks Desktop
-        "
+        title="Google Tasks UI"
         drawerWidth={drawerWidth}
         handleDrawerToggle={handleDrawerToggle} />
       <nav className={classes.drawer}>
@@ -98,7 +125,9 @@ const Home: React.FC = () => {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        Hello World I'm the content
+
+
+        <Tasks tasks={tasks} />
       </main>
     </div>
   );

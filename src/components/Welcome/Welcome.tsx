@@ -29,18 +29,18 @@ const Welcome: React.FC<IProps> = (props) => {
         <div>
           <img alt="Google Tasks" src="/assets/logo.png" className={classes.logo} />
         </div>
-        <Typography variant="h3" aria-label="Welcome to Google Tasks Desktop">
-          Welcome to Google Tasks Desktop
+        <Typography variant="h3" aria-label="Welcome to Google Tasks UI">
+          Welcome to Google Tasks UI
         </Typography>
 
         <Typography variant="h6">
-          The unofficial desktop application for Google Tasks.
+          The unofficial UI application for Google Tasks.
         </Typography>
 
         <br />
 
         <Typography variant="body1">
-          Google Tasks Desktop is an open source, 100% free application built to handle your Google Tasks. It has been built for ease of use and good look and feel.
+          Google Tasks UI is an open source, 100% free application built to handle your Google Tasks. It has been built for ease of use and good look and feel.
         </Typography>
 
         <br /><br />

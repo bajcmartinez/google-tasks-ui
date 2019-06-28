@@ -7,10 +7,11 @@ exports[`renders as expected 1`] = `
   <div
     className="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
   >
-    <button
+    <a
+      aria-disabled={false}
       aria-label="Open drawer"
       className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart makeStyles-menuButton-2"
-      disabled={false}
+      href="#"
       onBlur={[Function]}
       onClick={[Function]}
       onFocus={[Function]}
@@ -22,8 +23,8 @@ exports[`renders as expected 1`] = `
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
       onTouchStart={[Function]}
+      role="button"
       tabIndex={0}
-      type="button"
     >
       <span
         className="MuiIconButton-label"
@@ -44,7 +45,7 @@ exports[`renders as expected 1`] = `
           />
         </svg>
       </span>
-    </button>
+    </a>
     <h6
       className="MuiTypography-root MuiTypography-h6 MuiTypography-noWrap"
     >

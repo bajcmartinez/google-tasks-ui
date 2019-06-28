@@ -2,9 +2,23 @@
 let google = window.gapi;
 
 export type TaskList = {
-  id: String,
-  title: String,
-  updated: Date
+  id: string,
+  title: string,
+  updatedAt: Date,
+  status: string
+}
+
+export type Task = {
+  id: string,
+  title: string,
+  notes?: string,
+  completed: boolean,
+  completedAt: Date,
+  dueAt?: Date,
+  parent: string,
+  updatedAt: Date,
+  status: string,
+  listId: string
 }
 
 class GoogleTasksService {
@@ -95,7 +109,7 @@ class GoogleTasksService {
   /**
    * Lists all tasks lists
    *
-   * @returns [TaskList]
+   * @returns TaskList[]
    */
   async listTaskLists() {
     const response = await google.client.tasks.tasklists.list();
@@ -103,8 +117,34 @@ class GoogleTasksService {
     return response.result.items.map((item: any): TaskList => ({
       id: item["id"],
       title: item["title"],
-      updated: item["update"]
+      updatedAt: item["updated"]
     }) as TaskList);
+  }
+
+  /**
+   * Lists all tasks for a given task list
+   *
+   * @returns Task[]
+   */
+  async listTasks(taskListId: string) {
+    const response = await google.client.tasks.tasks.list({
+      tasklist: taskListId,
+      showCompleted: true,
+      showHidden: true
+    });
+
+    return response.result.items.map((item: any): Task => ({
+      id: item["id"],
+      title: item["title"],
+      notes: item["notes"],
+      dueAt: item["due"],
+      parent: item["parent"],
+      completed: item["status"] === "completed",
+      completedAt: item["completed"],
+      updatedAt: item["updated"],
+      listId: taskListId,
+      status: item["status"]
+    }) as Task);
   }
 }
 

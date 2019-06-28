@@ -5,12 +5,12 @@ export type TaskListsState = {
     list: TaskList[]
 }
 
-const initialState: TaskListsState = {
+export const initialTaskListsState: TaskListsState = {
     list: []
 };
 
 export function taskListsReducer(
-    state: TaskListsState = initialState,
+    state: TaskListsState = initialTaskListsState,
     action: TaskListsAction
 ): TaskListsState {
 

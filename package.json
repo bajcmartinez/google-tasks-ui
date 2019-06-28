@@ -1,12 +1,12 @@
 {
-  "name": "google-tasks-desktop",
+  "name": "google-tasks-ui",
   "author": {
     "name": "Juan Cruz Martinez",
     "email": "bajcmartinez@gmail.com",
     "url": "https://jcmartinez.dev"
   },
   "build": {
-    "appId": "dev.jcmartinez.google-tasks-desktop"
+    "appId": "dev.jcmartinez.google-tasks-ui"
   },
   "main": "public/electron.js",
   "homepage": "./",
@@ -58,5 +58,17 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
