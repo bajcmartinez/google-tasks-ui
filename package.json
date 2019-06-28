@@ -29,7 +29,6 @@
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
     "typeface-roboto": "0.0.54",
     "typescript": "3.5.2",
     "wait-on": "^3.2.0"
@@ -59,17 +58,5 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }

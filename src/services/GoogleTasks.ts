@@ -1,12 +1,22 @@
 // @ts-ignore
 let google = window.gapi;
 
+export type TaskList = {
+  id: String,
+  title: String,
+  updated: Date
+}
+
 class GoogleTasksService {
-  private clientId: string = "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com"
-  private scopes: string = 'https://www.googleapis.com/auth/tasks'
+  private clientId: string = "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com";
+  private scopes: string = 'https://www.googleapis.com/auth/tasks';
   private isLoaded: boolean = false;
   private auth: any;
 
+  /**
+   * Loads the client library and gets all the api required information from google servers
+   *
+   */
   load() {
     if (this.isLoaded) return Promise.resolve()
 
@@ -38,34 +48,63 @@ class GoogleTasksService {
     });
   }
 
+  /**
+   * Gets the client authorization to query google's API
+   *
+   */
   authorize() {
     return new Promise(async (resolve) => {
       await this.load();
 
       this.auth = await google.auth2.init({
         client_id: this.clientId,
-        //ux_mode: 'redirect',
-        //redirect_uri: window.location.href,
-        scope: this.scopes,
-        //cookie_policy: 'single_host_origin'
+        scope: this.scopes
       });
 
       resolve();
     });
   }
 
+  /**
+   * Returns whether the current session is signed in or not
+   *
+   */
   isSignedIn () {
     if (!this.auth) return false;
     return this.auth.isSignedIn.get();
   }
 
+  /**
+   * Event listener for sign in status
+   *
+   * @param subscriber
+   */
   subscribeSigninStatus (subscriber: (status: boolean) => void) {
     if (!this.auth) return false;
     return this.auth.isSignedIn.listen(subscriber);
   }
 
+  /**
+   * Starts the sign in process against your Google Account
+   *
+   */
   signIn() {
     this.auth.signIn();
+  }
+
+  /**
+   * Lists all tasks lists
+   *
+   * @returns [TaskList]
+   */
+  async listTaskLists() {
+    const response = await google.client.tasks.tasklists.list();
+
+    return response.result.items.map((item: any): TaskList => ({
+      id: item["id"],
+      title: item["title"],
+      updated: item["update"]
+    }) as TaskList);
   }
 }
 

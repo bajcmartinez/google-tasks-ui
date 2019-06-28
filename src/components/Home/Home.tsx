@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import useTheme from '@material-ui/core/styles/useTheme';
 
-import GoogleTasksService from '../../services/GoogleTasks';
 import TitleBar from '../TitleBar';
+import { taskListsReducer } from '../../reducers/taskLists';
+import { receiveTaskLists } from '../../actions/taskLists'
+import GoogleTasksService, { TaskList } from '../../services/GoogleTasks'
 
 const drawerWidth = 240;
 
@@ -37,10 +39,15 @@ const Home: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [state, dispatch] = useReducer(taskListsReducer, {
+    list: []
+  });
 
   useEffect(() => {
-    GoogleTasksService.authorize();
-  });
+    GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
+      dispatch(receiveTaskLists(taskLists));
+    });
+  }, []);
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
@@ -49,6 +56,8 @@ const Home: React.FC = () => {
   const drawer = (
     <div>Hello World I'm a Drawer!</div>
   )
+
+  console.log(state);
 
   return (
     <div className={classes.root}>
