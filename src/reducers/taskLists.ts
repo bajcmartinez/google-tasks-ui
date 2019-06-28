@@ -1,5 +1,6 @@
-import { RECEIVE_TASKLISTS, TaskListsAction } from '../actions/taskLists';
+import { RECEIVE_TASKLISTS } from '../actions/taskLists';
 import { TaskList } from '../services/GoogleTasks'
+import { AnyAction } from 'redux'
 
 export type TaskListsState = {
     list: TaskList[]
@@ -11,7 +12,7 @@ export const initialTaskListsState: TaskListsState = {
 
 export function taskListsReducer(
     state: TaskListsState = initialTaskListsState,
-    action: TaskListsAction
+    action: AnyAction
 ): TaskListsState {
 
     switch (action.type) {

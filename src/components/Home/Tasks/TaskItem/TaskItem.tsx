@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task } from '../../../../services/GoogleTasks';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,10 +12,11 @@ import TaskList from '../TaskList';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider'
+import Divider from '@material-ui/core/Divider';
 
 interface IProps {
-  task: Task
+  task: Task,
+  updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -39,8 +40,9 @@ const useStyles = makeStyles(theme => ({
 
 const TaskItem: React.FC<IProps> = (props) => {
   const classes = useStyles();
-  const { task } = props;
-  const [checked, setChecked] = useState(task.completed);
+  const { task, updateTaskCompletion } = props;
+
+  const [ checked, setChecked ] = useState(task.completed);
 
   const due = task.dueAt ? (
     <span>
@@ -68,13 +70,20 @@ const TaskItem: React.FC<IProps> = (props) => {
     setOpen(!open);
   }
 
+  function handleCompletedChanged(event: React.ChangeEvent<HTMLInputElement>) {
+    setChecked(event.target.checked);
+
+    updateTaskCompletion(task.id, task.listId, event.target.checked);
+  }
+
   return (
     <Fragment>
       <ListItem button>
         <ListItemIcon>
           <Checkbox
             edge="start"
-            checked={task.completed}
+            checked={checked}
+            onChange={handleCompletedChanged}
             tabIndex={-1}
             color="primary"
             inputProps={{ 'aria-labelledby': task.id }}
@@ -94,7 +103,7 @@ const TaskItem: React.FC<IProps> = (props) => {
       <Divider />
       {task.subtasks.length > 0 && (
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <TaskList tasks={task.subtasks} nested />
+          <TaskList tasks={task.subtasks} nested updateTaskCompletion={updateTaskCompletion} />
         </Collapse>
       )}
     </Fragment>

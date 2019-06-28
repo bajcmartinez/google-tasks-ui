@@ -156,6 +156,15 @@ class GoogleTasksService {
 
     return mapItems(items);
   }
+
+  async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
+    await google.client.tasks.tasks.update({
+      tasklist,
+      task,
+      id: task,
+      status: completed ? 'completed' : 'needsAction'
+    });
+  }
 }
 
 export default new GoogleTasksService();

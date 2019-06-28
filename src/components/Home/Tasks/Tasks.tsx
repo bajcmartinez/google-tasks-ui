@@ -4,11 +4,12 @@ import { Task } from '../../../services/GoogleTasks';
 import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import TaskList from './TaskList'
+import TaskList from './TaskList';
 
 interface IProps {
   tasks: Task[],
-  title: string
+  title: string,
+  updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +32,7 @@ const Tasks: React.FC<IProps> = (props) => {
               {props.title}
             </Typography>
 
-            <TaskList tasks={tasks} />
+            <TaskList tasks={tasks} updateTaskCompletion={props.updateTaskCompletion} />
           </Paper>
         </Grid>
       </Grid>

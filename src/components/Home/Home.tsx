@@ -6,6 +6,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 
 import TitleBar from '../TitleBar';
 import Menu from './Menu';
+import { useSnackbar } from 'notistack';
 
 import {
   initialTaskListsState,
@@ -14,7 +15,10 @@ import {
 import { receiveTaskLists } from '../../actions/taskLists'
 import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks'
 import { initialTasksState, tasksReducer } from '../../reducers/tasks'
-import { receiveTasks } from '../../actions/tasks'
+import {
+  receiveTasksAction,
+  updateTaskCompletionAction,
+} from '../../actions/tasks'
 import Tasks from './Tasks'
 
 const drawerWidth = 240;
@@ -52,7 +56,9 @@ const Home: React.FC = () => {
   const [taskListTitle, setTaskListTitle] = React.useState("All Tasks");
 
   const [taskListsState, taskListsDispatch] = useReducer(taskListsReducer, initialTaskListsState);
-  const [tasksState, taskstDispatch] = useReducer(tasksReducer, initialTasksState);
+  const [tasksState, tasksDispatch] = useReducer(tasksReducer, initialTasksState);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   function refreshData() {
     GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
@@ -62,10 +68,26 @@ const Home: React.FC = () => {
       taskLists.forEach((list: TaskList) => {
         GoogleTasksService.listTasks(list.id).then((tasks: Task[]) => {
           allTasks.push(...tasks);
-          taskstDispatch(receiveTasks(allTasks));
+          tasksDispatch(receiveTasksAction(allTasks));
         });
       })
     });
+  }
+
+  async function updateTaskCompletion(taskId: string, listId: string, completed: boolean) {
+    try {
+      // We update the UI meanwhile the API is doing it's stuff, we trust it just works
+      tasksDispatch(updateTaskCompletionAction(taskId, listId, completed));
+      await GoogleTasksService.updateTaskCompletion(taskId, listId, completed);
+
+    } catch (error) {
+      console.error("Error updating completion", error);
+      // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
+      // and we want to show the user an error before popping up again the item
+      enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
+
+      setTimeout(() => tasksDispatch(updateTaskCompletionAction(taskId, listId, !completed)), 1000);
+    }
   }
 
   useEffect(() => {
@@ -129,8 +151,7 @@ const Home: React.FC = () => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
-
-        <Tasks tasks={tasks} title={taskListTitle} />
+        <Tasks tasks={tasks} title={taskListTitle} updateTaskCompletion={updateTaskCompletion} />
       </main>
     </div>
   );
