@@ -1,10 +1,12 @@
+import moment, { Moment } from 'moment';
+
 // @ts-ignore
 let google = window.gapi;
 
 export type TaskList = {
   id: string,
   title: string,
-  updatedAt: Date,
+  updatedAt: Moment,
   status: string
 }
 
@@ -13,12 +15,13 @@ export type Task = {
   title: string,
   notes?: string,
   completed: boolean,
-  completedAt: Date,
-  dueAt?: Date,
+  completedAt?: Moment,
+  dueAt?: Moment,
   parent: string,
-  updatedAt: Date,
+  updatedAt: Moment,
   status: string,
-  listId: string
+  listId: string,
+  subtasks: Task[]
 }
 
 class GoogleTasksService {
@@ -117,7 +120,7 @@ class GoogleTasksService {
     return response.result.items.map((item: any): TaskList => ({
       id: item["id"],
       title: item["title"],
-      updatedAt: item["updated"]
+      updatedAt: moment(item["updated"])
     }) as TaskList);
   }
 
@@ -133,18 +136,25 @@ class GoogleTasksService {
       showHidden: true
     });
 
-    return response.result.items.map((item: any): Task => ({
-      id: item["id"],
-      title: item["title"],
-      notes: item["notes"],
-      dueAt: item["due"],
-      parent: item["parent"],
-      completed: item["status"] === "completed",
-      completedAt: item["completed"],
-      updatedAt: item["updated"],
-      listId: taskListId,
-      status: item["status"]
-    }) as Task);
+    const items = response.result.items;
+
+    const mapItems = (tasks: any[]): Task[] => {
+      return tasks.map((item: any): Task => ({
+        id: item["id"],
+        title: item["title"],
+        notes: item["notes"],
+        dueAt: item["due"] ? moment(item["due"]) : undefined,
+        parent: item["parent"],
+        completed: item["status"] === "completed",
+        completedAt: item["completed"] ? moment(item["completed"]) : undefined,
+        updatedAt: moment(item["updated"]),
+        listId: taskListId,
+        status: item["status"],
+        subtasks: mapItems(items.filter((subitem: any) => subitem["parent"] === item["id"]))
+      }) as Task);
+    };
+
+    return mapItems(items);
   }
 }
 

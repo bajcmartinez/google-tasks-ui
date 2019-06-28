@@ -4,7 +4,7 @@ import { tasksReducer } from './tasks'
 
 const rootReducer = combineReducers({
   taskLists: taskListsReducer,
-  tasksReducer: tasksReducer
+  tasks: tasksReducer
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

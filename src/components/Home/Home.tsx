@@ -21,7 +21,8 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
+    flexGrow: 1
   },
 
   drawer: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   },
 }));
 
@@ -48,6 +49,7 @@ const Home: React.FC = () => {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [taskListId, setTaskListId] = React.useState("all");
+  const [taskListTitle, setTaskListTitle] = React.useState("All Tasks");
 
   const [taskListsState, taskListsDispatch] = useReducer(taskListsReducer, initialTaskListsState);
   const [tasksState, taskstDispatch] = useReducer(tasksReducer, initialTasksState);
@@ -74,8 +76,9 @@ const Home: React.FC = () => {
     setMobileOpen(!mobileOpen);
   }
 
-  function handleSelectedTaskListChanged(id: string) {
+  function handleSelectedTaskListChanged(id: string, title: string) {
     setTaskListId(id);
+    setTaskListTitle(title);
   }
 
   const drawer = (<Menu taskLists={taskListsState.list} selectedTaskListChanged={handleSelectedTaskListChanged} />);
@@ -127,7 +130,7 @@ const Home: React.FC = () => {
         <div className={classes.toolbar} />
 
 
-        <Tasks tasks={tasks} />
+        <Tasks tasks={tasks} title={taskListTitle} />
       </main>
     </div>
   );

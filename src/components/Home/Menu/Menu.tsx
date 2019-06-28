@@ -10,7 +10,7 @@ import ListIcon  from '@material-ui/icons/List';
 
 interface IProps {
   taskLists: TaskList[],
-  selectedTaskListChanged: (id: string) => void
+  selectedTaskListChanged: (id: string, title: string) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -26,9 +26,9 @@ const Menu: React.FC<IProps> = (props) => {
   const selectTaskList = (index: number) => {
     setSelectedIndex(index);
     if (index >= 0)
-      selectedTaskListChanged(taskLists[index].id);
+      selectedTaskListChanged(taskLists[index].id, taskLists[index].title);
     else
-      selectedTaskListChanged("all");
+      selectedTaskListChanged("all", "All Tasks");
   }
 
   return (
