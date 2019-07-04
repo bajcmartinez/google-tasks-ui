@@ -8,6 +8,8 @@ import lightTheme from './themes/light';
 
 import { initStore } from './stores';
 import App from './components/App';
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const store = initStore({});
 const theme = lightTheme;
@@ -22,7 +24,9 @@ ReactDOM.render(
                 horizontal: 'center',
               }}
             >
-              <App />
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <App />
+              </MuiPickersUtilsProvider>
             </SnackbarProvider>
         </ThemeProvider>
     </Provider>, document.getElementById('root'));

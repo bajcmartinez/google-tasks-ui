@@ -151,7 +151,7 @@ const Home: React.FC = () => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
-        <Tasks tasks={tasks} title={taskListTitle} updateTaskCompletion={updateTaskCompletion} />
+        <Tasks tasks={tasks} title={taskListTitle} updateTaskCompletion={updateTaskCompletion} taskLists={taskListsState.list} />
       </main>
     </div>
   );

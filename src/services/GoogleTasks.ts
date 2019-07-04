@@ -141,8 +141,8 @@ class GoogleTasksService {
     const mapItems = (tasks: any[]): Task[] => {
       return tasks.map((item: any): Task => ({
         id: item["id"],
-        title: item["title"],
-        notes: item["notes"],
+        title: item["title"] ? item['title'] : '',
+        notes: item["notes"] ? item["notes"] : '',
         dueAt: item["due"] ? moment(item["due"]) : undefined,
         parent: item["parent"],
         completed: item["status"] === "completed",

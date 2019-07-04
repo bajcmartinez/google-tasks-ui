@@ -8,7 +8,8 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 interface IProps {
   tasks: Task[],
   nested?: boolean,
-  updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void
+  updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void,
+  handleSelectedTaskChanged?: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -33,8 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 const TaskList: React.FC<IProps> = (props) => {
   const classes = useStyles();
-
-  const tasks = props.tasks.sort((a: Task, b: Task) => ((a.dueAt || new Date()) < (b.dueAt || new Date())) ? -1 : 1);
+  const { tasks } = props;
 
   return (
     <List component="ul" className={props.nested ? classes.nested : undefined}>
@@ -50,7 +50,7 @@ const TaskList: React.FC<IProps> = (props) => {
             }}
           >
             <div className={classes.row}>
-              <TaskItem task={task}  updateTaskCompletion={props.updateTaskCompletion} />
+              <TaskItem task={task}  updateTaskCompletion={props.updateTaskCompletion} handleSelectedTaskChanged={props.handleSelectedTaskChanged} />
             </div>
           </CSSTransition>
         ))}

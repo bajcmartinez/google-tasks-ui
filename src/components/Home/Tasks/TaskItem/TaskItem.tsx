@@ -17,6 +17,7 @@ import Divider from '@material-ui/core/Divider';
 interface IProps {
   task: Task,
   updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void
+  handleSelectedTaskChanged?: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 
 const TaskItem: React.FC<IProps> = (props) => {
   const classes = useStyles();
-  const { task, updateTaskCompletion } = props;
+  const { task, updateTaskCompletion, handleSelectedTaskChanged } = props;
 
   const [ checked, setChecked ] = useState(task.completed);
 
@@ -66,7 +67,7 @@ const TaskItem: React.FC<IProps> = (props) => {
 
   const [open, setOpen] = React.useState(false);
 
-  function handleClick() {
+  function handleOpenSubTasks() {
     setOpen(!open);
   }
 
@@ -76,9 +77,13 @@ const TaskItem: React.FC<IProps> = (props) => {
     updateTaskCompletion(task.id, task.listId, event.target.checked);
   }
 
+  function handleSelection() {
+    handleSelectedTaskChanged && handleSelectedTaskChanged(task);
+  }
+
   return (
     <Fragment>
-      <ListItem button>
+      <ListItem button onClick={handleSelection}>
         <ListItemIcon>
           <Checkbox
             edge="start"
@@ -97,7 +102,7 @@ const TaskItem: React.FC<IProps> = (props) => {
         />
 
         {task.subtasks.length > 0 && (
-          open ? <ExpandLess onClick={handleClick} /> : <ExpandMore onClick={handleClick} />
+          open ? <ExpandLess onClick={handleOpenSubTasks} /> : <ExpandMore onClick={handleOpenSubTasks} />
         )}
       </ListItem>
       <Divider />
