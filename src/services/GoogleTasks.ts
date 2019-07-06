@@ -165,6 +165,18 @@ class GoogleTasksService {
       status: completed ? 'completed' : 'needsAction'
     });
   }
+
+  async updateTask(task: Task) {
+    await google.client.tasks.tasks.update({
+      tasklist: task.listId,
+      task: task.id,
+      id: task.id,
+      title: task.title,
+      notes: task.notes,
+      due: task.dueAt ? task.dueAt.format() : null,
+      status: task.completed ? 'completed' : 'needsAction'
+    });
+  }
 }
 
 export default new GoogleTasksService();

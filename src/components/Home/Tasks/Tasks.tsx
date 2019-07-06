@@ -6,12 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import TaskList from './TaskList';
 import TaskEdit from './TaskEdit'
+import {updateTaskAction} from "../../../actions/tasks";
 
 interface IProps {
   tasks: Task[],
   taskLists: TaskListType[],
   title: string,
-  updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void
+  updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void,
+  updateTask: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -63,7 +65,7 @@ const Tasks: React.FC<IProps> = (props) => {
 
         <Grid item xs={12} md={6}>
           <Paper className={classes.section}>
-            <TaskEdit task={selectedTask} taskLists={props.taskLists}  />
+            <TaskEdit task={selectedTask} taskLists={props.taskLists} updateTask={props.updateTask}  />
           </Paper>
         </Grid>
       </Grid>

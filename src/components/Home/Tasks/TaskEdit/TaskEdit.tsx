@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react'
+import React, {ChangeEvent, FormEvent, useEffect} from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task, TaskList } from '../../../../services/GoogleTasks';
 import CalendarIcon  from '@material-ui/icons/CalendarToday';
@@ -6,13 +6,14 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
-import { DateTimePicker, MaterialUiPickersDate } from '@material-ui/pickers'
+import { DatePicker, MaterialUiPickersDate } from '@material-ui/pickers'
 import { Moment } from 'moment'
 import InputAdornment from '@material-ui/core/InputAdornment'
 
 interface IProps {
   task?: Task,
   taskLists: TaskList[],
+  updateTask: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -35,7 +36,12 @@ const useStyles = makeStyles(theme => ({
   future: {
     color: '#1a73e8',
     marginRight: theme.spacing(1)
-  }
+  },
+
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 const TaskEdit: React.FC<IProps> = (props) => {
@@ -43,9 +49,13 @@ const TaskEdit: React.FC<IProps> = (props) => {
 
   const [task, setTask] = React.useState<Task | null>(null);
 
-  useEffect(() => {
+  const handleCancel = () => {
     setTask(props.task ? { ...props.task } : null);
-  }, [props.task])
+  };
+
+  useEffect(() => {
+    handleCancel();
+  }, [props.task]);
 
   if (!task) {
     return <div>No task selected</div>;
@@ -60,7 +70,12 @@ const TaskEdit: React.FC<IProps> = (props) => {
       ...task,
       dueAt: date as Moment
     })
-  }
+  };
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    props.updateTask(task);
+  };
 
   const taskEdit = { ...task } as Task;
 
@@ -71,7 +86,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
   );
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -111,7 +126,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
         </Grid>
 
         <Grid item xs={12}>
-          <DateTimePicker
+          <DatePicker
             clearable
             label="Due At"
             value={taskEdit.dueAt ? taskEdit.dueAt : null}
@@ -124,6 +139,14 @@ const TaskEdit: React.FC<IProps> = (props) => {
               ),
             }}
           />
+        </Grid>
+
+        <Grid item xs={12}>
+          <div className={classes.buttons}>
+            <Button variant="contained" color="default" onClick={handleCancel}>Cancel</Button>
+            &nbsp;&nbsp;
+            <Button variant="contained" color="primary" type="submit">Save</Button>
+          </div>
         </Grid>
       </Grid>
     </form>
