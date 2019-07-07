@@ -16,6 +16,7 @@ import { receiveTaskLists } from '../../actions/taskLists'
 import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks'
 import { initialTasksState, tasksReducer } from '../../reducers/tasks'
 import {
+  deleteTaskAction, insertTaskAction,
   receiveTasksAction, updateTaskAction,
   updateTaskCompletionAction,
 } from '../../actions/tasks'
@@ -108,6 +109,24 @@ const Home: React.FC = () => {
     }
   }
 
+  async function deleteTask(task: Task) {
+    const current = { ...tasksState.list.find((find: Task) => find.id === task.id) } as Task;
+    try {
+      // We update the UI meanwhile the API is doing it's stuff, we trust it just works
+      tasksDispatch(deleteTaskAction(task.id, task.listId, task.parent));
+      await GoogleTasksService.deleteTask(task.id, task.listId);
+      enqueueSnackbar('Task deleted!', {variant: 'success'});
+
+    } catch (error) {
+      console.error("Error deleting task", error);
+      // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
+      // and we want to show the user an error before popping up again the item
+      enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
+
+      setTimeout(() => tasksDispatch(insertTaskAction(current)), 1000);
+    }
+  }
+
   useEffect(() => {
     refreshData();
   }, []);
@@ -174,6 +193,7 @@ const Home: React.FC = () => {
             title={taskListTitle}
             updateTaskCompletion={updateTaskCompletion}
             updateTask={updateTask}
+            deleteTask={deleteTask}
             taskLists={taskListsState.list} />
       </main>
     </div>

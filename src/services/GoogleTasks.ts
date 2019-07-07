@@ -159,6 +159,13 @@ class GoogleTasksService {
     return mapItems(items.filter((subitem: any) => !subitem["parent"]));
   }
 
+  /**
+   * Sets the completion status of a task
+   *
+   * @param task: string
+   * @param tasklist: string
+   * @param completed: boolean
+   */
   async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
     await google.client.tasks.tasks.update({
       tasklist,
@@ -168,6 +175,11 @@ class GoogleTasksService {
     });
   }
 
+  /**
+   * Updates a task
+   *
+   * @param task: Task
+   */
   async updateTask(task: Task) {
     await google.client.tasks.tasks.update({
       tasklist: task.listId,
@@ -177,6 +189,19 @@ class GoogleTasksService {
       notes: task.notes,
       due: task.dueAt ? task.dueAt.format() : null,
       status: task.completed ? 'completed' : 'needsAction'
+    });
+  }
+
+  /**
+   * Deletes a task
+   *
+   * @param task: string
+   * @param tasklist: string
+   */
+  async deleteTask(task: string, tasklist: string) {
+    await google.client.tasks.tasks.delete({
+      tasklist,
+      task
     });
   }
 }

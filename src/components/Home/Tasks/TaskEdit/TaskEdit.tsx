@@ -12,11 +12,14 @@ import { debounce } from 'throttle-debounce'
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import SubtaskEdit from "./SubtaskEdit";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 interface IProps {
   task?: Task,
   taskLists: TaskList[],
-  updateTask: (task: Task) => void
+  updateTask: (task: Task) => void,
+  deleteTask: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -165,10 +168,22 @@ const TaskEdit: React.FC<IProps> = (props) => {
                 <SubtaskEdit
                     key={subtask.id}
                     updateTask={props.updateTask}
+                    deleteTask={props.deleteTask}
                     task={subtask}
                 />
             ))}
           </List>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => props.deleteTask(task)}
+          >
+            <DeleteIcon />
+            Delete Task
+          </Button>
         </Grid>
       </Grid>
     </form>

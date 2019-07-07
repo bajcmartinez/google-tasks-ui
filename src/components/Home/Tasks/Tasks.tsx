@@ -13,6 +13,7 @@ interface IProps {
   title: string,
   updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void,
   updateTask: (task: Task) => void
+  deleteTask: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +46,13 @@ const Tasks: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     if (tasks.length > 0)
-      handleSelectedTaskChanged(tasks[0]);
+      if (selectedTask) {
+        // Only select the first if the selected task is not anymore on the list
+        const st = tasks.find((find: Task) => find.id === selectedTask.id) || tasks[0];
+        handleSelectedTaskChanged(st);
+      } else {
+        handleSelectedTaskChanged(tasks[0]);
+      }
   }, [tasks]);
 
 
@@ -64,7 +71,12 @@ const Tasks: React.FC<IProps> = (props) => {
 
         <Grid item xs={12} md={6}>
           <Paper className={classes.section}>
-            <TaskEdit task={selectedTask} taskLists={props.taskLists} updateTask={props.updateTask}  />
+            <TaskEdit
+                task={selectedTask}
+                taskLists={props.taskLists}
+                updateTask={props.updateTask}
+                deleteTask={props.deleteTask}
+            />
           </Paper>
         </Grid>
       </Grid>
@@ -72,6 +84,6 @@ const Tasks: React.FC<IProps> = (props) => {
 
     </div>
   );
-}
+};
 
 export default Tasks;

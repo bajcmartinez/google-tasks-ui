@@ -4,11 +4,13 @@ import { Task } from '../../../../../services/GoogleTasks';
 import TextField from '@material-ui/core/TextField';
 import { debounce } from 'throttle-debounce'
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
+import {IconButton} from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 interface IProps {
   task: Task,
-  updateTask: (task: Task) => void
+  updateTask: (task: Task) => void,
+  deleteTask: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -57,6 +59,14 @@ const SubtaskEdit: React.FC<IProps> = (props) => {
             onChange={handleChange('title')}
             fullWidth
         />
+
+        <IconButton
+            color="default"
+            aria-label="Delete"
+            onClick={() => props.deleteTask(task)}
+        >
+          <DeleteIcon />
+        </IconButton>
       </ListItem>
     </Fragment>
   );
