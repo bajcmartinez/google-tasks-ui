@@ -1,14 +1,17 @@
-import React, {ChangeEvent, useEffect, useRef} from 'react'
+import React, {ChangeEvent, Fragment, useEffect, useRef} from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task, TaskList } from '../../../../services/GoogleTasks';
 import CalendarIcon  from '@material-ui/icons/CalendarToday';
 import TextField from '@material-ui/core/TextField';
-import { Grid } from '@material-ui/core'
+import {Checkbox, Grid} from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
 import { DatePicker, MaterialUiPickersDate } from '@material-ui/pickers'
 import { Moment } from 'moment'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { debounce } from 'throttle-debounce'
+import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List";
+import SubtaskEdit from "./SubtaskEdit";
 
 interface IProps {
   task?: Task,
@@ -150,9 +153,26 @@ const TaskEdit: React.FC<IProps> = (props) => {
             }}
           />
         </Grid>
+
+        <Grid item xs={12}>
+
+          <Typography variant="h5">
+            Subtasks
+          </Typography>
+
+          <List component="ul">
+            {task.subtasks.map((subtask: Task) => (
+                <SubtaskEdit
+                    key={subtask.id}
+                    updateTask={props.updateTask}
+                    task={subtask}
+                />
+            ))}
+          </List>
+        </Grid>
       </Grid>
     </form>
   );
-}
+};
 
 export default TaskEdit;

@@ -27,17 +27,46 @@ export function tasksReducer(
             };
 
         case UPDATE_TASK:
-            return {
-                ...state,
-                list: state.list.map((task: Task): Task => {
-                    const updated = action.payload as Task;
-                    if (task.id === updated.id) {
-                        return { ...task, ...updated };
-                    }
+            const updated = action.payload as Task;
+            if (updated.parent) {
+                // We are updating a subtask
+                const updatedParent = state.list.find((parent: Task) => parent.id === updated.parent);
+                if (!updatedParent) {
+                    return state;
+                }
 
-                    return task;
-                })
-            };
+                return {
+                    ...state,
+                    list: state.list.map((task: Task): Task => {
+                        if (task.id === updatedParent.id) {
+                            updatedParent.subtasks = updatedParent.subtasks.map((subtask: Task): Task => {
+                                if (subtask.id === updated.id) {
+                                    return {...subtask, ...updated};
+                                }
+
+                                return subtask;
+                            });
+
+                            return {
+                                ...updatedParent
+                            }
+                        }
+
+                        return task;
+                    })
+                };
+            } else {
+                return {
+                    ...state,
+                    list: state.list.map((task: Task): Task => {
+                        if (task.id === updated.id) {
+                            return {...task, ...updated};
+                        }
+
+                        return task;
+                    })
+                };
+            }
 
         case UPDATE_TASK_COMPLETION:
             return {

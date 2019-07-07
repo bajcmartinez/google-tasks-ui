@@ -156,7 +156,7 @@ class GoogleTasksService {
       }) as Task);
     };
 
-    return mapItems(items);
+    return mapItems(items.filter((subitem: any) => !subitem["parent"]));
   }
 
   async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
