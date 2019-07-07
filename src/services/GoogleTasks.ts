@@ -21,7 +21,8 @@ export type Task = {
   updatedAt: Moment,
   status: string,
   listId: string,
-  subtasks: Task[]
+  subtasks: Task[],
+  isDirty: boolean
 }
 
 class GoogleTasksService {
@@ -150,6 +151,7 @@ class GoogleTasksService {
         updatedAt: moment(item["updated"]),
         listId: taskListId,
         status: item["status"],
+        isDirty: false,
         subtasks: mapItems(items.filter((subitem: any) => subitem["parent"] === item["id"]))
       }) as Task);
     };

@@ -1,14 +1,14 @@
-import React, {ChangeEvent, FormEvent, useEffect} from 'react'
+import React, {ChangeEvent, useEffect, useRef} from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task, TaskList } from '../../../../services/GoogleTasks';
 import CalendarIcon  from '@material-ui/icons/CalendarToday';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
 import { DatePicker, MaterialUiPickersDate } from '@material-ui/pickers'
 import { Moment } from 'moment'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import { debounce } from 'throttle-debounce'
 
 interface IProps {
   task?: Task,
@@ -48,33 +48,43 @@ const TaskEdit: React.FC<IProps> = (props) => {
   const classes = useStyles();
 
   const [task, setTask] = React.useState<Task | null>(null);
+  const debounced = useRef(debounce(500, (task: Task | null) => {
+    if (task && task.isDirty) {
+      props.updateTask({
+        ...task,
+        isDirty: false
+      });
+    }
+  }));
 
-  const handleCancel = () => {
-    setTask(props.task ? { ...props.task } : null);
-  };
-
+  // Reset the form when the task props changes
   useEffect(() => {
-    handleCancel();
+    setTask(props.task ? { ...props.task } : null);
   }, [props.task]);
+
+  // Save when the task changes
+  useEffect(() => {
+    debounced.current(task);
+  }, [task]);
 
   if (!task) {
     return <div>No task selected</div>;
   }
 
   const handleChange = (name:string) => (event:ChangeEvent<HTMLInputElement>) => {
-    setTask({ ...task, [name]: event.target.value });
+    setTask({
+      ...task,
+      [name]: event.target.value,
+      isDirty: true
+    });
   };
 
   const handleDueDateChange = (date: MaterialUiPickersDate) => {
     setTask({
       ...task,
-      dueAt: date as Moment
-    })
-  };
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    props.updateTask(task);
+      dueAt: date as Moment,
+      isDirty: true
+    });
   };
 
   const taskEdit = { ...task } as Task;
@@ -86,7 +96,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
   );
 
   return (
-    <form onSubmit={onSubmit}>
+    <form>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
@@ -139,14 +149,6 @@ const TaskEdit: React.FC<IProps> = (props) => {
               ),
             }}
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <div className={classes.buttons}>
-            <Button variant="contained" color="default" onClick={handleCancel}>Cancel</Button>
-            &nbsp;&nbsp;
-            <Button variant="contained" color="primary" type="submit">Save</Button>
-          </div>
         </Grid>
       </Grid>
     </form>

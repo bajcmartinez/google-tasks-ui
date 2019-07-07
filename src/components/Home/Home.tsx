@@ -128,7 +128,7 @@ const Home: React.FC = () => {
     !task.parent // Tasks without parents
     && (taskListId === "all" || taskListId === task.listId) // Tasks for the current list
     && !task.completed // Show only incompleted tasks
-  )
+  );
 
   return (
     <div className={classes.root}>

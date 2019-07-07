@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import TaskList from './TaskList';
 import TaskEdit from './TaskEdit'
-import {updateTaskAction} from "../../../actions/tasks";
 
 interface IProps {
   tasks: Task[],
