@@ -44,7 +44,7 @@ class GoogleTasksService {
 
       // To load first we need to inject the scripts
       const script = document.createElement("script");
-      script.src = "gapi.js";
+      script.src = "https://apis.google.com/js/api.js";
       // @ts-ignore
       script.onload = () => {
         // @ts-ignore
