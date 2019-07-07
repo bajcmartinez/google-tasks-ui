@@ -31,7 +31,7 @@ export type DeleteTaskAction = {
 }
 
 export function receiveTasksAction(tasks: Task[]): TasksAction {
-    return <const>{
+    return {
         type: RECEIVE_TASKS,
         payload: tasks
     }

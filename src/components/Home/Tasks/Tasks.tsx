@@ -53,7 +53,7 @@ const Tasks: React.FC<IProps> = (props) => {
       } else {
         handleSelectedTaskChanged(tasks[0]);
       }
-  }, [tasks]);
+  }, [tasks, selectedTask]);
 
 
   return (

@@ -1,5 +1,4 @@
 import React, {ChangeEvent, useEffect, Fragment, useRef} from 'react'
-import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task } from '../../../../../services/GoogleTasks';
 import TextField from '@material-ui/core/TextField';
 import { debounce } from 'throttle-debounce'
@@ -13,13 +12,7 @@ interface IProps {
   deleteTask: (task: Task) => void
 }
 
-const useStyles = makeStyles(theme => ({
-
-}));
-
 const SubtaskEdit: React.FC<IProps> = (props) => {
-  const classes = useStyles();
-
   const [task, setTask] = React.useState<Task>(props.task);
   const debounced = useRef(debounce(500, (task: Task | null) => {
     if (task && task.isDirty) {

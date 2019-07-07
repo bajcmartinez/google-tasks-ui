@@ -1,9 +1,9 @@
-import React, {ChangeEvent, Fragment, useEffect, useRef} from 'react'
+import React, {ChangeEvent, useEffect, useRef} from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task, TaskList } from '../../../../services/GoogleTasks';
 import CalendarIcon  from '@material-ui/icons/CalendarToday';
 import TextField from '@material-ui/core/TextField';
-import {Checkbox, Grid} from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
 import { DatePicker, MaterialUiPickersDate } from '@material-ui/pickers'
 import { Moment } from 'moment'
@@ -44,10 +44,13 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
 
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+  button: {
+    margin: theme.spacing(1)
   },
+
+  rightIcon: {
+    marginLeft: theme.spacing(1)
+  }
 }));
 
 const TaskEdit: React.FC<IProps> = (props) => {
@@ -178,11 +181,12 @@ const TaskEdit: React.FC<IProps> = (props) => {
         <Grid item xs={12}>
           <Button
               variant="contained"
-              color="secondary"
+              color="default"
+              className={classes.button}
               onClick={() => props.deleteTask(task)}
           >
-            <DeleteIcon />
             Delete Task
+            <DeleteIcon className={classes.rightIcon} />
           </Button>
         </Grid>
       </Grid>

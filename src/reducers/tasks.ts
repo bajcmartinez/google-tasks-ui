@@ -88,7 +88,6 @@ export function tasksReducer(
                 // We are deleting a sub task
 
                 const updatedParent = state.list.find((parent: Task) => parent.id === deleteAction.parent);
-                debugger;
                 if (!updatedParent) {
                     return state;
                 }
