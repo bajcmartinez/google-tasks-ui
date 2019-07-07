@@ -22,8 +22,6 @@
     "@types/react": "16.8.20",
     "@types/react-dom": "16.8.4",
     "@types/react-linkify": "^0.2.0",
-    "@types/react-redux": "^7.1.0",
-    "@types/redux-logger": "^3.0.7",
     "@types/throttle-debounce": "^1.1.1",
     "cross-env": "^5.2.0",
     "electron-is-dev": "^1.1.0",
@@ -32,11 +30,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-linkify": "^1.0.0-alpha",
-    "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
     "react-transition-group": "^4.2.0",
-    "redux": "^4.0.1",
-    "redux-logger": "^3.0.6",
     "throttle-debounce": "^2.1.0",
     "typeface-roboto": "0.0.54",
     "typescript": "3.5.2",
@@ -52,8 +47,7 @@
     "electron-builder": "^20.43.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "react-test-renderer": "^16.8.6",
-    "redux-devtools-extension": "^2.13.8"
+    "react-test-renderer": "^16.8.6"
   },
   "scripts": {
     "react-start": "react-scripts start",

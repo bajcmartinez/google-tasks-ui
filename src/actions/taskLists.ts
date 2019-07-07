@@ -2,7 +2,7 @@ import { TaskList } from '../services/GoogleTasks'
 
 export const RECEIVE_TASKLISTS = 'RECEIVE_TASKLISTS';
 
-export type TaskListsAction = {
+type TaskListsAction = {
     type: string,
     payload: TaskList[]
 }
@@ -13,3 +13,5 @@ export function receiveTaskLists(taskLists: TaskList[]): TaskListsAction {
         payload: taskLists
     }
 }
+
+export type Action = TaskListsAction
