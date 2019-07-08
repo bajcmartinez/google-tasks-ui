@@ -6,8 +6,14 @@
     "url": "https://jcmartinez.dev"
   },
   "build": {
-    "appId": "dev.jcmartinez.google-tasks-ui"
+    "appId": "dev.jcmartinez.google-tasks-ui",
+    "productName": "Google Tasks UI"
   },
+  "bugs": {
+    "url": "https://github.com/bajcmartinez/google-tasks-ui/issues",
+    "email": "bajcmartinez@gmail.com"
+  },
+  "license": "MIT",
   "main": "public/electron.js",
   "homepage": "./",
   "version": "0.1.0",
@@ -34,8 +40,7 @@
     "react-transition-group": "^4.2.0",
     "throttle-debounce": "^2.1.0",
     "typeface-roboto": "0.0.54",
-    "typescript": "3.5.2",
-    "wait-on": "^3.2.0"
+    "typescript": "3.5.2"
   },
   "devDependencies": {
     "@types/enzyme": "^3.9.3",
@@ -45,6 +50,7 @@
     "concurrently": "^4.1.0",
     "electron": "^5.0.4",
     "electron-builder": "^20.43.0",
+    "wait-on": "^3.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "react-test-renderer": "^16.8.6"

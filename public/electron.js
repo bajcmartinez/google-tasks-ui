@@ -6,7 +6,12 @@ const isDev = require("electron-is-dev");
 let mainWindow;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680 });
+  console.log(path.join(__dirname, '../assets/logo.png'));
+  mainWindow = new BrowserWindow({
+    width: 1280,
+    height: 768,
+    icon: path.join(__dirname, '../assets/logo.png')
+  });
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
