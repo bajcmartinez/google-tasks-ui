@@ -131,6 +131,11 @@ const Home: React.FC = () => {
     refreshData();
   }, []);
 
+  // Set the window title
+  useEffect(() => {
+    document.title = taskListTitle;
+  }, [taskListTitle]);
+
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
   }

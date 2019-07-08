@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'typeface-roboto';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Button, Container, Typography } from '@material-ui/core';
@@ -23,6 +23,12 @@ interface IProps {
 
 const Welcome: React.FC<IProps> = (props) => {
   const classes = useStyles();
+
+  // Set the window title
+  useEffect(() => {
+    document.title = "Welcome to Google Tasks UI";
+  });
+
   return (
     <Container component="main" maxWidth="md">
       <div className={classes.paper}>
