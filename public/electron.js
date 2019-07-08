@@ -3,10 +3,10 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
+
 let mainWindow;
 
 function createWindow() {
-  console.log(path.join(__dirname, '../assets/logo.png'));
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 768,

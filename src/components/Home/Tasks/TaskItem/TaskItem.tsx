@@ -23,7 +23,6 @@ interface IProps {
 const useStyles = makeStyles(theme => ({
   due: {
     ...theme.typography.body2,
-    color: theme.palette.text.secondary,
     textTransform: 'none',
     marginTop: theme.spacing(1)
   },

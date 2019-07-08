@@ -1,41 +1,58 @@
 import React, { useState } from 'react'
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import { TaskList } from '../../../services/GoogleTasks';
-import Divider from '@material-ui/core/Divider';
-import List  from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListIcon  from '@material-ui/icons/List';
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import { TaskList } from '../../../services/GoogleTasks'
+import Divider from '@material-ui/core/Divider'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListSubheader from '@material-ui/core/ListSubheader'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import Switch from '@material-ui/core/Switch'
+import ListIcon from '@material-ui/icons/List'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAdjust } from '@fortawesome/free-solid-svg-icons'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 interface IProps {
   taskLists: TaskList[],
   selectedTaskListChanged: (id: string, title: string) => void
+  switchDarkMode: () => void
 }
 
 const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
-}));
+
+  faIcon: {
+    width: '1em',
+    height: '1em',
+    fontSize: '1.5rem'
+  }
+}))
 
 const Menu: React.FC<IProps> = (props) => {
   const classes = useStyles();
-  const { taskLists, selectedTaskListChanged } = props;
+  const { taskLists, selectedTaskListChanged, switchDarkMode } = props;
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const selectTaskList = (index: number) => {
-    setSelectedIndex(index);
+    setSelectedIndex(index)
     if (index >= 0)
-      selectedTaskListChanged(taskLists[index].id, taskLists[index].title);
+      selectedTaskListChanged(taskLists[index].id, taskLists[index].title)
     else
-      selectedTaskListChanged("all", "All Tasks");
+      selectedTaskListChanged('all', 'All Tasks')
+  }
+
+  const handleDarkMode = () => {
+    switchDarkMode();
   }
 
   return (
     <div>
-      <div className={classes.toolbar} />
+      <div className={classes.toolbar}/>
 
-      <Divider />
+      <Divider/>
 
       <List component="nav" aria-label="Main Actions">
         <ListItem
@@ -45,15 +62,19 @@ const Menu: React.FC<IProps> = (props) => {
         >
 
           <ListItemIcon>
-            <ListIcon />
+            <ListIcon/>
           </ListItemIcon>
           <ListItemText>All Tasks</ListItemText>
         </ListItem>
       </List>
 
-      <Divider />
+      <Divider/>
 
       <List component="nav" aria-label="Task Lists">
+        <ListSubheader>
+          Task Lists
+        </ListSubheader>
+
         {taskLists.map((taskList: TaskList, index: number) => (
           <ListItem
             button key={taskList.id}
@@ -66,9 +87,43 @@ const Menu: React.FC<IProps> = (props) => {
         ))}
       </List>
 
+      <Divider/>
 
+      <List component="nav" aria-label="Task Lists">
+        <ListSubheader>
+          Others
+        </ListSubheader>
+
+        <ListItem>
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faAdjust} className={classes.faIcon} />
+          </ListItemIcon>
+          <ListItemText>Dark Mode</ListItemText>
+
+          <ListItemSecondaryAction>
+            <Switch
+              edge="end"
+              checked={localStorage.getItem("settings.darkMode") === "true"}
+              onChange={() => handleDarkMode()}
+              inputProps={{ 'aria-labelledby': 'switch-list-label-darkMode' }}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+
+        <ListItem
+          button
+          component="a"
+          href="https://github.com/bajcmartinez/google-tasks-ui"
+          target="_blank"
+        >
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faGithub} className={classes.faIcon} />
+          </ListItemIcon>
+          <ListItemText>View on GitHub</ListItemText>
+        </ListItem>
+      </List>
     </div>
-  );
+  )
 }
 
-export default Menu;
+export default Menu

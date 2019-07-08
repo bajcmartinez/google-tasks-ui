@@ -22,6 +22,10 @@ import {
 } from '../../actions/tasks'
 import Tasks from './Tasks'
 
+interface IProps {
+  switchDarkMode: () => void
+}
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -49,7 +53,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Home: React.FC = () => {
+const Home: React.FC<IProps> = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -145,7 +149,11 @@ const Home: React.FC = () => {
     setTaskListTitle(title);
   }
 
-  const drawer = (<Menu taskLists={taskListsState.list} selectedTaskListChanged={handleSelectedTaskListChanged} />);
+  const drawer = (<Menu
+    taskLists={taskListsState.list}
+    selectedTaskListChanged={handleSelectedTaskListChanged}
+    switchDarkMode={props.switchDarkMode}
+  />);
 
   // Filter tasks on the screen
   const tasks = tasksState.list.filter((task: Task) =>

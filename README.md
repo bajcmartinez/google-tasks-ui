@@ -4,7 +4,9 @@ Open source alternative to Google Tasks that comes in the form of a website and 
 
 [Check it out](https://googletasksui.com)
 
-![All Tasks](assets/demo.png)
+| Light Mode | Dark Mode |
+------|------
+![All Tasks](assets/demo.png) | ![All Tasks](assets/demo-dark.png)
 
 
 This application is undergoing heavy development and any contributions are welcomed!

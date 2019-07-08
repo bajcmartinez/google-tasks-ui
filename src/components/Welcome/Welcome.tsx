@@ -79,7 +79,7 @@ const Welcome: React.FC<IProps> = (props) => {
 
             <br />
 
-            <Button variant="contained" color="secondary" href="https://github.com/bajcmartinez/google-tasks-ui" target="_blank">
+            <Button variant="contained" color="secondary" href="https://github.com/bajcmartinez/google-tasks-ui" target="_blank" rel="noopener noreferrer">
               Contribute on GitHub
             </Button>
           </Grid>
@@ -92,7 +92,7 @@ const Welcome: React.FC<IProps> = (props) => {
             <br />
 
             <Typography variant="body1">
-              Found any issues? Report them <a href="https://github.com/bajcmartinez/google-tasks-ui/issues" target="_blank">here</a>
+              Found any issues? Report them <a href="https://github.com/bajcmartinez/google-tasks-ui/issues" target="_blank" rel="noopener noreferrer">here</a>
             </Typography>
           </Grid>
         </Grid>

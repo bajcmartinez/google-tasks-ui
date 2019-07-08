@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react'
 import 'typeface-roboto';
+import { ThemeProvider } from '@material-ui/styles';
+import lightTheme from '../themes/light';
+import darkTheme from '../themes/dark';
 
 import GoogleTasksService from '../services/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
-
+import { CssBaseline } from '@material-ui/core'
 
 const App: React.FC = () => {
   const [googleLoaded, setGoogleLoaded] = React.useState(false);
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
+  const [settings, setSettings] = React.useState({
+    darkMode: localStorage.getItem("settings.darkMode") === "true"
+  });
+
+  // Initialize google gapi only on the first load
   useEffect(() => {
     GoogleTasksService.authorize().then(() => {
       setGoogleLoaded(true);
@@ -17,7 +25,7 @@ const App: React.FC = () => {
       if (!isSignedIn)
         GoogleTasksService.subscribeSigninStatus(updateSigninStatus);
     });
-  });
+  }, []);
 
   function updateSigninStatus(isSignedIn: boolean) {
     setIsSignedIn(isSignedIn);
@@ -27,15 +35,31 @@ const App: React.FC = () => {
     GoogleTasksService.signIn()
   }
 
-  if (!googleLoaded) {
-    return (<div>Loading...</div>);
+  function switchDarkMode() {
+    localStorage.setItem("settings.darkMode", (!settings.darkMode).toString());
+    setSettings({
+      darkMode: !settings.darkMode
+    })
   }
 
-  if (GoogleTasksService.isSignedIn()) {
-    return (<Home />)
+  let render;
+
+  if (!googleLoaded) {
+    render = (<div>Loading...</div>);
   } else {
-    return (<Welcome signIn={signIn} />)
+    if (GoogleTasksService.isSignedIn()) {
+      render = (<Home switchDarkMode={switchDarkMode} />)
+    } else {
+      render = (<Welcome signIn={signIn}/>)
+    }
   }
+
+  return (
+    <ThemeProvider theme={settings.darkMode ? darkTheme : lightTheme}>
+      <CssBaseline />
+      {render}
+    </ThemeProvider>
+  )
 }
 
 export default App;
