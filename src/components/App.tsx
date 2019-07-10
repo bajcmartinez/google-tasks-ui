@@ -22,12 +22,14 @@ const App: React.FC = () => {
     GoogleTasksService.authorize().then(() => {
       setGoogleLoaded(true);
 
+      updateSigninStatus(GoogleTasksService.isSignedIn());
       GoogleTasksService.subscribeSigninStatus(updateSigninStatus);
+    }).catch(error => {
+      console.error("Error loading Google Authorization Module", error);
     });
   }, []);
 
   function updateSigninStatus(isSignedIn: boolean) {
-    console.log('updateSigninStatus', isSignedIn);
     setIsSignedIn(isSignedIn);
   }
 
@@ -52,10 +54,12 @@ const App: React.FC = () => {
     render = (<div>Loading...</div>);
   } else {
     if (isSignedIn) {
-      render = (<Home
-        switchDarkMode={switchDarkMode}
-        signOut={signOut}
-      />)
+      render = (
+        <Home
+          switchDarkMode={switchDarkMode}
+          signOut={signOut}
+        />
+      )
     } else {
       render = (<Welcome signIn={signIn}/>)
     }

@@ -20,7 +20,10 @@ import {
   receiveTasksAction, updateTaskAction,
   updateTaskCompletionAction,
 } from '../../actions/tasks'
-import Tasks from './Tasks'
+import Tasks from './Tasks';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { useInterval } from '../../hooks/useInterval'
+
 
 interface IProps {
   switchDarkMode: () => void,
@@ -60,23 +63,38 @@ const Home: React.FC<IProps> = (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [taskListId, setTaskListId] = React.useState("all");
   const [taskListTitle, setTaskListTitle] = React.useState("All Tasks");
+  const [loading, setLoading] = React.useState(false);
 
   const [taskListsState, taskListsDispatch] = useReducer(taskListsReducer, initialTaskListsState);
   const [tasksState, tasksDispatch] = useReducer(tasksReducer, initialTasksState);
 
   const { enqueueSnackbar } = useSnackbar();
 
-  function refreshData() {
+  const refreshData = () => {
+    setLoading(true);
+    console.log('loading Data...');
     GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
-      taskListsDispatch(receiveTaskLists(taskLists));
-
       const allTasks:Task[] = [];
+      const promises:Promise<any>[] = [];
       taskLists.forEach((list: TaskList) => {
-        GoogleTasksService.listTasks(list.id).then((tasks: Task[]) => {
+        promises.push(GoogleTasksService.listTasks(list.id));
+      });
+
+      Promise.all(promises).then((results:any[]) => {
+        results.forEach((tasks: Task[]) => {
           allTasks.push(...tasks);
-          tasksDispatch(receiveTasksAction(allTasks));
         });
-      })
+
+        taskListsDispatch(receiveTaskLists(taskLists));
+        tasksDispatch(receiveTasksAction(allTasks));
+        setLoading(false);
+      });
+    }).catch(error => {
+      setLoading(false);
+      console.error("Error loading tasks", error);
+      // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
+      // and we want to show the user an error before popping up again the item
+      enqueueSnackbar('Error loading tasks, please try again!', {variant: 'error'});
     });
   }
 
@@ -134,7 +152,13 @@ const Home: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     refreshData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useInterval(() => {
+    refreshData();
+  }, 10000);
 
   // Set the window title
   useEffect(() => {
@@ -203,6 +227,8 @@ const Home: React.FC<IProps> = (props) => {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
+
+        {loading && <LinearProgress />}
 
         <Tasks
             tasks={tasks}
