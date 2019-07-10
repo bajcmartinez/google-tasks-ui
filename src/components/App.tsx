@@ -22,17 +22,21 @@ const App: React.FC = () => {
     GoogleTasksService.authorize().then(() => {
       setGoogleLoaded(true);
 
-      if (!isSignedIn)
-        GoogleTasksService.subscribeSigninStatus(updateSigninStatus);
+      GoogleTasksService.subscribeSigninStatus(updateSigninStatus);
     });
   }, []);
 
   function updateSigninStatus(isSignedIn: boolean) {
+    console.log('updateSigninStatus', isSignedIn);
     setIsSignedIn(isSignedIn);
   }
 
   function signIn() {
     GoogleTasksService.signIn()
+  }
+
+  function signOut() {
+    GoogleTasksService.signOut()
   }
 
   function switchDarkMode() {
@@ -47,8 +51,11 @@ const App: React.FC = () => {
   if (!googleLoaded) {
     render = (<div>Loading...</div>);
   } else {
-    if (GoogleTasksService.isSignedIn()) {
-      render = (<Home switchDarkMode={switchDarkMode} />)
+    if (isSignedIn) {
+      render = (<Home
+        switchDarkMode={switchDarkMode}
+        signOut={signOut}
+      />)
     } else {
       render = (<Welcome signIn={signIn}/>)
     }

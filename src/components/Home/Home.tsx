@@ -23,7 +23,8 @@ import {
 import Tasks from './Tasks'
 
 interface IProps {
-  switchDarkMode: () => void
+  switchDarkMode: () => void,
+  signOut: () => void
 }
 
 const drawerWidth = 240;
@@ -167,7 +168,9 @@ const Home: React.FC<IProps> = (props) => {
       <TitleBar
         title="Google Tasks UI"
         drawerWidth={drawerWidth}
-        handleDrawerToggle={handleDrawerToggle} />
+        handleDrawerToggle={handleDrawerToggle}
+        signOut={props.signOut}
+      />
       <nav className={classes.drawer}>
         <Hidden smUp implementation="css">
           <Drawer

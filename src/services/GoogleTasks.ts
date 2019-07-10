@@ -111,6 +111,14 @@ class GoogleTasksService {
   }
 
   /**
+   * Starts the sign out process against your Google Account
+   *
+   */
+  signOut() {
+    this.auth.signOut();
+  }
+
+  /**
    * Lists all tasks lists
    *
    * @returns TaskList[]
