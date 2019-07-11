@@ -68,8 +68,12 @@ const TaskEdit: React.FC<IProps> = (props) => {
 
   // Reset the form when the task props changes
   useEffect(() => {
-    setTask(props.task ? { ...props.task } : null);
-  }, [props.task]);
+    // Update the edit form only if we have selected a new task
+    // This prevents the screen from updating and replacing the user content with the background update
+    if (!task || !props.task || task.id !== props.task.id) {
+      setTask(props.task ? {...props.task} : null);
+    }
+  }, [props.task, task]);
 
   // Save when the task changes
   useEffect(() => {
