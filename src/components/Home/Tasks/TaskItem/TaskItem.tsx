@@ -53,7 +53,7 @@ const TaskItem: React.FC<IProps> = (props) => {
           {task.dueAt.fromNow()}
         </span>
       </Button>
-    </span>) : null
+    </span>) : null;
 
   const secondary = (
     <span>
@@ -66,19 +66,19 @@ const TaskItem: React.FC<IProps> = (props) => {
 
   const [open, setOpen] = React.useState(false);
 
-  function handleOpenSubTasks() {
+  const handleOpenSubTasks = () => {
     setOpen(!open);
-  }
+  };
 
-  function handleCompletedChanged(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleCompletedChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
 
     updateTaskCompletion(task.id, task.listId, event.target.checked);
-  }
+  };
 
-  function handleSelection() {
+  const handleSelection = () => {
     handleSelectedTaskChanged && handleSelectedTaskChanged(task);
-  }
+  };
 
   return (
     <Fragment>
@@ -112,6 +112,13 @@ const TaskItem: React.FC<IProps> = (props) => {
       )}
     </Fragment>
   );
-}
+};
 
-export default TaskItem;
+const arePropsEqual = (prevProps: IProps, nextProps: IProps) => {
+  // Only renders when title, notes, dueDate or subtasks changes
+  return (
+      JSON.stringify(prevProps.task) === JSON.stringify(nextProps.task)
+  );
+};
+
+export default React.memo(TaskItem, arePropsEqual);

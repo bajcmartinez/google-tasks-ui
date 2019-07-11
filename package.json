@@ -54,10 +54,10 @@
     "concurrently": "^4.1.0",
     "electron": "^5.0.4",
     "electron-builder": "^20.43.0",
-    "wait-on": "^3.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
-    "react-test-renderer": "^16.8.6"
+    "react-test-renderer": "^16.8.6",
+    "wait-on": "^3.2.0"
   },
   "scripts": {
     "react-start": "react-scripts start",
