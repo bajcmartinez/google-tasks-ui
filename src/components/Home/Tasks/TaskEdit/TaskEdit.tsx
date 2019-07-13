@@ -66,14 +66,17 @@ const TaskEdit: React.FC<IProps> = (props) => {
     }
   }));
 
+  let titleInput: HTMLInputElement | null = null;
+
   // Reset the form when the task props changes
   useEffect(() => {
     // Update the edit form only if we have selected a new task
     // This prevents the screen from updating and replacing the user content with the background update
     if (!task || !props.task || task.id !== props.task.id) {
       setTask(props.task ? {...props.task} : null);
+      titleInput && titleInput.focus();
     }
-  }, [props.task, task]);
+  }, [props.task, task, titleInput]);
 
   // Save when the task changes
   useEffect(() => {
@@ -113,6 +116,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
+            inputRef={(input: HTMLInputElement) => { titleInput = input; }}
             label="Title"
             value={taskEdit.title}
             onChange={handleChange('title')}

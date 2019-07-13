@@ -6,40 +6,57 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import TaskList from './TaskList';
 import TaskEdit from './TaskEdit'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import Zoom from '@material-ui/core/Zoom'
 
 interface IProps {
   tasks: Task[],
   taskLists: TaskListType[],
+  selectedTask?: Task,
+  selectedTaskListId: string,
   title: string,
   updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void,
-  updateTask: (task: Task) => void
+  setSelectedTask: (task: Task) => void,
+  updateTask: (task: Task) => void,
+  insertTask: (task: Task) => void,
   deleteTask: (task: Task) => void
 }
 
 const useStyles = makeStyles(theme => ({
   section: {
     padding: theme.spacing(3, 2),
-    height: 'calc(100vh - 176px)',
-    overflowY: 'scroll'
+    height: 'calc(100vh - 100px)',
+    overflowY: 'scroll',
+    position: 'relative'
   },
 
-  fixedSection: {
-    padding: theme.spacing(3, 2),
-    position: 'fixed',
-    height: 'calc(100vh - 176px)',
-  }
+  fab: {
+    position: 'absolute',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
 }));
 
 const Tasks: React.FC<IProps> = (props) => {
   const classes = useStyles();
 
-  const [selectedTask, setSelectedTask] = useState<Task>();
-
-  function handleSelectedTaskChanged(task: Task):void {
-    setSelectedTask(task);
+  const handleSelectedTaskChanged = (task: Task):void => {
+    props.setSelectedTask(task);
   }
 
+  const handleInsertTask = (): void => {
+    props.insertTask({
+      title: '',
+      notes: '',
+      listId: props.selectedTaskListId,
+      subtasks: [] as Task[]
+    } as Task);
+  }
+
+  const { selectedTask } = props;
   const [ tasks, setTasks ] = useState<Task[]>([])
+
   useEffect(() => {
     setTasks(props.tasks.sort((a: Task, b: Task) => ((a.dueAt || new Date()) < (b.dueAt || new Date())) ? -1 : 1));
   }, [props.tasks]);
@@ -53,6 +70,7 @@ const Tasks: React.FC<IProps> = (props) => {
       } else {
         handleSelectedTaskChanged(tasks[0]);
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks, selectedTask]);
 
 
@@ -66,6 +84,17 @@ const Tasks: React.FC<IProps> = (props) => {
             </Typography>
 
             <TaskList tasks={tasks} handleSelectedTaskChanged={handleSelectedTaskChanged} updateTaskCompletion={props.updateTaskCompletion} />
+
+            <Zoom in={props.selectedTaskListId !== 'all'} unmountOnExit>
+              <Fab
+                aria-label={"Insert Task"}
+                className={classes.fab}
+                color="primary"
+                onClick={handleInsertTask}
+              >
+                <AddIcon />
+              </Fab>
+            </Zoom>
           </Paper>
         </Grid>
 

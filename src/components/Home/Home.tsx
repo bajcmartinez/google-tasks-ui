@@ -63,6 +63,7 @@ const Home: React.FC<IProps> = (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [taskListId, setTaskListId] = React.useState("all");
   const [taskListTitle, setTaskListTitle] = React.useState("All Tasks");
+  const [selectedTask, setSelectedTask] = React.useState<Task>();
   const [loading, setLoading] = React.useState(false);
 
   const [taskListsState, taskListsDispatch] = useReducer(taskListsReducer, initialTaskListsState);
@@ -129,6 +130,26 @@ const Home: React.FC<IProps> = (props) => {
       enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
 
       setTimeout(() => tasksDispatch(updateTaskAction(current)), 1000);
+    }
+  }
+
+  async function insertTask(task: Task) {
+    try {
+      // We update the UI meanwhile the API is doing it's stuff, we trust it just works
+      const response = await GoogleTasksService.insertTask(task);
+      task = {
+        ...task,
+        id: response.result.id
+      }
+      tasksDispatch(insertTaskAction(task));
+      setSelectedTask(task);
+      enqueueSnackbar('Task created!', {variant: 'success'});
+
+    } catch (error) {
+      console.error("Error creating task", error);
+      // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
+      // and we want to show the user an error before popping up again the item
+      enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
     }
   }
 
@@ -233,9 +254,13 @@ const Home: React.FC<IProps> = (props) => {
         <Tasks
             tasks={tasks}
             title={taskListTitle}
+            selectedTask={selectedTask}
+            setSelectedTask={setSelectedTask}
             updateTaskCompletion={updateTaskCompletion}
+            insertTask={insertTask}
             updateTask={updateTask}
             deleteTask={deleteTask}
+            selectedTaskListId={taskListId}
             taskLists={taskListsState.list} />
       </main>
     </div>

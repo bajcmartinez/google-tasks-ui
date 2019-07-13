@@ -184,6 +184,24 @@ class GoogleTasksService {
   }
 
   /**
+   * Creates a task
+   *
+   * @param task: Task
+   */
+  async insertTask(task: Task) {
+    return await google.client.tasks.tasks.insert({
+      tasklist: task.listId,
+      task: task.id,
+      id: task.id,
+      title: task.title ? task.title : '',
+      notes: task.notes ? task.notes : '',
+      due: task.dueAt ? task.dueAt.format() : null,
+      status: task.completed ? 'completed' : 'needsAction',
+      parent: task.parent
+    });
+  }
+
+  /**
    * Updates a task
    *
    * @param task: Task
