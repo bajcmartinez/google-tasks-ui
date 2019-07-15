@@ -179,7 +179,7 @@ const Home: React.FC<IProps> = (props) => {
 
   useInterval(() => {
     refreshData();
-  }, 10000);
+  }, 30000);
 
   // Set the window title
   useEffect(() => {

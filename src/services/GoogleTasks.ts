@@ -138,14 +138,18 @@ class GoogleTasksService {
    *
    * @returns Task[]
    */
-  async listTasks(taskListId: string) {
+  async listTasks(taskListId: string, pageToken: string = '') {
     const response = await google.client.tasks.tasks.list({
       tasklist: taskListId,
-      showCompleted: true,
-      showHidden: true
+      showCompleted: false,
+      showHidden: true,
+      pageToken: pageToken
     });
 
     const items = response.result.items;
+    const nextPageToken = response.result.nextPageToken as string;
+
+    const result: Task[] = [];
 
     const mapItems = (tasks: any[]): Task[] => {
       return tasks.map((item: any): Task => ({
@@ -164,7 +168,13 @@ class GoogleTasksService {
       }) as Task);
     };
 
-    return mapItems(items.filter((subitem: any) => !subitem["parent"]));
+    result.concat(mapItems(items.filter((subitem: any) => !subitem["parent"])));
+
+    if (nextPageToken) {
+      result.concat(await this.listTasks(taskListId, nextPageToken));
+    }
+
+    return result;
   }
 
   /**
