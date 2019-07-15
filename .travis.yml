@@ -22,7 +22,6 @@ before_deploy:
       npm run release
       git config --local user.name "Juan Cruz Martinez"
       git config --local user.email "bajcmartinez@gmail.com"
-      git tag "$(node -p 'require(`./package.json`).version')";
     fi;
 
 deploy:
@@ -34,3 +33,17 @@ deploy:
       - "dist/Google Tasks UI*"
     on:
       branch: master
+  - provider: s3
+      access_key_id: $AWS_ACCESS_KEY_ID
+      secret_access_key: $AWS_SECRET_ACCESS_KEY
+      bucket: googletasksui.com
+      local_dir: build
+      skip_cleanup: true
+      on:
+        branch: master
+
+after_deploy:
+  # Allow `awscli` to make requests to CloudFront.
+  - aws configure set preview.cloudfront true
+  # Invalidate every object in the targeted distribution.
+  - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
