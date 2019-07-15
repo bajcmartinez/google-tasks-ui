@@ -7,7 +7,10 @@
   },
   "build": {
     "appId": "dev.jcmartinez.google-tasks-ui",
-    "productName": "Google Tasks UI"
+    "productName": "Google Tasks UI",
+    "mac": {
+      "category": "public.app-category.productivity"
+    }
   },
   "bugs": {
     "url": "https://github.com/bajcmartinez/google-tasks-ui/issues",
