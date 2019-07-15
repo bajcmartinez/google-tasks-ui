@@ -71,9 +71,7 @@
     "release": "npm run react-build && electron-builder --publish=always",
     "build": "npm run react-build && npm run electron-build",
     "test": "react-scripts test",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "release-web": "npm run react-build && aws s3 sync build/ s3://googletasksui.com --delete && npm run invalidate-cache",
-    "invalidate-cache": "aws cloudfront create-invalidation --distribution-id E3PS5DC06DWZ92 --paths '/*'"
+    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": "react-app"
