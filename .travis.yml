@@ -11,20 +11,12 @@ cache:
 script:
   - npm run test
   - npm run react-build
-  - npm run release
 
 before_deploy:
-  - >
-    if [ "$TRAVIS_BRANCH" != "master" ]; then
-      sed -i -e "s/\(\"version\":\\s\+\"\([0-9]\+\.\?\)\+\)/\1-pre.$TRAVIS_BUILD_NUMBER/" package.json;
-    fi;
-    if ! [ "$BEFORE_DEPLOY_RUN" ]; then
-      export BEFORE_DEPLOY_RUN=1;
-      - git config --local user.name "Juan Cruz Martinez"
-      - git config --local user.email "bajcmartinez@gmail.com"
-      git tag "$(node -p 'require(`./package.json`).version')";
-    fi;
-
+  - npm run release
+  - git config --local user.name "Juan Cruz Martinez"
+  - git config --local user.email "bajcmartinez@gmail.com"
+  - git tag "$(node -p 'require(`./package.json`).version')";
 
 deploy:
   - provider: releases
