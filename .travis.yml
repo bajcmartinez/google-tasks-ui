@@ -3,7 +3,6 @@ if: tag IS blank
 
 node_js:
   - "node"
-  - "lts/*"
 
 cache:
   directories:
@@ -12,6 +11,7 @@ cache:
 script:
   - npm run test
   - npm run react-build
+  - npm run release
 
 before_deploy:
   - >
@@ -30,5 +30,8 @@ deploy:
   - provider: releases
     api_key: $GH_TOKEN
     skip_cleanup: true
+    file_glob: true
+    file:
+      - "dist/Google Tasks UI*"
     on:
       branch: master

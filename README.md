@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bajcmartinez/google-tasks-ui.svg?branch=master)](https://travis-ci.org/bajcmartinez/google-tasks-ui)
+
 # Google Tasks UI
 
 Open source alternative to Google Tasks that comes in the form of a website and a desktop app.
