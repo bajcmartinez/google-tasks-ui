@@ -1,19 +1,16 @@
-if: tag IS blank
-
 matrix:
   include:
     - os: osx
       osx_image: xcode10.2
       language: node_js
-      node_js: "node"
+      node_js: "10"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
     - os: linux
-      language: node_js
-      node_js: "node"
-
-env:
-  - ELECTRON_CACHE=$HOME/.cache/electron
-  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
+      services: docker
+      language: generic
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
@@ -24,9 +21,21 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
+  - npm run build
 script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test; fi
-  - npm run build
+  - |
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      docker run --rm \
+        --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
+        -v ${PWD}:/project \
+        -v ~/.cache/electron:/root/.cache/electron \
+        -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+        electronuserland/builder:wine \
+        /bin/bash -c "npm run build --linux --win"
+    else
+      npm run build
+    fi
 
 after_script:
   - COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls
