@@ -22,6 +22,7 @@ before_deploy:
       npm run release
       git config --local user.name "Juan Cruz Martinez"
       git config --local user.email "bajcmartinez@gmail.com"
+      git tag "$(node -p 'require(`./package.json`).version')";
     fi;
 
 deploy:
