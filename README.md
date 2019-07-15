@@ -1,4 +1,4 @@
-# [Google Tasks UI](https://googletasksui.com) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bajcmartinez/google-tasks-ui/blob/master/LICENSE) [![Build Status](https://travis-ci.org/bajcmartinez/google-tasks-ui.svg?branch=master)](https://travis-ci.org/bajcmartinez/google-tasks-ui)
+# [Google Tasks UI](https://googletasksui.com) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bajcmartinez/google-tasks-ui/blob/master/LICENSE) [![Build Status](https://travis-ci.org/bajcmartinez/google-tasks-ui.svg?branch=master)](https://travis-ci.org/bajcmartinez/google-tasks-ui) [![Coverage Status](https://coveralls.io/repos/github/bajcmartinez/google-tasks-ui/badge.svg)](https://coveralls.io/github/bajcmartinez/google-tasks-ui)
 
 Open source alternative to Google Tasks that comes in the form of a website and a desktop app.
 
