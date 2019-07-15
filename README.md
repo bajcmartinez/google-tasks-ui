@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/bajcmartinez/google-tasks-ui.svg?branch=master)](https://travis-ci.org/bajcmartinez/google-tasks-ui)
-
-# Google Tasks UI
+# [Google Tasks UI](https://googletasksui.com) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bajcmartinez/google-tasks-ui/blob/master/LICENSE) [![Build Status](https://travis-ci.org/bajcmartinez/google-tasks-ui.svg?branch=master)](https://travis-ci.org/bajcmartinez/google-tasks-ui)
 
 Open source alternative to Google Tasks that comes in the form of a website and a desktop app.
 
@@ -16,7 +14,7 @@ This application is undergoing heavy development and any contributions are welco
 ## Run the app
 
 ### Web interface 
-
+  
 `npm run react-start`
 
 Runs the app in the development mode.<br>
