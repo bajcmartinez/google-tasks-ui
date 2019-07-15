@@ -29,9 +29,9 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test; fi
   - |
       if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        npm run build --linux --win
+        npm run release --linux --win
       else
-        npm run build
+        npm run release
       fi
 
 after_script:
@@ -45,24 +45,6 @@ before_deploy:
       git config --local user.email "bajcmartinez@gmail.com"
       git tag "$(node -p 'require(`./package.json`).version')";
     fi;
-
-deploy:
-  - provider: releases
-    api_key: $GH_TOKEN
-    draft: true
-    skip_cleanup: true
-    file_glob: true
-    file: "dist/Google Tasks UI*"
-    on:
-      branch: master
-  - provider: s3
-    access_key_id: $AWS_ACCESS_KEY_ID
-    secret_access_key: $AWS_SECRET_ACCESS_KEY
-    bucket: googletasksui.com
-    local_dir: build
-    skip_cleanup: true
-    on:
-      branch: master
 
 after_deploy:
   # Allow `awscli` to make requests to CloudFront.
