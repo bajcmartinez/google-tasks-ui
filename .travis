@@ -1,3 +1,6 @@
+language: node_js
+if: tag IS blank
+
 node_js:
   - "node"
   - "lts/*"
@@ -6,28 +9,26 @@ cache:
   directories:
     - node_modules
 
-before_deploy:
-  - git config --local user.name "Juan Cruz Martinez"
-  - git config --local user.email "bajcmartinez@gmail.com"
-  - newVersion=$(git describe --abbrev=0)
-  - git tag $newVersion
+script:
+  - npm run test
+  - npm run react-build
 
-jobs:
-  include:
-    - stage: Test
-      script:
-        - npm test
-    - stage: Deploy Windows & Mac
-      if: tag IS present
-      os: osx
-      osx_image: xcode10.1
-      script:
-        - npm run release -- --mac --win
-      before_cache:
-        - rm -rf $HOME/.cache/electron-builder/wine
-    - stage: Deploy linux
-      if: tag IS present
-      os: linux
-      dist: trusty
-      script:
-        - npm run release
+before_deploy:
+  - >
+    if [ "$TRAVIS_BRANCH" != "master" ]; then
+      sed -i -e "s/\(\"version\":\\s\+\"\([0-9]\+\.\?\)\+\)/\1-pre.$TRAVIS_BUILD_NUMBER/" package.json;
+    fi;
+    if ! [ "$BEFORE_DEPLOY_RUN" ]; then
+      export BEFORE_DEPLOY_RUN=1;
+      - git config --local user.name "Juan Cruz Martinez"
+      - git config --local user.email "bajcmartinez@gmail.com"
+      git tag "$(node -p 'require(`./package.json`).version')";
+    fi;
+
+
+deploy:
+  - provider: releases
+    api_key: $GH_TOKEN
+    skip_cleanup: true
+    on:
+      branch: master
