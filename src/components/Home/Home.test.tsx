@@ -6,7 +6,10 @@ import { SnackbarProvider } from 'notistack';
 it('renders without crashing', () => {
   const titleBar = shallow(
     <SnackbarProvider>
-      <Home />
+      <Home
+        signOut={() => null}
+        switchDarkMode={() => null}
+      />
     </SnackbarProvider>
     );
   expect(titleBar.exists()).toBe(true);
