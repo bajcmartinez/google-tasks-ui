@@ -1,21 +1,19 @@
-language: node_js
 if: tag IS blank
 
-osx_image: xcode10.2
-
-dist: trusty
-sudo: false
-
-node_js:
-  - "node"
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.2
+      language: node_js
+      node_js: "node"
+    - os: linux
+      language: node_js
+      node_js: "node"
 
 env:
   - ELECTRON_CACHE=$HOME/.cache/electron
   - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
-os:
-  - linux
-  - osx
 
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
