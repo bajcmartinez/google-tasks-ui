@@ -34,13 +34,13 @@ deploy:
     on:
       branch: master
   - provider: s3
-      access_key_id: $AWS_ACCESS_KEY_ID
-      secret_access_key: $AWS_SECRET_ACCESS_KEY
-      bucket: googletasksui.com
-      local_dir: build
-      skip_cleanup: true
-      on:
-        branch: master
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    bucket: googletasksui.com
+    local_dir: build
+    skip_cleanup: true
+    on:
+      branch: master
 
 after_deploy:
   # Allow `awscli` to make requests to CloudFront.
