@@ -97,7 +97,7 @@ const Home: React.FC<IProps> = (props) => {
       // and we want to show the user an error before popping up again the item
       enqueueSnackbar('Error loading tasks, please try again!', {variant: 'error'});
     });
-  }
+  };
 
   async function updateTaskCompletion(taskId: string, listId: string, completed: boolean) {
     try {
@@ -140,7 +140,7 @@ const Home: React.FC<IProps> = (props) => {
       task = {
         ...task,
         id: response.result.id
-      }
+      };
       tasksDispatch(insertTaskAction(task));
       setSelectedTask(task);
       enqueueSnackbar('Task created!', {variant: 'success'});

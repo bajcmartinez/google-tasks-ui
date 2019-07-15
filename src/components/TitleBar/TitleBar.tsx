@@ -106,6 +106,6 @@ const TitleBar: React.FC<IProps> = (props) => {
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default TitleBar;
