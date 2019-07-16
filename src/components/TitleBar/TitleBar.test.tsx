@@ -29,7 +29,7 @@ describe("Basic", () => {
     expect(titleBar.find(Typography).text()).toBe("New Title");
   });
 
-  it('should render a <Accordion> component with several tabs in and selectedIndex', () => {
+  it('should render a <TitleBar> component as expected', () => {
     const wrapper = mount(
         <TitleBar
             title="Test Title"
