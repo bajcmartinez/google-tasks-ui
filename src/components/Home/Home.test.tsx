@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils';
 jest.mock('../../services/GoogleTasks');
 
 describe("Basic", () => {
-  it('renders without crashing', async () => {
+  it('should render without crashing', async () => {
     // await act(async () => {
     //   const home = mount(
     //     <SnackbarProvider>

@@ -7,7 +7,7 @@ import moment from 'moment';
 import Switch from '@material-ui/core/Switch';
 
 describe("Basic", () => {
-  it('renders without crashing', () => {
+  it('should render without crashing', () => {
     const menu = shallow(
       <Menu
         selectedTaskListChanged={() => null}

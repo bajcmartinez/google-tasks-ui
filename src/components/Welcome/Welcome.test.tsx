@@ -6,7 +6,7 @@ import { Button } from '@material-ui/core'
 
 describe('Basic', () => {
 
-  it('renders without crashing', () => {
+  it('should render without crashing', () => {
     act(() => {
       const welcome = mount(<Welcome signIn={() => null}/>);
       expect(welcome.exists()).toBe(true);
