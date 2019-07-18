@@ -32,7 +32,7 @@ const Welcome: React.FC<IProps> = (props) => {
   // Set the window title
   useEffect(() => {
     document.title = "Welcome to Google Tasks UI";
-  });
+  }, []);
 
   return (
     <Container component="main" maxWidth="md">

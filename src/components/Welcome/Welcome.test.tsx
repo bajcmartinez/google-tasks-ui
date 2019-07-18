@@ -1,9 +1,35 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-
+import { mount, ReactWrapper } from 'enzyme'
+import { act } from 'react-dom/test-utils'
 import Welcome from './Welcome';
+import { Button } from '@material-ui/core'
 
-it('renders without crashing', () => {
-  const titleBar = shallow(<Welcome signIn={() => null}/>);
-  expect(titleBar.exists()).toBe(true);
+describe('Basic', () => {
+
+  it('renders without crashing', () => {
+    act(() => {
+      const welcome = mount(<Welcome signIn={() => null}/>);
+      expect(welcome.exists()).toBe(true);
+    })
+  });
+
+});
+
+describe("Events", () => {
+  it('handles the login button', () => {
+    const handler = jest.fn();
+
+    let welcome: ReactWrapper | undefined;
+
+    act(() => {
+      welcome = mount(<Welcome signIn={handler}/>);
+      expect(welcome.exists()).toBe(true);
+    })
+
+
+    const button = welcome && welcome.find(Button).first();
+    button && button.simulate('click');
+
+    expect(handler).toBeCalled();
+  });
 });

@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import { shallow, mount } from 'enzyme';
 import TaskEdit from './TaskEdit';
-import { Task, TaskList } from '../../../../services/GoogleTasks/GoogleTasks'
+import { Task } from '../../../../services/GoogleTasks/GoogleTasks'
 import moment from 'moment';
 import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
