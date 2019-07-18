@@ -2,10 +2,9 @@ import React, { ChangeEvent } from 'react'
 import { shallow, mount } from 'enzyme';
 import Menu from './Menu';
 import ListItem from '@material-ui/core/ListItem'
-import { TaskList } from '../../../services/GoogleTasks'
+import { TaskList } from '../../../services/GoogleTasks/GoogleTasks'
 import moment from 'moment';
 import Switch from '@material-ui/core/Switch';
-import TitleBar from '../../TitleBar'
 
 describe("Basic", () => {
   it('renders without crashing', () => {
@@ -16,23 +15,6 @@ describe("Basic", () => {
         switchDarkMode={() => null}
       />);
     expect(menu.exists()).toBe(true);
-  });
-
-  it('should render a <Menu> component as expected', () => {
-    const taskList: TaskList = {
-      id: "1",
-      status: "active",
-      title: "Task List 1",
-      updatedAt: moment()
-    }
-
-    const menu = shallow(<Menu
-      selectedTaskListChanged={() => null}
-      taskLists={[taskList]}
-      switchDarkMode={() => null}
-    />);
-
-    expect(menu).toMatchSnapshot();
   });
 });
 

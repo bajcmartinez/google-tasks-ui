@@ -1,4 +1,4 @@
-import { TaskList } from '../services/GoogleTasks'
+import { TaskList } from '../services/GoogleTasks/GoogleTasks'
 
 export const RECEIVE_TASKLISTS = 'RECEIVE_TASKLISTS';
 

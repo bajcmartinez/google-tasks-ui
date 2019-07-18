@@ -1,13 +1,14 @@
 import React, { ChangeEvent } from 'react'
 import { shallow, mount } from 'enzyme';
 import TaskEdit from './TaskEdit';
-import { Task, TaskList } from '../../../../services/GoogleTasks'
+import { Task, TaskList } from '../../../../services/GoogleTasks/GoogleTasks'
 import moment from 'moment';
 import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import TextField from '@material-ui/core/TextField';
-import { act } from 'react-dom/test-utils'
-import { Button } from '@material-ui/core'
+import { act } from 'react-dom/test-utils';
+import { Button } from '@material-ui/core';
+import SubtaskEdit from './SubtaskEdit'
 
 describe("Basic", () => {
   it('should render without crashing', () => {
@@ -43,7 +44,7 @@ describe("Basic", () => {
     expect(taskEdit.exists()).toBe(true);
   });
 
-  it('should render a <TaskEdit /> component as expected', () => {
+  it('should render the subtasks', () => {
     const task: Task = {
       id: "1",
       title: "My Title",
@@ -54,36 +55,41 @@ describe("Basic", () => {
       listId: '1',
       subtasks: [{
         id: "2",
-        title: "My subtask",
+        title: "My subtask 1",
         completed: false,
         parent: "",
         updatedAt: moment(),
         status: 'neededAction',
         listId: '1',
         isDirty: false
-      } as Task],
+      } as Task,
+        {
+          id: "3",
+          title: "My subtask 2",
+          completed: false,
+          parent: "",
+          updatedAt: moment(),
+          status: 'neededAction',
+          listId: '1',
+          isDirty: false
+        } as Task],
       isDirty: false
     }
-
-    const taskLists: TaskList[] = [{
-      id: "1",
-      status: "active",
-      title: "Task List 1",
-      updatedAt: moment()
-    }]
 
     const taskEdit = mount(
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <TaskEdit
           task={task}
-          taskLists={taskLists}
+          taskLists={[]}
           deleteTask={() => null}
           updateTask={() => null}
         />
       </MuiPickersUtilsProvider>
     );
 
-    expect(taskEdit).toMatchSnapshot();
+    const subtasks = taskEdit.find(SubtaskEdit);
+
+    expect(subtasks.length).toBe(2);
   });
 });
 

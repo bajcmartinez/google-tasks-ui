@@ -1,4 +1,4 @@
-import { Task } from '../services/GoogleTasks'
+import { Task } from '../services/GoogleTasks/GoogleTasks'
 
 export const RECEIVE_TASKS: string = 'RECEIVE_TASKS';
 export const UPDATE_TASK: string = 'UPDATE_TASK';

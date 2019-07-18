@@ -26,16 +26,16 @@ export type Task = {
 }
 
 class GoogleTasksService {
-  private clientId: string = "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com";
-  private scopes: string = 'https://www.googleapis.com/auth/tasks';
-  private isLoaded: boolean = false;
-  private auth: any;
+  private static clientId: string = "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com";
+  private static scopes: string = 'https://www.googleapis.com/auth/tasks';
+  private static isLoaded: boolean = false;
+  private static auth: any;
 
   /**
    * Loads the client library and gets all the api required information from google servers
    *
    */
-  load() {
+  static load() {
     if (this.isLoaded) return Promise.resolve()
 
     const self = this;
@@ -70,7 +70,7 @@ class GoogleTasksService {
    * Gets the client authorization to query google's API
    *
    */
-  authorize() {
+  static authorize() {
     return new Promise(async (resolve) => {
       await this.load();
 
@@ -87,7 +87,7 @@ class GoogleTasksService {
    * Returns whether the current session is signed in or not
    *
    */
-  isSignedIn () {
+  static isSignedIn () {
     if (!this.auth) return false;
     return this.auth.isSignedIn.get();
   }
@@ -97,7 +97,7 @@ class GoogleTasksService {
    *
    * @param subscriber
    */
-  subscribeSigninStatus (subscriber: (status: boolean) => void) {
+  static subscribeSigninStatus (subscriber: (status: boolean) => void) {
     if (!this.auth) return false;
     return this.auth.isSignedIn.listen(subscriber);
   }
@@ -106,7 +106,7 @@ class GoogleTasksService {
    * Starts the sign in process against your Google Account
    *
    */
-  signIn() {
+  static signIn() {
     this.auth.signIn();
   }
 
@@ -114,7 +114,7 @@ class GoogleTasksService {
    * Starts the sign out process against your Google Account
    *
    */
-  signOut() {
+  static signOut() {
     this.auth.signOut();
   }
 
@@ -123,7 +123,7 @@ class GoogleTasksService {
    *
    * @returns TaskList[]
    */
-  async listTaskLists() {
+  static async listTaskLists() {
     const response = await google.client.tasks.tasklists.list();
 
     return response.result.items.map((item: any): TaskList => ({
@@ -138,7 +138,7 @@ class GoogleTasksService {
    *
    * @returns Task[]
    */
-  async listTasks(taskListId: string, pageToken: string = '') {
+  static async listTasks(taskListId: string, pageToken: string = '') {
     const response = await google.client.tasks.tasks.list({
       tasklist: taskListId,
       showCompleted: false,
@@ -149,7 +149,7 @@ class GoogleTasksService {
     const items = response.result.items;
     const nextPageToken = response.result.nextPageToken as string;
 
-    const result: Task[] = [];
+    let result: Task[] = [];
 
     const mapItems = (tasks: any[]): Task[] => {
       return tasks.map((item: any): Task => ({
@@ -168,10 +168,10 @@ class GoogleTasksService {
       }) as Task);
     };
 
-    result.concat(mapItems(items.filter((subitem: any) => !subitem["parent"])));
+    result = result.concat(mapItems(items.filter((subitem: any) => !subitem["parent"])));
 
     if (nextPageToken) {
-      result.concat(await this.listTasks(taskListId, nextPageToken));
+      result = result.concat(await this.listTasks(taskListId, nextPageToken));
     }
 
     return result;
@@ -184,7 +184,7 @@ class GoogleTasksService {
    * @param tasklist: string
    * @param completed: boolean
    */
-  async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
+  static async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
     await google.client.tasks.tasks.update({
       tasklist,
       task,
@@ -198,7 +198,7 @@ class GoogleTasksService {
    *
    * @param task: Task
    */
-  async insertTask(task: Task) {
+  static async insertTask(task: Task) {
     return await google.client.tasks.tasks.insert({
       tasklist: task.listId,
       task: task.id,
@@ -216,7 +216,7 @@ class GoogleTasksService {
    *
    * @param task: Task
    */
-  async updateTask(task: Task) {
+  static async updateTask(task: Task) {
     await google.client.tasks.tasks.update({
       tasklist: task.listId,
       task: task.id,
@@ -234,7 +234,7 @@ class GoogleTasksService {
    * @param task: string
    * @param tasklist: string
    */
-  async deleteTask(task: string, tasklist: string) {
+  static async deleteTask(task: string, tasklist: string) {
     await google.client.tasks.tasks.delete({
       tasklist,
       task
@@ -242,4 +242,4 @@ class GoogleTasksService {
   }
 }
 
-export default new GoogleTasksService();
+export default GoogleTasksService;

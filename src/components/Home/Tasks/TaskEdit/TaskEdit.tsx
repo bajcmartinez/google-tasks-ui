@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef} from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Task, TaskList } from '../../../../services/GoogleTasks';
+import { Task, TaskList } from '../../../../services/GoogleTasks/GoogleTasks';
 import CalendarIcon  from '@material-ui/icons/CalendarToday';
 import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core'

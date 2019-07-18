@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import TitleBar from './TitleBar';
 import {MenuItem} from "@material-ui/core";
@@ -27,17 +27,6 @@ describe("Basic", () => {
 
     titleBar.setProps({title: 'New Title'});
     expect(titleBar.find(Typography).text()).toBe("New Title");
-  });
-
-  it('should render a <TitleBar> component as expected', () => {
-    const wrapper = mount(
-        <TitleBar
-            title="Test Title"
-            drawerWidth={240}
-            signOut={() => null}
-            handleDrawerToggle={() => null}/>
-    );
-    expect(wrapper).toMatchSnapshot();
   });
 });
 

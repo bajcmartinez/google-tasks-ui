@@ -1,5 +1,5 @@
 import { RECEIVE_TASKLISTS, Action } from '../actions/taskLists';
-import { TaskList } from '../services/GoogleTasks';
+import { TaskList } from '../services/GoogleTasks/GoogleTasks';
 
 export type TaskListsState = {
     list: TaskList[]

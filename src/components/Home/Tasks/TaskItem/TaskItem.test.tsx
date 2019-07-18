@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TaskItem from './TaskItem';
-import { Task } from '../../../../services/GoogleTasks';
+import { Task } from '../../../../services/GoogleTasks/GoogleTasks';
 import moment from 'moment';
 
 it('renders without crashing', () => {

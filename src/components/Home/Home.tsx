@@ -13,7 +13,7 @@ import {
   taskListsReducer,
 } from '../../reducers/taskLists'
 import { receiveTaskLists } from '../../actions/taskLists'
-import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks'
+import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks/GoogleTasks'
 import { initialTasksState, tasksReducer } from '../../reducers/tasks'
 import {
   deleteTaskAction, insertTaskAction,
@@ -73,7 +73,6 @@ const Home: React.FC<IProps> = (props) => {
 
   const refreshData = () => {
     setLoading(true);
-    console.log('loading Data...');
     GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
       const allTasks:Task[] = [];
       const promises:Promise<any>[] = [];

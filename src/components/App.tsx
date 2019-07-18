@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import lightTheme from '../themes/light';
 import darkTheme from '../themes/dark';
 
-import GoogleTasksService from '../services/GoogleTasks';
+import GoogleTasksService from '../services/GoogleTasks/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
 import { CssBaseline } from '@material-ui/core'

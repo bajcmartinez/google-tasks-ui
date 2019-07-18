@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme'
 import Tasks from './Tasks';
-import { Task, TaskList } from '../../../services/GoogleTasks'
+import { Task, TaskList } from '../../../services/GoogleTasks/GoogleTasks'
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -31,89 +31,6 @@ describe("Basic", () => {
       />
     );
     expect(titleBar.exists()).toBe(true);
-  });
-
-  it('should render a <Tasks /> component as expected', () => {
-    const taskList: TaskList = {
-      id: "1",
-      status: "active",
-      title: "Task List 1",
-      updatedAt: moment()
-    }
-
-    const tasks: Task[] = [
-      {
-        id: '1',
-        title: 'Task 1',
-        notes: 'notes',
-        subtasks: [],
-        listId: '1',
-        isDirty: false,
-        dueAt: moment(),
-        completed: false,
-        status: "needsAction",
-        updatedAt: moment(),
-        parent: ""
-      }
-    ]
-
-    const wrapper = mount(
-      <Tasks
-        tasks={tasks}
-        selectedTaskListId="1"
-        taskLists={[taskList]}
-        title="Task List 1"
-        insertTask={() => null}
-        updateTask={() => null}
-        updateTaskCompletion={() => null}
-        deleteTask={() => null}
-        setSelectedTask={() => null}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should render a <Tasks /> component as expected with a selected item', () => {
-    const taskList: TaskList = {
-      id: "1",
-      status: "active",
-      title: "Task List 1",
-      updatedAt: moment()
-    }
-
-    const tasks: Task[] = [
-      {
-        id: '1',
-        title: 'Task 1',
-        notes: 'notes',
-        subtasks: [],
-        listId: '1',
-        isDirty: false,
-        dueAt: moment(),
-        completed: false,
-        status: "needsAction",
-        updatedAt: moment(),
-        parent: ""
-      }
-    ]
-
-    const wrapper = mount(
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Tasks
-          tasks={tasks}
-          selectedTaskListId="1"
-          selectedTask={tasks[0]}
-          taskLists={[taskList]}
-          title="Task List 1"
-          insertTask={() => null}
-          updateTask={() => null}
-          updateTaskCompletion={() => null}
-          deleteTask={() => null}
-          setSelectedTask={() => null}
-        />
-      </MuiPickersUtilsProvider>
-    );
-    expect(wrapper).toMatchSnapshot();
   });
 });
 
