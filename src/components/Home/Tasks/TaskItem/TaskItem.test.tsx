@@ -10,6 +10,7 @@ import { act } from 'react-dom/test-utils'
 import ListItem from '@material-ui/core/ListItem'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { ExpandLess } from '@material-ui/icons'
 
 describe('Basic', () => {
 
@@ -196,6 +197,7 @@ describe('Events', () => {
         parent: "",
         updatedAt: moment(),
         status: 'neededAction',
+        subtasks: [],
         listId: '1',
         isDirty: false
       } as Task],
@@ -212,15 +214,17 @@ describe('Events', () => {
     expect(taskItem.find(Collapse).first().props().in).toBe(false);
 
     const expandMore = taskItem.find(ExpandMore).first();
+
     expect(expandMore.exists()).toBe(true);
+    expect(taskItem.find(ExpandLess).exists()).toBe(false);
+
     act(() => {
       expandMore.simulate('click');
     });
-    expect(taskItem.find(Collapse).first().props().in).toBe(true);
 
-    // act(() => {
-    //   taskItem.find(Collapse).first().simulate('click');
-    // });
+    taskItem.update();
+    expect(taskItem.find(ExpandLess).exists()).toBe(true);
+    expect(taskItem.find(Collapse).first().props().in).toBe(true);
   });
 
 });

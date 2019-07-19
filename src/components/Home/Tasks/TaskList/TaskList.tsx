@@ -2,7 +2,7 @@ import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task } from '../../../../services/GoogleTasks/GoogleTasks';
 import List  from '@material-ui/core/List';
-import TaskItem from '../TaskItem'
+import TaskItem from '../TaskItem/TaskItem'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 interface IProps {
@@ -50,7 +50,7 @@ const TaskList: React.FC<IProps> = (props) => {
             }}
           >
             <div className={classes.row}>
-              <TaskItem task={task}  updateTaskCompletion={props.updateTaskCompletion} handleSelectedTaskChanged={props.handleSelectedTaskChanged} />
+              <TaskItem task={task} updateTaskCompletion={props.updateTaskCompletion} handleSelectedTaskChanged={props.handleSelectedTaskChanged} />
             </div>
           </CSSTransition>
         ))}
