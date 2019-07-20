@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import { mount, shallow } from 'enzyme'
 import TaskItem from './TaskItem';
-import { Task } from '../../../../services/GoogleTasks/GoogleTasks';
+import { Task } from '../../../../services/GoogleTasks';
 import moment from 'moment';
 import CalendarIcon  from '@material-ui/icons/CalendarToday';
 import { ListItemText } from '@material-ui/core'

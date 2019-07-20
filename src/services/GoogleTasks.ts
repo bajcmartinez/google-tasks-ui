@@ -240,6 +240,13 @@ class GoogleTasksService {
       task
     });
   }
+
+  /**
+   * Only used for testing purposes, view mock file
+   */
+  static reset() {
+
+  }
 }
 
 export default GoogleTasksService;

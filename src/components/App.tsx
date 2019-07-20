@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/styles';
 import lightTheme from '../themes/light';
 import darkTheme from '../themes/dark';
 
-import GoogleTasksService from '../services/GoogleTasks/GoogleTasks';
+import GoogleTasksService from '../services/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
 import { CssBaseline } from '@material-ui/core'
@@ -25,6 +25,7 @@ const App: React.FC = () => {
       updateSigninStatus(GoogleTasksService.isSignedIn());
       GoogleTasksService.subscribeSigninStatus(updateSigninStatus);
     }).catch(error => {
+      /* istanbul ignore next */
       console.error("Error loading Google Authorization Module", error);
     });
   }, []);
@@ -41,7 +42,7 @@ const App: React.FC = () => {
     GoogleTasksService.signOut()
   }
 
-  function switchDarkMode() {
+  const switchDarkMode = () => {
     localStorage.setItem("settings.darkMode", (!settings.darkMode).toString());
     setSettings({
       darkMode: !settings.darkMode

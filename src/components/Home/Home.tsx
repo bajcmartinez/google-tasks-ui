@@ -13,7 +13,7 @@ import {
   taskListsReducer,
 } from '../../reducers/taskLists'
 import { receiveTaskLists } from '../../actions/taskLists'
-import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks/GoogleTasks'
+import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks'
 import { initialTasksState, tasksReducer } from '../../reducers/tasks'
 import {
   deleteTaskAction, insertTaskAction,

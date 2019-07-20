@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react'
 import { shallow, mount } from 'enzyme';
 import Menu from './Menu';
 import ListItem from '@material-ui/core/ListItem'
-import { TaskList } from '../../../services/GoogleTasks/GoogleTasks'
+import { TaskList } from '../../../services/GoogleTasks'
 import moment from 'moment';
 import Switch from '@material-ui/core/Switch';
 

@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Task } from '../../../../services/GoogleTasks/GoogleTasks';
+import { Task } from '../../../../services/GoogleTasks';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';

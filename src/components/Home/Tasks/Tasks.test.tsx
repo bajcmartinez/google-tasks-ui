@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme'
 import Tasks from './Tasks';
-import { Task, TaskList } from '../../../services/GoogleTasks/GoogleTasks'
+import { Task, TaskList } from '../../../services/GoogleTasks'
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';

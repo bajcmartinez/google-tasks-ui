@@ -5,7 +5,7 @@ import {
     UPDATE_TASK_COMPLETION,
     Action, TasksAction, TaskAction, UpdateTaskCompletionAction, DeleteTaskAction
 } from '../actions/tasks'
-import { Task } from '../services/GoogleTasks/GoogleTasks'
+import { Task } from '../services/GoogleTasks'
 
 export type TasksState = {
     list: Task[]
