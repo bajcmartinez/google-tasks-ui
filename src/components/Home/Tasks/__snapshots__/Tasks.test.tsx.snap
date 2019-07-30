@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Basic should render a <Tasks /> component as expected 1`] = `ReactWrapper {}`;
-
-exports[`Basic should render a <Tasks /> component as expected with a selected item 1`] = `ReactWrapper {}`;
