@@ -109,6 +109,14 @@ class GoogleTasksService {
     ]);
   }
 
+  static async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
+    return Promise.resolve();
+  }
+
+  static async deleteTask(task: string, tasklist: string) {
+    return Promise.resolve();
+  }
+
   static subscribeSigninStatus (subscriber: (status: boolean) => void) {
     this._subscription = subscriber;
   }

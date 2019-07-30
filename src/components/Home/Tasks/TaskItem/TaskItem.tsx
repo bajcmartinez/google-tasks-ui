@@ -82,7 +82,7 @@ const TaskItem: React.FC<IProps> = (props) => {
 
   return (
     <Fragment>
-      <ListItem button onClick={handleSelection}>
+      <ListItem button onClick={handleSelection} data-test-id={`task-item-${task.id}`}>
         <ListItemIcon>
           <Checkbox
             edge="start"
