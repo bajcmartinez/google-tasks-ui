@@ -6,6 +6,8 @@ import { act } from 'react-dom/test-utils'
 import { Button } from '@material-ui/core'
 import { SnackbarProvider } from 'notistack'
 import GoogleTasksService from '../services/GoogleTasks'
+import MomentUtils from '@date-io/moment'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 
 jest.mock('../services/GoogleTasks');
 
@@ -28,9 +30,11 @@ describe('Events', () => {
     // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       wrapper = await mount(
-        <SnackbarProvider>
-          <App/>
-        </SnackbarProvider>);
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <SnackbarProvider>
+            <App/>
+          </SnackbarProvider>
+        </MuiPickersUtilsProvider>);
     });
 
     expect(wrapper).toBeDefined();
