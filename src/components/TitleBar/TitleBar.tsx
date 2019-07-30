@@ -100,12 +100,12 @@ const TitleBar: React.FC<IProps> = (props) => {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={signOut}>Sign Out</MenuItem>
+            <MenuItem data-test-id="menu-sign-out" onClick={signOut}>Sign Out</MenuItem>
           </Menu>
         </div>
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default TitleBar;

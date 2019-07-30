@@ -4,7 +4,7 @@ import SubtaskEdit from './SubtaskEdit';
 import { Task } from '../../../../services/GoogleTasks';
 import moment from 'moment';
 
-it('renders without crashing', () => {
+it('should render without crashing', () => {
   const task: Task = {
     id: "1",
     title: "My Title",
@@ -17,5 +17,5 @@ it('renders without crashing', () => {
   }
 
   const titleBar = shallow(<SubtaskEdit task={task} />);
-  expect(titleBar.exists()).toBe(true);
+  expect(titleBar.exists()).toBeTruthy();
 });

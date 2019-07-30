@@ -115,4 +115,4 @@ const Tasks: React.FC<IProps> = (props) => {
   );
 };
 
-export default React.memo(Tasks);
+export default Tasks;

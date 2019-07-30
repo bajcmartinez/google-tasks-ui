@@ -191,6 +191,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
               variant="contained"
               color="default"
               className={classes.button}
+              data-test-id="task-delete-button"
               onClick={() => props.deleteTask(task)}
           >
             Delete Task

@@ -1,16 +1,244 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import React, { ChangeEvent } from 'react'
+import { mount, shallow } from 'enzyme'
 import Home from './Home';
 import { SnackbarProvider } from 'notistack';
+import { act } from 'react-dom/test-utils';
+import Tasks from './Tasks'
+import MomentUtils from '@date-io/moment'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import GoogleTasksService from '../../services/GoogleTasks'
+import { Checkbox } from '@material-ui/core'
 
-it('renders without crashing', () => {
-  const titleBar = shallow(
-    <SnackbarProvider>
-      <Home
-        signOut={() => null}
-        switchDarkMode={() => null}
-      />
-    </SnackbarProvider>
-    );
-  expect(titleBar.exists()).toBe(true);
+jest.mock('../../services/GoogleTasks');
+
+describe("Basic", () => {
+  it('should render & load initial data without crashing', async () => {
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+        <SnackbarProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Home
+              signOut={() => null}
+              switchDarkMode={() => null}
+            />
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+    expect(wrapper.find(Home).exists()).toBeTruthy();
+
+    expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+    expect(wrapper.find(Tasks).props().tasks).toHaveLength(8);
+  });
+
+  it('should render & catch the error to load', async () => {
+    GoogleTasksService.reset();
+    const listTaskListsFn = GoogleTasksService.listTaskLists;
+    GoogleTasksService.listTaskLists = () => Promise.reject("Error");
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+        <SnackbarProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Home
+              signOut={() => null}
+              switchDarkMode={() => null}
+            />
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+    expect(wrapper.find(Home).exists()).toBeTruthy();
+
+    expect(wrapper.find(Tasks).props().taskLists).toHaveLength(0);
+    expect(wrapper.find(Tasks).props().tasks).toHaveLength(0);
+
+    GoogleTasksService.listTaskLists = listTaskListsFn;
+  });
+});
+
+describe("Completion", () => {
+
+  it('should mark the task as completed', async () => {
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+        <SnackbarProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Home
+              signOut={() => null}
+              switchDarkMode={() => null}
+            />
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+
+    // Now let's mark the task as completed
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
+      const toggleTaskCompletion = wrapper.find('[data-test-id="task-item-1_1"]').first().find(Checkbox).first().props();
+      toggleTaskCompletion.onChange && toggleTaskCompletion.onChange({
+        target: {
+          checked: true
+        }
+      } as ChangeEvent<HTMLInputElement>);
+
+      jest.advanceTimersByTime(1000);
+    });
+
+    wrapper.update();
+    expect(wrapper.find('[data-test-id="task-item-1_1"]').exists()).toBeFalsy();
+  });
+
+  it('should leave the task as is if the update fails', async () => {
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    const updateTaskCompletionFn = GoogleTasksService.updateTaskCompletion;
+    GoogleTasksService.updateTaskCompletion = () => Promise.reject("Error");
+
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+        <SnackbarProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Home
+              signOut={() => null}
+              switchDarkMode={() => null}
+            />
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+
+    // Now let's mark the task as completed
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      const toggleTaskCompletion = wrapper.find('[data-test-id="task-item-1_1"]').first().find(Checkbox).first().props();
+      toggleTaskCompletion.onChange && toggleTaskCompletion.onChange({
+        target: {
+          checked: true
+        }
+      } as ChangeEvent<HTMLInputElement>);
+
+      jest.advanceTimersByTime(1500);
+    });
+
+    wrapper.update();
+    expect(wrapper.find('[data-test-id="task-item-1_1"]').exists()).toBeTruthy();
+
+    GoogleTasksService.updateTaskCompletion = updateTaskCompletionFn;
+  });
+
+});
+
+describe("Deletion", () => {
+
+  it('should delete the task', async () => {
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+        <SnackbarProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Home
+              signOut={() => null}
+              switchDarkMode={() => null}
+            />
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+
+    // Now let's mark the task as completed
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      // First select the item
+      await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
+      jest.advanceTimersByTime(1000);
+      wrapper.update();
+      await wrapper.find('[data-test-id="task-delete-button"]').first().simulate('click');
+
+      jest.advanceTimersByTime(1000);
+    });
+
+    wrapper.update();
+    expect(wrapper.find('[data-test-id="task-item-1_1"]').exists()).toBeFalsy();
+  });
+
+  it('should revert delete task if error', async () => {
+    const deleteTaskFn = GoogleTasksService.deleteTask;
+    GoogleTasksService.deleteTask = () => Promise.reject("Error");
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+        <SnackbarProvider>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Home
+              signOut={() => null}
+              switchDarkMode={() => null}
+            />
+          </MuiPickersUtilsProvider>
+        </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+
+    // Now let's mark the task as completed
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      // First select the item
+      await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
+      jest.advanceTimersByTime(1000);
+      wrapper.update();
+      await wrapper.find('[data-test-id="task-delete-button"]').first().simulate('click');
+    });
+
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      jest.advanceTimersByTime(1500);
+      wrapper.update();
+    });
+
+    expect(wrapper.find('[data-test-id="task-item-1_1"]').exists()).toBeTruthy();
+
+    GoogleTasksService.deleteTask = deleteTaskFn;
+  });
+
 });
