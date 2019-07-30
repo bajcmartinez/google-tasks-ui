@@ -27,15 +27,10 @@ cache:
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test; fi
-  - |
-      if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        npm run build --linux --win
-      else
-        npm run build
-      fi
+
 
 after_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls; fi
 
 before_deploy:
   - >
@@ -44,6 +39,12 @@ before_deploy:
       git config --local user.name "Juan Cruz Martinez"
       git config --local user.email "bajcmartinez@gmail.com"
       git tag "$(node -p 'require(`./package.json`).version')";
+
+      if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+        npm run build --linux --win
+      else
+        npm run build
+      fi
     fi;
 
 deploy:
