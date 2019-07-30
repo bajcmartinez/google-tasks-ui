@@ -103,6 +103,7 @@ const Menu: React.FC<IProps> = (props) => {
           <ListItemSecondaryAction>
             <Switch
               edge="end"
+              data-test-id="menu-dark-mode"
               checked={localStorage.getItem("settings.darkMode") === "true"}
               onChange={() => handleDarkMode()}
               inputProps={{ 'aria-labelledby': 'switch-list-label-darkMode' }}

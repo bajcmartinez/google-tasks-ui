@@ -33,7 +33,7 @@ describe('Basic', () => {
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={() => null}
     />);
-    expect(taskItem.exists()).toBe(true);
+    expect(taskItem.exists()).toBeTruthy();
   });
 
   it('should render a calendar if it has a due date', () => {
@@ -57,7 +57,7 @@ describe('Basic', () => {
         handleSelectedTaskChanged={() => null}
       />);
 
-    expect(taskItem.find(CalendarIcon).exists()).toBe(true);
+    expect(taskItem.find(CalendarIcon).exists()).toBeTruthy();
   });
 
   it('should not render a calendar if we have no due date', () => {
@@ -215,7 +215,7 @@ describe('Events', () => {
 
     const expandMore = taskItem.find(ExpandMore).first();
 
-    expect(expandMore.exists()).toBe(true);
+    expect(expandMore.exists()).toBeTruthy();
     expect(taskItem.find(ExpandLess).exists()).toBe(false);
 
     act(() => {
@@ -223,8 +223,8 @@ describe('Events', () => {
     });
 
     taskItem.update();
-    expect(taskItem.find(ExpandLess).exists()).toBe(true);
-    expect(taskItem.find(Collapse).first().props().in).toBe(true);
+    expect(taskItem.find(ExpandLess).exists()).toBeTruthy();
+    expect(taskItem.find(Collapse).first().props().in).toBeTruthy();
   });
 
 });

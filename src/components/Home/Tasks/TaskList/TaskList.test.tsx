@@ -4,5 +4,5 @@ import TaskList from './TaskList';
 
 it('should render without crashing', () => {
   const titleBar = shallow(<TaskList tasks={[]} />);
-  expect(titleBar.exists()).toBe(true);
+  expect(titleBar.exists()).toBeTruthy();
 });

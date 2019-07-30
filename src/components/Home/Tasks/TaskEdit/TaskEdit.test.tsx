@@ -41,7 +41,7 @@ describe("Basic", () => {
         updateTask={() => null}
       />
     );
-    expect(taskEdit.exists()).toBe(true);
+    expect(taskEdit.exists()).toBeTruthy();
   });
 
   it('should render the subtasks', () => {

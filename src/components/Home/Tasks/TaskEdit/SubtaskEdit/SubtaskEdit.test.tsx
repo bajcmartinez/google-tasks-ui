@@ -17,5 +17,5 @@ it('should render without crashing', () => {
   }
 
   const titleBar = shallow(<SubtaskEdit task={task} />);
-  expect(titleBar.exists()).toBe(true);
+  expect(titleBar.exists()).toBeTruthy();
 });

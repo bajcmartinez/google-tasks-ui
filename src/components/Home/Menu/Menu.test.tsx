@@ -14,7 +14,7 @@ describe("Basic", () => {
         taskLists={[]}
         switchDarkMode={() => null}
       />);
-    expect(menu.exists()).toBe(true);
+    expect(menu.exists()).toBeTruthy();
   });
 });
 

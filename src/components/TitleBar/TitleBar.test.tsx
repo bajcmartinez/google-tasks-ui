@@ -13,7 +13,7 @@ describe("Basic", () => {
         drawerWidth={240}
         signOut={() => null}
         handleDrawerToggle={() => null}/>);
-    expect(titleBar.exists()).toBe(true);
+    expect(titleBar.exists()).toBeTruthy();
   });
 
   it("should display the right title", () => {

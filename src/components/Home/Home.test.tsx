@@ -30,7 +30,7 @@ describe("Basic", () => {
     });
 
     wrapper.update();
-    expect(wrapper.find(Home).exists()).toBe(true);
+    expect(wrapper.find(Home).exists()).toBeTruthy();
 
     expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
     expect(wrapper.find(Tasks).props().tasks).toHaveLength(8);

@@ -30,7 +30,7 @@ describe("Basic", () => {
         setSelectedTask={() => null}
       />
     );
-    expect(titleBar.exists()).toBe(true);
+    expect(titleBar.exists()).toBeTruthy();
   });
 });
 

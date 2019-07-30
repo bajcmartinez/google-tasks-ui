@@ -9,7 +9,7 @@ describe('Basic', () => {
   it('should render without crashing', () => {
     act(() => {
       const welcome = mount(<Welcome signIn={() => null}/>);
-      expect(welcome.exists()).toBe(true);
+      expect(welcome.exists()).toBeTruthy();
     })
   });
 
@@ -23,7 +23,7 @@ describe("Events", () => {
 
     act(() => {
       welcome = mount(<Welcome signIn={handler}/>);
-      expect(welcome.exists()).toBe(true);
+      expect(welcome.exists()).toBeTruthy();
     })
 
 
