@@ -82,7 +82,7 @@ const TitleBar: React.FC<IProps> = (props) => {
         <div className={classes.grow} />
 
         <div className={classes.rightSection}>
-          <Typography variant='caption' noWrap>
+          <Typography variant='body2' noWrap>
             App Version: {version}
           </Typography>
           <IconButton
