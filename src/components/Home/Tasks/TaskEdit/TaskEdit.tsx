@@ -57,16 +57,17 @@ const TaskEdit: React.FC<IProps> = (props) => {
   const classes = useStyles();
 
   const [task, setTask] = React.useState<Task | null>(null);
-  const debounced = useRef(debounce(500, (task: Task | null) => {
+
+  let titleInput: HTMLInputElement | null = null;
+
+  const updateTask = useRef(debounce(500, (task: Task | null, updateTask: (task: Task) => void) => {
     if (task && task.isDirty) {
-      props.updateTask({
+      updateTask({
         ...task,
         isDirty: false
       });
     }
   }));
-
-  let titleInput: HTMLInputElement | null = null;
 
   // Reset the form when the task props changes
   useEffect(() => {
@@ -78,21 +79,19 @@ const TaskEdit: React.FC<IProps> = (props) => {
     }
   }, [props.task, task, titleInput]);
 
-  // Save when the task changes
-  useEffect(() => {
-    debounced.current(task);
-  }, [task]);
-
   if (!task) {
     return <div>No task selected</div>;
   }
 
   const handleChange = (name:string) => (event:ChangeEvent<HTMLInputElement>) => {
-    setTask({
+    const newTask = {
       ...task,
       [name]: event.target.value,
       isDirty: true
-    });
+    };
+    setTask(newTask);
+
+    updateTask.current(newTask, props.updateTask);
   };
 
   const handleDueDateChange = (date: MaterialUiPickersDate) => {
@@ -119,6 +118,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
             inputRef={(input: HTMLInputElement) => { titleInput = input; }}
             label="Title"
             value={taskEdit.title}
+            data-test-id="task-edit-title"
             onChange={handleChange('title')}
             fullWidth
           />

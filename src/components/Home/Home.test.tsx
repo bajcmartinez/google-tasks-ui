@@ -8,6 +8,7 @@ import MomentUtils from '@date-io/moment'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import GoogleTasksService from '../../services/GoogleTasks'
 import { Checkbox } from '@material-ui/core'
+import ListItemText from "@material-ui/core/ListItemText";
 
 jest.mock('../../services/GoogleTasks');
 
@@ -65,6 +66,42 @@ describe("Basic", () => {
 
     GoogleTasksService.listTaskLists = listTaskListsFn;
   });
+
+  it('should do a background refresh after n seconds', async () => {
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+          <SnackbarProvider>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Home
+                  signOut={() => null}
+                  switchDarkMode={() => null}
+              />
+            </MuiPickersUtilsProvider>
+          </SnackbarProvider>
+      );
+    });``
+
+    // Replace the refresh function
+    const listTaskListsFn = GoogleTasksService.listTaskLists;
+    GoogleTasksService.listTaskLists = jest.fn().mockReturnValue(listTaskListsFn());
+
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      jest.advanceTimersByTime(35000); // Advance 35 seconds on the timer
+      await wrapper.update();
+    });
+
+    expect(GoogleTasksService.listTaskLists).toBeCalledTimes(1);
+
+
+    GoogleTasksService.listTaskLists = listTaskListsFn;
+  });
 });
 
 describe("Completion", () => {
@@ -75,6 +112,7 @@ describe("Completion", () => {
     let wrapper: any = undefined;
 
     // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       wrapper = await mount(
         <SnackbarProvider>
@@ -239,6 +277,118 @@ describe("Deletion", () => {
     expect(wrapper.find('[data-test-id="task-item-1_1"]').exists()).toBeTruthy();
 
     GoogleTasksService.deleteTask = deleteTaskFn;
+  });
+
+});
+
+describe("Updating", () => {
+
+  it('should update the task', async () => {
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+          <SnackbarProvider>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Home
+                  signOut={() => null}
+                  switchDarkMode={() => null}
+              />
+            </MuiPickersUtilsProvider>
+          </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+    const expectedTitle = 'New Title Set Here';
+
+    // Now let's mark the task as completed
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      // First select the item
+      await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
+      jest.advanceTimersByTime(1500);
+      wrapper.update();
+
+      // Now change the title
+      const title = await wrapper.find('[data-test-id="task-edit-title"]').first();
+      title.find('input').simulate('change', {
+        target: {
+          value: expectedTitle
+        }
+      });
+
+      jest.advanceTimersByTime(1000);
+    });
+
+    wrapper.update();
+
+    const listItemText = wrapper.find('[data-test-id="task-item-1_1"]').first().find(ListItemText);
+    expect(listItemText.props().primary).toBe(expectedTitle);
+  });
+
+  it('should revert update if api fails', async () => {
+    const updateTaskFn = GoogleTasksService.updateTask;
+    GoogleTasksService.updateTask = () => Promise.reject("Error");
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+          <SnackbarProvider>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Home
+                  signOut={() => null}
+                  switchDarkMode={() => null}
+              />
+            </MuiPickersUtilsProvider>
+          </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+    const expectedTitle = 'Task 1';
+
+    // Now let's mark the task as completed
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      // First select the item
+      await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
+      jest.advanceTimersByTime(1000);
+      wrapper.update();
+
+      // Now change the title
+      const title = wrapper.find('[data-test-id="task-edit-title"]').first();
+      await title.find('input').simulate('change', {
+        target: {
+          value: 'New Title Set Here'
+        }
+      });
+      jest.advanceTimersByTime(1000);
+      wrapper.update();
+    });
+
+    wrapper.update();
+
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      jest.advanceTimersByTime(1500);
+      wrapper.update();
+    });
+
+    wrapper.update();
+    const listItemText = wrapper.find('[data-test-id="task-item-1_1"]').first().find(ListItemText);
+    expect(listItemText.props().primary).toBe(expectedTitle);
+
+    GoogleTasksService.updateTask = updateTaskFn;
   });
 
 });

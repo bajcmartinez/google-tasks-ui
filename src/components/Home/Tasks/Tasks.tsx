@@ -43,7 +43,7 @@ const Tasks: React.FC<IProps> = (props) => {
 
   const handleSelectedTaskChanged = (task: Task):void => {
     props.setSelectedTask(task);
-  }
+  };
 
   const handleInsertTask = (): void => {
     props.insertTask({
@@ -52,7 +52,7 @@ const Tasks: React.FC<IProps> = (props) => {
       listId: props.selectedTaskListId,
       subtasks: [] as Task[]
     } as Task);
-  }
+  };
 
   const { selectedTask } = props;
   const [ tasks, setTasks ] = useState<Task[]>([])

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import {Task} from "../GoogleTasks";
 
 class GoogleTasksService {
 
@@ -114,6 +115,10 @@ class GoogleTasksService {
   }
 
   static async deleteTask(task: string, tasklist: string) {
+    return Promise.resolve();
+  }
+
+  static async updateTask(task: Task) {
     return Promise.resolve();
   }
 

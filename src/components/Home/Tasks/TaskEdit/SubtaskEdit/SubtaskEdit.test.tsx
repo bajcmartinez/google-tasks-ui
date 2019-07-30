@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import SubtaskEdit from './SubtaskEdit';
-import { Task } from '../../../../services/GoogleTasks';
+import { Task } from '../../../../../services/GoogleTasks';
 import moment from 'moment';
 
 it('should render without crashing', () => {
@@ -13,9 +13,16 @@ it('should render without crashing', () => {
     updatedAt: moment(),
     status: 'neededAction',
     listId: '1',
-    subtasks: []
-  }
+    subtasks: [],
+    isDirty: false
+  };
 
-  const titleBar = shallow(<SubtaskEdit task={task} />);
+  const titleBar = shallow(
+      <SubtaskEdit
+          task={task}
+          updateTask={() => null}
+          deleteTask={() => null}
+      />
+    );
   expect(titleBar.exists()).toBeTruthy();
 });
