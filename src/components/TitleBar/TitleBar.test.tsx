@@ -9,24 +9,26 @@ import {MenuItem} from "@material-ui/core";
 describe("Basic", () => {
   it('should render without crashing', () => {
     const titleBar = shallow(<TitleBar
-        title="Test Title"
-        drawerWidth={240}
-        signOut={() => null}
-        handleDrawerToggle={() => null}/>);
+      title="Test Title"
+      drawerWidth={240}
+      signOut={() => null}
+      handleDrawerToggle={() => null}
+    />);
     expect(titleBar.exists()).toBeTruthy();
   });
 
   it("should display the right title", () => {
     const titleBar = shallow(<TitleBar
-        title="Test Title"
-        drawerWidth={240}
-        signOut={() => null}
-        handleDrawerToggle={() => null}/>);
+      title="Test Title"
+      drawerWidth={240}
+      signOut={() => null}
+      handleDrawerToggle={() => null}
+    />);
 
-    expect(titleBar.find(Typography).text()).toBe("Test Title");
+    expect(titleBar.find(Typography).first().text()).toBe("Test Title");
 
     titleBar.setProps({title: 'New Title'});
-    expect(titleBar.find(Typography).text()).toBe("New Title");
+    expect(titleBar.find(Typography).first().text()).toBe("New Title");
   });
 });
 

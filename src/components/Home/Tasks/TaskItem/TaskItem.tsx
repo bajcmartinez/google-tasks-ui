@@ -8,13 +8,15 @@ import CalendarIcon  from '@material-ui/icons/CalendarToday';
 import { Checkbox } from '@material-ui/core';
 import Linkify from 'react-linkify';
 import Button from '@material-ui/core/Button';
-import TaskList from '../TaskList';
+import TaskList from '../TaskViews/ListView';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
+import { ISettings } from '../../../../types';
 
 interface IProps {
+  settings: ISettings,
   task: Task,
   updateTaskCompletion: (task: string, tasklist: string, completed: boolean) => void
   handleSelectedTaskChanged?: (task: Task) => void
@@ -60,7 +62,7 @@ const TaskItem: React.FC<IProps> = (props) => {
       <Linkify>
         {task.notes}
       </Linkify>
-      {due}
+      {!props.settings.comfortView && due}
     </span>
   );
 
@@ -82,7 +84,12 @@ const TaskItem: React.FC<IProps> = (props) => {
 
   return (
     <Fragment>
-      <ListItem button onClick={handleSelection} data-test-id={`task-item-${task.id}`}>
+      <ListItem
+        button
+        onClick={handleSelection}
+        data-test-id={`task-item-${task.id}`}
+        dense={props.settings.comfortView}
+      >
         <ListItemIcon>
           <Checkbox
             edge="start"
@@ -107,7 +114,11 @@ const TaskItem: React.FC<IProps> = (props) => {
       <Divider />
       {task.subtasks.length > 0 && (
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <TaskList tasks={task.subtasks} nested updateTaskCompletion={updateTaskCompletion} />
+          <TaskList
+            settings={props.settings}
+            tasks={task.subtasks}
+            nested
+            updateTaskCompletion={updateTaskCompletion} />
         </Collapse>
       )}
     </Fragment>
@@ -117,7 +128,8 @@ const TaskItem: React.FC<IProps> = (props) => {
 const arePropsEqual = (prevProps: IProps, nextProps: IProps) => {
   // Only renders when title, notes, dueDate or subtasks changes
   return (
-      JSON.stringify(prevProps.task) === JSON.stringify(nextProps.task)
+      JSON.stringify(prevProps.task) === JSON.stringify(nextProps.task) &&
+        prevProps.settings.comfortView === nextProps.settings.comfortView
   );
 };
 

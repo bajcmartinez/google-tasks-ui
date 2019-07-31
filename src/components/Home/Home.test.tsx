@@ -23,6 +23,12 @@ describe("Basic", () => {
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Home
+              switchSetting={() => null}
+              settings={{
+                taskView: 'DueDateView',
+                comfortView: false,
+                darkMode: false
+              }}
               signOut={() => null}
               switchDarkMode={() => null}
             />
@@ -50,6 +56,12 @@ describe("Basic", () => {
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Home
+              switchSetting={() => null}
+              settings={{
+                taskView: 'DueDateView',
+                comfortView: false,
+                darkMode: false
+              }}
               signOut={() => null}
               switchDarkMode={() => null}
             />
@@ -78,8 +90,14 @@ describe("Basic", () => {
           <SnackbarProvider>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <Home
-                  signOut={() => null}
-                  switchDarkMode={() => null}
+                switchSetting={() => null}
+                settings={{
+                  taskView: 'DueDateView',
+                  comfortView: false,
+                  darkMode: false
+                }}
+                signOut={() => null}
+                switchDarkMode={() => null}
               />
             </MuiPickersUtilsProvider>
           </SnackbarProvider>
@@ -118,6 +136,12 @@ describe("Completion", () => {
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Home
+              switchSetting={() => null}
+              settings={{
+                taskView: 'DueDateView',
+                comfortView: false,
+                darkMode: false
+              }}
               signOut={() => null}
               switchDarkMode={() => null}
             />
@@ -161,6 +185,12 @@ describe("Completion", () => {
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Home
+              switchSetting={() => null}
+              settings={{
+                taskView: 'DueDateView',
+                comfortView: false,
+                darkMode: false
+              }}
               signOut={() => null}
               switchDarkMode={() => null}
             />
@@ -206,6 +236,12 @@ describe("Deletion", () => {
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Home
+              switchSetting={() => null}
+              settings={{
+                taskView: 'DueDateView',
+                comfortView: false,
+                darkMode: false
+              }}
               signOut={() => null}
               switchDarkMode={() => null}
             />
@@ -246,6 +282,12 @@ describe("Deletion", () => {
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <Home
+              switchSetting={() => null}
+              settings={{
+                taskView: 'DueDateView',
+                comfortView: false,
+                darkMode: false
+              }}
               signOut={() => null}
               switchDarkMode={() => null}
             />
@@ -294,8 +336,14 @@ describe("Updating", () => {
           <SnackbarProvider>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <Home
-                  signOut={() => null}
-                  switchDarkMode={() => null}
+                switchSetting={() => null}
+                settings={{
+                  taskView: 'DueDateView',
+                  comfortView: false,
+                  darkMode: false
+                }}
+                signOut={() => null}
+                switchDarkMode={() => null}
               />
             </MuiPickersUtilsProvider>
           </SnackbarProvider>
@@ -344,8 +392,14 @@ describe("Updating", () => {
           <SnackbarProvider>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <Home
-                  signOut={() => null}
-                  switchDarkMode={() => null}
+                switchSetting={() => null}
+                settings={{
+                  taskView: 'DueDateView',
+                  comfortView: false,
+                  darkMode: false
+                }}
+                signOut={() => null}
+                switchDarkMode={() => null}
               />
             </MuiPickersUtilsProvider>
           </SnackbarProvider>

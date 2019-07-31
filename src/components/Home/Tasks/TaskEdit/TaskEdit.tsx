@@ -95,11 +95,13 @@ const TaskEdit: React.FC<IProps> = (props) => {
   };
 
   const handleDueDateChange = (date: MaterialUiPickersDate) => {
-    setTask({
+    const newTask = {
       ...task,
       dueAt: date as Moment,
       isDirty: true
-    });
+    };
+    setTask(newTask);
+    updateTask.current(newTask, props.updateTask);
   };
 
   const taskEdit = { ...task } as Task;
