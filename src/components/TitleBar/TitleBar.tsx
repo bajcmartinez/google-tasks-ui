@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { version } from '../../../package.json';
 
 interface IProps {
   title: string,
@@ -24,6 +25,11 @@ const useStyles = makeStyles(theme => ({
       width: `calc(100% - ${props.drawerWidth}px)`,
     },
   }),
+
+  rightSection: {
+    display: 'flex',
+    alignItems: 'center'
+  },
 
   menuButton: {
     marginRight: theme.spacing(2),
@@ -75,7 +81,10 @@ const TitleBar: React.FC<IProps> = (props) => {
 
         <div className={classes.grow} />
 
-        <div>
+        <div className={classes.rightSection}>
+          <Typography variant='body2' noWrap>
+            App Version: {version}
+          </Typography>
           <IconButton
             aria-label="Account of current user"
             aria-controls="menu-appbar"

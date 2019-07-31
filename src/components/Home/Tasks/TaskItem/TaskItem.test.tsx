@@ -29,6 +29,11 @@ describe('Basic', () => {
 
     const taskItem = shallow(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={() => null}
@@ -52,6 +57,11 @@ describe('Basic', () => {
 
     const taskItem = mount(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={() => null}
@@ -75,6 +85,11 @@ describe('Basic', () => {
 
     const taskItem = mount(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={() => null}
@@ -98,6 +113,11 @@ describe('Basic', () => {
 
     const taskItem = shallow(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={() => null}
@@ -135,6 +155,11 @@ describe('Events', () => {
 
     const taskItem = mount(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={handler}
         handleSelectedTaskChanged={() => null}
@@ -169,6 +194,11 @@ describe('Events', () => {
 
     const taskItem = mount(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={handler}
@@ -206,6 +236,11 @@ describe('Events', () => {
 
     const taskItem = mount(
       <TaskItem
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         task={task}
         updateTaskCompletion={() => null}
         handleSelectedTaskChanged={() => null}
