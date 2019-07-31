@@ -26,7 +26,7 @@ cache:
     - $HOME/.cache/electron-builder
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run test; fi
 
 
 after_script:
