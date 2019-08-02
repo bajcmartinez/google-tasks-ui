@@ -67,7 +67,7 @@ const Welcome: React.FC<IProps> = (props) => {
     </Fragment>
   );
 
-  const message = !isMobile.any ? mobileMessage : defaultMessage;
+  const message = isMobile.any ? mobileMessage : defaultMessage;
 
   return (
     <Container component="main" maxWidth="md">
@@ -125,6 +125,6 @@ const Welcome: React.FC<IProps> = (props) => {
       </div>
     </Container>
   );
-}
+};
 
 export default Welcome;
