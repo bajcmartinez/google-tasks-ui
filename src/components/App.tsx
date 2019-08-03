@@ -8,7 +8,8 @@ import { ISettings } from '../types';
 import GoogleTasksService from '../services/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core';
+import { SnackbarProvider } from 'notistack';
 
 const App: React.FC = () => {
   const [googleLoaded, setGoogleLoaded] = React.useState(false);
@@ -83,7 +84,16 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={settings.darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      {render}
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={1000}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        {render}
+      </SnackbarProvider>
     </ThemeProvider>
   )
 }
