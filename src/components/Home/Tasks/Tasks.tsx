@@ -133,7 +133,6 @@ const Tasks: React.FC<IProps> = (props) => {
             {props.settings.taskView === "DueDateView" &&
             <DueDateView
               settings={props.settings}
-              title={props.title}
               tasks={tasks}
               handleSelectedTaskChanged={handleSelectedTaskChanged}
               updateTaskCompletion={props.updateTaskCompletion}
@@ -157,6 +156,7 @@ const Tasks: React.FC<IProps> = (props) => {
             <TaskEdit
                 task={selectedTask}
                 taskLists={props.taskLists}
+                insertTask={props.insertTask}
                 updateTask={props.updateTask}
                 deleteTask={props.deleteTask}
             />
