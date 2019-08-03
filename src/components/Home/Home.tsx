@@ -72,7 +72,7 @@ const Home: React.FC<IProps> = (props) => {
   const [tasksState, tasksDispatch] = useReducer(tasksReducer, initialTasksState);
 
   const { enqueueSnackbar } = useSnackbar();
-
+  
   const refreshData = () => {
     setLoading(true);
     GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
