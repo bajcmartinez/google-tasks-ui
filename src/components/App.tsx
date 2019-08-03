@@ -3,18 +3,22 @@ import 'typeface-roboto';
 import { ThemeProvider } from '@material-ui/styles';
 import lightTheme from '../themes/light';
 import darkTheme from '../themes/dark';
+import { ISettings } from '../types';
 
 import GoogleTasksService from '../services/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core';
+import { SnackbarProvider } from 'notistack';
 
 const App: React.FC = () => {
   const [googleLoaded, setGoogleLoaded] = React.useState(false);
   const [isSignedIn, setIsSignedIn] = React.useState(false);
 
-  const [settings, setSettings] = React.useState({
-    darkMode: localStorage.getItem("settings.darkMode") === "true"
+  const [settings, setSettings] = React.useState<ISettings>({
+    darkMode: localStorage.getItem("settings.darkMode") === "true",
+    comfortView: localStorage.getItem("settings.comfortView") === "true",
+    taskView: localStorage.getItem("settings.taskView") || "DueDateView",
   });
 
   // Initialize google gapi only on the first load
@@ -45,9 +49,18 @@ const App: React.FC = () => {
   const switchDarkMode = () => {
     localStorage.setItem("settings.darkMode", (!settings.darkMode).toString());
     setSettings({
+      ...settings,
       darkMode: !settings.darkMode
-    })
+    });
   }
+
+  const switchSetting = (key: string, value: any) => {
+    localStorage.setItem(`settings.${key}`, (value).toString());
+    setSettings({
+      ...settings,
+      [key]: value
+    });
+  };
 
   let render;
 
@@ -57,7 +70,9 @@ const App: React.FC = () => {
     if (isSignedIn) {
       render = (
         <Home
+          settings={settings}
           switchDarkMode={switchDarkMode}
+          switchSetting={switchSetting}
           signOut={signOut}
         />
       )
@@ -69,7 +84,16 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={settings.darkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      {render}
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={1000}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+      >
+        {render}
+      </SnackbarProvider>
     </ThemeProvider>
   )
 }

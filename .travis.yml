@@ -26,16 +26,11 @@ cache:
     - $HOME/.cache/electron-builder
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run test; fi
-  - |
-      if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-        npm run build --linux --win
-      else
-        npm run build
-      fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run test; fi
+
 
 after_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls; fi
 
 before_deploy:
   - >
@@ -43,7 +38,8 @@ before_deploy:
       export BEFORE_DEPLOY_RUN=1;
       git config --local user.name "Juan Cruz Martinez"
       git config --local user.email "bajcmartinez@gmail.com"
-      git tag "$(node -p 'require(`./package.json`).version')";
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build --linux; fi
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build --mac --win; fi
     fi;
 
 deploy:
@@ -59,7 +55,7 @@ deploy:
       - "dist/latest-linux.yml"
       - "dist/latest-mac.yml"
     on:
-      branch: master
+      tags: true
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY

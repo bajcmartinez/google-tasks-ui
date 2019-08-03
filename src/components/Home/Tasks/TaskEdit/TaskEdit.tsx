@@ -14,10 +14,13 @@ import List from "@material-ui/core/List";
 import SubtaskEdit from "./SubtaskEdit";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton'
 
 interface IProps {
   task?: Task,
   taskLists: TaskList[],
+  insertTask: (task: Task) => void,
   updateTask: (task: Task) => void,
   deleteTask: (task: Task) => void
 }
@@ -50,6 +53,14 @@ const useStyles = makeStyles(theme => ({
 
   rightIcon: {
     marginLeft: theme.spacing(1)
+  },
+
+  subtasks: {
+    display: 'flex'
+  },
+
+  spacer: {
+    flexGrow: 1
   }
 }));
 
@@ -57,16 +68,17 @@ const TaskEdit: React.FC<IProps> = (props) => {
   const classes = useStyles();
 
   const [task, setTask] = React.useState<Task | null>(null);
-  const debounced = useRef(debounce(500, (task: Task | null) => {
+
+  let titleInput: HTMLInputElement | null = null;
+
+  const updateTask = useRef(debounce(500, (task: Task | null, updateTask: (task: Task) => void) => {
     if (task && task.isDirty) {
-      props.updateTask({
+      updateTask({
         ...task,
         isDirty: false
       });
     }
   }));
-
-  let titleInput: HTMLInputElement | null = null;
 
   // Reset the form when the task props changes
   useEffect(() => {
@@ -76,31 +88,47 @@ const TaskEdit: React.FC<IProps> = (props) => {
       setTask(props.task ? {...props.task} : null);
       titleInput && titleInput.focus();
     }
+    if (task && props.task && task.subtasks.length !== props.task.subtasks.length) {
+      setTask({
+        ...task,
+        subtasks: props.task.subtasks
+      });
+    }
   }, [props.task, task, titleInput]);
-
-  // Save when the task changes
-  useEffect(() => {
-    debounced.current(task);
-  }, [task]);
 
   if (!task) {
     return <div>No task selected</div>;
   }
 
+  const handleInsertTask = (): void => {
+    props.insertTask({
+      title: '',
+      notes: '',
+      parent: task.id,
+      listId: task.listId,
+      subtasks: [] as Task[]
+    } as Task);
+  };
+
   const handleChange = (name:string) => (event:ChangeEvent<HTMLInputElement>) => {
-    setTask({
+    const newTask = {
       ...task,
       [name]: event.target.value,
       isDirty: true
-    });
+    };
+    setTask(newTask);
+
+    updateTask.current(newTask, props.updateTask);
   };
 
   const handleDueDateChange = (date: MaterialUiPickersDate) => {
-    setTask({
+    const newTask = {
       ...task,
       dueAt: date as Moment,
       isDirty: true
-    });
+    };
+    setTask(newTask);
+    updateTask.current(newTask, props.updateTask);
   };
 
   const taskEdit = { ...task } as Task;
@@ -119,6 +147,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
             inputRef={(input: HTMLInputElement) => { titleInput = input; }}
             label="Title"
             value={taskEdit.title}
+            data-test-id="task-edit-title"
             onChange={handleChange('title')}
             fullWidth
           />
@@ -170,19 +199,32 @@ const TaskEdit: React.FC<IProps> = (props) => {
 
         <Grid item xs={12}>
 
-          <Typography variant="h5">
-            Subtasks
-          </Typography>
+          <div className={classes.subtasks}>
+            <Typography variant="h5">
+              Subtasks
+            </Typography>
+            <div className={classes.spacer} />
+            <IconButton
+              title="Add Subtask"
+              aria-label="Add Subtask"
+              size="small"
+              onClick={handleInsertTask}
+            >
+              <AddIcon />
+            </IconButton>
+          </div>
 
           <List component="ul">
-            {task.subtasks.map((subtask: Task) => (
+            {task.subtasks.length > 0 ?
+              task.subtasks.map((subtask: Task) => (
                 <SubtaskEdit
                     key={subtask.id}
                     updateTask={props.updateTask}
                     deleteTask={props.deleteTask}
                     task={subtask}
                 />
-            ))}
+              )) : <Typography variant="body1">No sub-tasks</Typography>
+            }
           </List>
         </Grid>
 

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import moment, { Moment } from 'moment';
 
 // @ts-ignore
@@ -36,7 +37,7 @@ class GoogleTasksService {
    *
    */
   static load() {
-    if (this.isLoaded) return Promise.resolve()
+    if (this.isLoaded) return Promise.resolve();
 
     const self = this;
 

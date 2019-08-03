@@ -7,7 +7,7 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import TitleBar from '../TitleBar';
 import Menu from './Menu';
 import { useSnackbar } from 'notistack';
-
+import { ISettings } from '../../types';
 import {
   initialTaskListsState,
   taskListsReducer,
@@ -22,11 +22,13 @@ import {
 } from '../../actions/tasks'
 import Tasks from './Tasks';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { useInterval } from '../../hooks/useInterval'
+import { useInterval } from '../../hooks/useInterval';
 
 
 interface IProps {
+  settings: ISettings,
   switchDarkMode: () => void,
+  switchSetting: (key: string, value: any) => void,
   signOut: () => void
 }
 
@@ -70,7 +72,7 @@ const Home: React.FC<IProps> = (props) => {
   const [tasksState, tasksDispatch] = useReducer(tasksReducer, initialTasksState);
 
   const { enqueueSnackbar } = useSnackbar();
-
+  
   const refreshData = () => {
     setLoading(true);
     GoogleTasksService.listTaskLists().then((taskLists: TaskList[]) => {
@@ -251,16 +253,19 @@ const Home: React.FC<IProps> = (props) => {
         {loading && <LinearProgress />}
 
         <Tasks
-            tasks={tasks}
-            title={taskListTitle}
-            selectedTask={selectedTask}
-            setSelectedTask={setSelectedTask}
-            updateTaskCompletion={updateTaskCompletion}
-            insertTask={insertTask}
-            updateTask={updateTask}
-            deleteTask={deleteTask}
-            selectedTaskListId={taskListId}
-            taskLists={taskListsState.list} />
+          settings={props.settings}
+          tasks={tasks}
+          title={taskListTitle}
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+          updateTaskCompletion={updateTaskCompletion}
+          insertTask={insertTask}
+          updateTask={updateTask}
+          deleteTask={deleteTask}
+          selectedTaskListId={taskListId}
+          taskLists={taskListsState.list}
+          switchSetting={props.switchSetting}
+        />
       </main>
     </div>
   );

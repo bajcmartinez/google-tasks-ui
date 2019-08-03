@@ -6,6 +6,7 @@ import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Fab } from '@material-ui/core'
+import Home from '../Home'
 
 
 describe("Basic", () => {
@@ -19,6 +20,12 @@ describe("Basic", () => {
 
     const titleBar = shallow(
       <Tasks
+        switchSetting={() => null}
+        settings={{
+          taskView: 'DueDateView',
+          comfortView: false,
+          darkMode: false
+        }}
         tasks={[]}
         selectedTaskListId="1"
         taskLists={[taskList]}
@@ -78,6 +85,12 @@ describe("Events", () => {
     mount(
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Tasks
+          switchSetting={() => null}
+          settings={{
+            taskView: 'DueDateView',
+            comfortView: false,
+            darkMode: false
+          }}
           tasks={tasks}
           selectedTaskListId="1"
           taskLists={[taskList]}
@@ -123,6 +136,12 @@ describe("Events", () => {
     const wrapper = mount(
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Tasks
+          switchSetting={() => null}
+          settings={{
+            taskView: 'DueDateView',
+            comfortView: false,
+            darkMode: false
+          }}
           tasks={tasks}
           selectedTaskListId="1"
           taskLists={[taskList]}
