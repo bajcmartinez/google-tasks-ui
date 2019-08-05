@@ -102,7 +102,7 @@ describe("Basic", () => {
             </MuiPickersUtilsProvider>
           </SnackbarProvider>
       );
-    });``
+    });
 
     // Replace the refresh function
     const listTaskListsFn = GoogleTasksService.listTaskLists;
@@ -443,6 +443,119 @@ describe("Updating", () => {
     expect(listItemText.props().primary).toBe(expectedTitle);
 
     GoogleTasksService.updateTask = updateTaskFn;
+  });
+
+});
+
+describe("Insertion", () => {
+  it('should insert the task', async () => {
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+          <SnackbarProvider>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Home
+                  switchSetting={() => null}
+                  settings={{
+                    taskView: 'DueDateView',
+                    comfortView: false,
+                    darkMode: false
+                  }}
+                  signOut={() => null}
+                  switchDarkMode={() => null}
+              />
+            </MuiPickersUtilsProvider>
+          </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+    expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+    expect(wrapper.find(Tasks).props().tasks).toHaveLength(8);
+
+    // Now let's insert a task
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      // First select the task list
+      await wrapper.find('[data-test-id="menu-tasklist-id=1"]').first().simulate('click');
+      jest.advanceTimersByTime(1500);
+      wrapper.update();
+
+      expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+      expect(wrapper.find(Tasks).props().tasks).toHaveLength(4);
+
+      // Then add the item
+      await wrapper.find('[data-test-id="tasks-add-button"]').first().simulate('click');
+
+      jest.advanceTimersByTime(1000);
+    });
+
+    wrapper.update();
+
+    expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+    expect(wrapper.find(Tasks).props().tasks).toHaveLength(5);
+  });
+
+  it('should revert the insertion of the task when the API fails', async () => {
+    const insertTaskFn = GoogleTasksService.insertTask;
+    GoogleTasksService.insertTask = () => Promise.reject("Error");
+    jest.useFakeTimers();
+    GoogleTasksService.reset();
+    let wrapper: any = undefined;
+
+    // @ts-ignore
+    await act(async () => {
+      wrapper = await mount(
+          <SnackbarProvider>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Home
+                  switchSetting={() => null}
+                  settings={{
+                    taskView: 'DueDateView',
+                    comfortView: false,
+                    darkMode: false
+                  }}
+                  signOut={() => null}
+                  switchDarkMode={() => null}
+              />
+            </MuiPickersUtilsProvider>
+          </SnackbarProvider>
+      );
+    });
+
+    wrapper.update();
+    expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+    expect(wrapper.find(Tasks).props().tasks).toHaveLength(8);
+
+    // Now let's insert a task
+    // @ts-ignore
+    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
+    await act(async () => {
+      // First select the task list
+      await wrapper.find('[data-test-id="menu-tasklist-id=1"]').first().simulate('click');
+      jest.advanceTimersByTime(1500);
+      wrapper.update();
+
+      expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+      expect(wrapper.find(Tasks).props().tasks).toHaveLength(4);
+
+      // Then add the item
+      await wrapper.find('[data-test-id="tasks-add-button"]').first().simulate('click');
+
+      jest.advanceTimersByTime(1000);
+    });
+
+    wrapper.update();
+
+    expect(wrapper.find(Tasks).props().taskLists).toHaveLength(2);
+    expect(wrapper.find(Tasks).props().tasks).toHaveLength(4);
+
+    GoogleTasksService.insertTask = insertTaskFn;
   });
 
 });
