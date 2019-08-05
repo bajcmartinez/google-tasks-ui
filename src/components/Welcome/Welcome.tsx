@@ -35,7 +35,7 @@ const Welcome: React.FC<IProps> = (props) => {
     document.title = "Welcome to Google Tasks UI";
   }, []);
 
-  const links = isMobile.apple ?
+  const links = isMobile.apple.device ?
       'https://itunes.apple.com/us/app/google-tasks-get-things-done/id1353634006?mt=8' :
       'https://play.google.com/store/apps/details?id=com.google.android.apps.tasks';
 
