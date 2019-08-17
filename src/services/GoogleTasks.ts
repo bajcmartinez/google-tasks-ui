@@ -147,10 +147,13 @@ class GoogleTasksService {
       pageToken: pageToken
     });
 
-    const items = response.result.items;
-    const nextPageToken = response.result.nextPageToken as string;
-
     let result: Task[] = [];
+
+    const items = response.result.items;
+    if (!items)
+      return result;
+
+    const nextPageToken = response.result.nextPageToken as string;
 
     const mapItems = (tasks: any[]): Task[] => {
       return tasks.map((item: any): Task => ({
