@@ -143,6 +143,7 @@ const Tasks: React.FC<IProps> = (props) => {
                 aria-label={"Insert Task"}
                 className={classes.fab}
                 color="primary"
+                data-test-id="tasks-add-button"
                 onClick={handleInsertTask}
               >
                 <AddIcon />

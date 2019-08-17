@@ -114,6 +114,14 @@ class GoogleTasksService {
     return Promise.resolve();
   }
 
+  static async insertTask(task: Task) {
+    return Promise.resolve({
+      result: {
+        id: 999
+      }
+    });
+  }
+
   static async deleteTask(task: string, tasklist: string) {
     return Promise.resolve();
   }

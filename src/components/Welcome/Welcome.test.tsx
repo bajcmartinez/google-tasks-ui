@@ -27,7 +27,6 @@ describe("Events", () => {
     });
 
     const button = welcome && welcome.find(Button).first();
-    console.log(button)
     button && button.simulate('click');
 
     expect(handler).toBeCalled();

@@ -42,11 +42,11 @@ const Menu: React.FC<IProps> = (props) => {
       selectedTaskListChanged(taskLists[index].id, taskLists[index].title)
     else
       selectedTaskListChanged('all', 'All Tasks')
-  }
+  };
 
   const handleDarkMode = () => {
     switchDarkMode();
-  }
+  };
 
   return (
     <div>
@@ -77,7 +77,9 @@ const Menu: React.FC<IProps> = (props) => {
 
         {taskLists.map((taskList: TaskList, index: number) => (
           <ListItem
-            button key={taskList.id}
+            button
+            key={taskList.id}
+            data-test-id={`menu-tasklist-id=${taskList.id}`}
             selected={selectedIndex === index}
             onClick={() => selectTaskList(index)}
           >
