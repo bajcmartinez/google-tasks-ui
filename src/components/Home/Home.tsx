@@ -12,9 +12,10 @@ import {
   initialTaskListsState,
   taskListsReducer,
 } from '../../reducers/taskLists'
-import { receiveTaskLists } from '../../actions/taskLists'
-import GoogleTasksService, { Task, TaskList } from '../../services/GoogleTasks'
-import { initialTasksState, tasksReducer } from '../../reducers/tasks'
+import { receiveTaskLists } from '../../actions/taskLists';
+import GoogleTasksService from '../../services/GoogleTasks';
+import  { Task, TaskList } from '../../types/google';
+import { initialTasksState, tasksReducer } from '../../reducers/tasks';
 import {
   deleteTaskAction, insertTaskAction,
   receiveTasksAction, updateTaskAction,

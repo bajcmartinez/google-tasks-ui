@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper, shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import App from './App';
 import Welcome from './Welcome'
 import { act } from 'react-dom/test-utils'

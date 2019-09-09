@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, Fragment, useRef} from 'react'
-import { Task } from '../../../../../services/GoogleTasks';
+import { Task } from '../../../../../types/google';
 import TextField from '@material-ui/core/TextField';
 import { debounce } from 'throttle-debounce'
 import ListItem from "@material-ui/core/ListItem";

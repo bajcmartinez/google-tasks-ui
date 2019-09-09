@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Task, TaskList as TaskListType } from '../../../services/GoogleTasks';
+import { Task, TaskList as TaskListType } from '../../../types/google';
 import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import ListView from './TaskViews/ListView';

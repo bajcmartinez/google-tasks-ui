@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { TaskList } from '../../../services/GoogleTasks'
+import { TaskList } from '../../../types/google'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'

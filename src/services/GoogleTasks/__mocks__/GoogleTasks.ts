@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {Task} from "../GoogleTasks";
+import { Task } from "../../../types/google";
 
 class GoogleTasksService {
 

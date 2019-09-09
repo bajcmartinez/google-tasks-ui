@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Task } from '../../../../../services/GoogleTasks';
+import { Task } from '../../../../../types/google';
 import { ISettings } from '../../../../../types';
 import moment from 'moment';
 import ListView from '../ListView/ListView'

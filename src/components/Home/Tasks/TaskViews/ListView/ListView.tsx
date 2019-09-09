@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Task } from '../../../../../services/GoogleTasks';
+import { Task } from '../../../../../types/google';
 import List  from '@material-ui/core/List';
 import TaskItem from '../../TaskItem/TaskItem'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
