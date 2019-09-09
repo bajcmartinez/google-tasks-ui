@@ -19,7 +19,7 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
    * Gets the client authorization to query google's API
    *
    */
-  load() {
+  load(callback: (isSignedIn: boolean) => void) {
     this.oAuth2Client = new google.auth.OAuth2(
       "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com", // Client Id
       "SoEHofyXw1fuGgdYBa1IXuAT", // Client Secret Id
@@ -33,6 +33,7 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
 
     this.tasksAPI = tasksAPI;
     this.taskListsAPI = taskListsAPI;
+    this.signedInCallback = callback;
 
     ipcRenderer.on('google-auth-reply', async (event:any, access_token: string) => {
       await this.getTokenAPI(access_token);
@@ -72,13 +73,12 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
    * Starts the sign in process against your Google Account
    *
    */
-  signIn(callback: (isSignedIn: boolean) => void) {
+  signIn() {
     if (this.oAuth2Client) {
       const authorizeUrl = this.oAuth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: scopes
       });
-      this.signedInCallback = callback;
 
       const token = localStorage.getItem(tokenStorageId);
       if (!token) {

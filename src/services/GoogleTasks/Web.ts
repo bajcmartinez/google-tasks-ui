@@ -71,11 +71,12 @@ export class GoogleTasksWebService {
    * Gets the client authorization to query google's API
    *
    */
-  load() {
+  load(callback: (isSignedIn: boolean) => void) {
     return new Promise(async (resolve) => {
       await this.loadScript();
       this.auth = google.auth2.getAuthInstance();
 
+      this.subscribeSigninStatus(callback);
       resolve();
     });
   }
@@ -103,9 +104,8 @@ export class GoogleTasksWebService {
    * Starts the sign in process against your Google Account
    *
    */
-  signIn(callback: (isSignedIn: boolean) => void) {
+  signIn() {
     this.auth.signIn();
-    this.subscribeSigninStatus(callback);
   }
 
   /**

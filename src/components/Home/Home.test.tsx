@@ -202,8 +202,6 @@ describe("Completion", () => {
     wrapper.update();
 
     // Now let's mark the task as completed
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       const toggleTaskCompletion = wrapper.find('[data-test-id="task-item-1_1"]').first().find(Checkbox).first().props();
       toggleTaskCompletion.onChange && toggleTaskCompletion.onChange({
@@ -215,6 +213,11 @@ describe("Completion", () => {
       jest.advanceTimersByTime(1500);
     });
 
+    wrapper.update();
+
+    await act(async () => {
+      jest.advanceTimersByTime(1500);
+    });
     wrapper.update();
     expect(wrapper.find('[data-test-id="task-item-1_1"]').exists()).toBeTruthy();
 
@@ -253,8 +256,6 @@ describe("Deletion", () => {
     wrapper.update();
 
     // Now let's mark the task as completed
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       // First select the item
       await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');

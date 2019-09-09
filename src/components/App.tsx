@@ -23,7 +23,7 @@ const App: React.FC = () => {
 
   // Initialize google gapi only on the first load
   useEffect(() => {
-    GoogleTasksService.load();
+    GoogleTasksService.load(updateSigninStatus);
     setGoogleLoaded(true);
 
     updateSigninStatus(GoogleTasksService.isSignedIn());
@@ -34,11 +34,11 @@ const App: React.FC = () => {
   }
 
   function signIn() {
-    GoogleTasksService.signIn(updateSigninStatus)
+    GoogleTasksService.signIn();
   }
 
   function signOut() {
-    GoogleTasksService.signOut()
+    GoogleTasksService.signOut();
   }
 
   const switchDarkMode = () => {

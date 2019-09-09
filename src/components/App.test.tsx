@@ -27,8 +27,6 @@ describe('Events', () => {
     GoogleTasksService.reset();
     let wrapper: any = undefined;
 
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       wrapper = await mount(
         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -46,9 +44,6 @@ describe('Events', () => {
     expect(wrapper.find(Home).exists()).toBeFalsy();
 
     // Now we log in
-
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       await wrapper.find(Button).first().simulate('click');
     });
@@ -58,9 +53,6 @@ describe('Events', () => {
     expect(wrapper.find(Home).exists()).toBeTruthy();
 
     // Now log out
-
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       await wrapper.find('[data-test-id="menu-sign-out"]').first().simulate('click');
     });
@@ -74,8 +66,6 @@ describe('Events', () => {
     GoogleTasksService.reset();
     let wrapper: any = undefined;
 
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       wrapper = await mount(
         <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -87,8 +77,6 @@ describe('Events', () => {
 
     expect(wrapper).toBeDefined();
     wrapper.update();
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       await wrapper.find(Button).first().simulate('click');
     });
@@ -96,9 +84,6 @@ describe('Events', () => {
     wrapper.update();
 
     // Now we switch to dark mode
-
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       const toggleDarkMode = await wrapper.find('[data-test-id="menu-dark-mode"]').first().props();
       toggleDarkMode.onChange && toggleDarkMode.onChange()
