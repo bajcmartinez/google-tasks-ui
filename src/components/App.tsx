@@ -23,15 +23,10 @@ const App: React.FC = () => {
 
   // Initialize google gapi only on the first load
   useEffect(() => {
-    GoogleTasksService.authorize().then(() => {
-      setGoogleLoaded(true);
+    GoogleTasksService.load(updateSigninStatus);
+    setGoogleLoaded(true);
 
-      updateSigninStatus(GoogleTasksService.isSignedIn());
-      GoogleTasksService.subscribeSigninStatus(updateSigninStatus);
-    }).catch(error => {
-      /* istanbul ignore next */
-      console.error("Error loading Google Authorization Module", error);
-    });
+    updateSigninStatus(GoogleTasksService.isSignedIn());
   }, []);
 
   function updateSigninStatus(isSignedIn: boolean) {
@@ -39,11 +34,11 @@ const App: React.FC = () => {
   }
 
   function signIn() {
-    GoogleTasksService.signIn()
+    GoogleTasksService.signIn();
   }
 
   function signOut() {
-    GoogleTasksService.signOut()
+    GoogleTasksService.signOut();
   }
 
   const switchDarkMode = () => {

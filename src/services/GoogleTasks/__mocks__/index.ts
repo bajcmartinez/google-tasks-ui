@@ -1,30 +1,36 @@
 import moment from 'moment';
-import {Task} from "../GoogleTasks";
+import { Task } from "../../../types/google";
+import { GoogleTasksWebService } from '../Web';
 
-class GoogleTasksService {
+class Index extends GoogleTasksWebService {
 
-  static _signedIn: boolean = false;
-  static _subscription: (status: boolean) => void | undefined;
+  private _signedIn: boolean = false;
+  private _subscription: ((status: boolean) => void) | undefined;
 
-  static authorize() {
+  load(callback: (isSignedIn: boolean) => void) {
+    this.subscribeSigninStatus(callback);
+    return Promise.resolve();
+  }
+
+  authorize() {
     return Promise.resolve(true);
   }
 
-  static signIn() {
+  signIn() {
     this._signedIn = true;
     this._subscription && this._subscription(this._signedIn);
   }
 
-  static signOut() {
+  signOut() {
     this._signedIn = false;
     this._subscription && this._subscription(this._signedIn);
   }
 
-  static isSignedIn() {
+  isSignedIn() {
     return this._signedIn;
   }
 
-  static listTaskLists() {
+  listTaskLists() {
     return Promise.resolve([
       {
         id: "1",
@@ -41,7 +47,7 @@ class GoogleTasksService {
     ]);
   }
 
-  static async listTasks(taskListId: string, pageToken: string = '') {
+  async listTasks(taskListId: string, pageToken: string = '') {
     return Promise.resolve([
       {
         id: `${taskListId.toString()}_1`,
@@ -110,11 +116,11 @@ class GoogleTasksService {
     ]);
   }
 
-  static async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
+  async updateTaskCompletion(task: string, tasklist: string, completed: boolean) {
     return Promise.resolve();
   }
 
-  static async insertTask(task: Task) {
+  async insertTask(task: Task) {
     return Promise.resolve({
       result: {
         id: 999
@@ -122,26 +128,24 @@ class GoogleTasksService {
     });
   }
 
-  static async deleteTask(task: string, tasklist: string) {
+  async deleteTask(task: string, tasklist: string) {
     return Promise.resolve();
   }
 
-  static async updateTask(task: Task) {
+  async updateTask(task: Task) {
     return Promise.resolve();
   }
 
-  static subscribeSigninStatus (subscriber: (status: boolean) => void) {
+  subscribeSigninStatus (subscriber: (status: boolean) => void) {
     this._subscription = subscriber;
   }
 
-  /**
-   * Only used for testing purposes
-   */
-  static reset() {
+  reset() {
     this._signedIn = false;
     // @ts-ignore
     this._subscription = null;
   }
 }
 
-export default GoogleTasksService;
+const r = new Index();
+export default r;
