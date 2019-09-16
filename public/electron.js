@@ -59,7 +59,6 @@ electron.ipcMain.on('google-auth-start', async (event, authorizeUrl) => {
   mainWindow.on("closed", () => (mainWindow = null));
 
   const checkNavigation = (windowEvent, url) => {
-    console.log('URL', url);
     if (url.indexOf("https://googletasksui.com") === 0) {
       function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -68,7 +67,7 @@ electron.ipcMain.on('google-auth-start', async (event, authorizeUrl) => {
           results = regex.exec(url);
         if (!results) return null;
         if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        return decodeURIComponent(results[2].replace( /\+/g, ' '));
       }
 
       const access_token = getParameterByName("code", url);
