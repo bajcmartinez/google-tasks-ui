@@ -40,6 +40,7 @@
     "@types/react-test-renderer": "^16.9.0",
     "@types/throttle-debounce": "^1.1.1",
     "cross-env": "^5.2.0",
+    "crypto-browserify": "^3.12.0",
     "electron-is-dev": "^1.1.0",
     "googleapis": "^43.0.0",
     "ismobilejs": "^0.5.2",
@@ -69,7 +70,7 @@
     "wait-on": "^3.3.0"
   },
   "scripts": {
-    "react-start": "craco start",
+    "react-start": "react-scripts start",
     "react-build": "craco build",
     "react-test": "craco test",
     "react-eject": "react-scripts eject",

@@ -12,8 +12,6 @@ export class GoogleTasksWebService {
   private isLoaded: boolean = false;
   private auth: any;
 
-  constructor() {}
-
   /**
    * Loads the client library and gets all the api required information from google servers
    *
@@ -97,6 +95,7 @@ export class GoogleTasksWebService {
    */
     subscribeSigninStatus (subscriber: (status: boolean) => void) {
     if (!this.auth) return false;
+    subscriber(this.isSignedIn());
     return this.auth.isSignedIn.listen(subscriber);
   }
 
