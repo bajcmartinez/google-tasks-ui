@@ -26,6 +26,11 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
       "https://googletasksui.com"
     );
 
+    this.oAuth2Client.on('tokens', (tokens) => {
+      this.oAuth2Client && this.oAuth2Client.setCredentials(tokens);
+      localStorage.setItem(tokenStorageId, JSON.stringify(tokens));
+    });
+
     const { tasks: tasksAPI, tasklists: taskListsAPI } = google.tasks({
       version: 'v1',
       auth: this.oAuth2Client
@@ -34,6 +39,11 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
     this.tasksAPI = tasksAPI;
     this.taskListsAPI = taskListsAPI;
     this.signedInCallback = callback;
+
+    // Check if we are signed in
+    if (this.isSignedIn()) {
+      this.signIn();
+    }
 
     ipcRenderer.on('google-auth-reply', async (event:any, access_token: string) => {
       await this.getTokenAPI(access_token);
@@ -64,20 +74,19 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
    *
    */
   isSignedIn () {
-    return false;
-    // if (!this.auth) return false;
-    // return this.auth.isSignedIn.get();
+    return !!localStorage.getItem(tokenStorageId);
   }
 
   /**
    * Starts the sign in process against your Google Account
    *
    */
-  signIn() {
+  signIn(consent: boolean = false) {
     if (this.oAuth2Client) {
       const authorizeUrl = this.oAuth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: scopes
+        scope: scopes,
+        prompt: consent ? 'consent' : undefined
       });
 
       const token = localStorage.getItem(tokenStorageId);
@@ -99,7 +108,8 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
    *
    */
   signOut() {
-    // this.auth.signOut();
+    localStorage.removeItem(tokenStorageId);
+    this.signedInCallback(false);
   }
 
   /**
