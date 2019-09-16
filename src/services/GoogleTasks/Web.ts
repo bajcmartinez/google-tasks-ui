@@ -103,7 +103,7 @@ export class GoogleTasksWebService {
    * Starts the sign in process against your Google Account
    *
    */
-  signIn() {
+  signIn(consent: boolean = false) {
     this.auth.signIn();
   }
 

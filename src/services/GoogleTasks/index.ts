@@ -1,10 +1,10 @@
 /* istanbul ignore file */
 import { GoogleTasksWebService } from './Web'
+import isElectron from 'is-electron';
 
 let GoogleTasksService = GoogleTasksWebService;
 
-if (typeof process !== 'undefined' && process.versions && process.versions.hasOwnProperty('electron')) {
-  console.log('here I am');
+if (isElectron()) {
   const { GoogleTasksElectronService } = require('./Electron');
   GoogleTasksService = GoogleTasksElectronService;
 }

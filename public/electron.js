@@ -58,8 +58,9 @@ electron.ipcMain.on('google-auth-start', async (event, authorizeUrl) => {
   authWindow.loadURL(authorizeUrl);
   mainWindow.on("closed", () => (mainWindow = null));
 
-  authWindow.webContents.on('will-redirect', (windowEvent, url) => {
-    if (url.includes("https://googletasksui.com")) {
+  const checkNavigation = (windowEvent, url) => {
+    console.log('URL', url);
+    if (url.indexOf("https://googletasksui.com") === 0) {
       function getParameterByName(name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
@@ -76,5 +77,8 @@ electron.ipcMain.on('google-auth-start', async (event, authorizeUrl) => {
       event.preventDefault();
       authWindow.close();
     }
-  })
+  }
+
+  authWindow.webContents.on('will-redirect', checkNavigation);
+  authWindow.webContents.on('will-navigate', checkNavigation);
 });

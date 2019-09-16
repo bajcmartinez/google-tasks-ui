@@ -73,7 +73,7 @@ const Welcome: React.FC<IProps> = (props) => {
     <Container component="main" maxWidth="md">
       <div className={classes.main}>
         <div>
-          <img alt="Google Tasks" src="/assets/logo.png" className={classes.logo} />
+          <img alt="Google Tasks" src="assets/logo.png" className={classes.logo} />
         </div>
         <Typography variant="h3" aria-label="Welcome to Google Tasks UI">
           Welcome to Google Tasks UI

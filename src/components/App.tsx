@@ -11,6 +11,7 @@ import Welcome from './Welcome';
 import { CssBaseline } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 
+
 const App: React.FC = () => {
   const [googleLoaded, setGoogleLoaded] = React.useState(false);
   const [isSignedIn, setIsSignedIn] = React.useState(false);
@@ -34,7 +35,7 @@ const App: React.FC = () => {
   }
 
   function signIn() {
-    GoogleTasksService.signIn();
+    GoogleTasksService.signIn(true);
   }
 
   function signOut() {
