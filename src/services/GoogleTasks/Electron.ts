@@ -26,6 +26,11 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
       "https://googletasksui.com"
     );
 
+    this.oAuth2Client.on('tokens', (tokens) => {
+      this.oAuth2Client && this.oAuth2Client.setCredentials(tokens);
+      localStorage.setItem(tokenStorageId, JSON.stringify(tokens));
+    });
+
     const { tasks: tasksAPI, tasklists: taskListsAPI } = google.tasks({
       version: 'v1',
       auth: this.oAuth2Client
