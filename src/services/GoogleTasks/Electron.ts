@@ -1,13 +1,15 @@
 /* istanbul ignore file */
 import { GoogleTasksWebService } from './Web';
-import { google, tasks_v1 } from 'googleapis'
+import { google, tasks_v1 } from 'googleapis';
 import moment  from 'moment';
-import { Task, TaskList } from '../../types/google';
+import { Task, TaskList, OAuthKeys } from '../../types/google';
 import { APIEndpoint, OAuth2Client } from 'googleapis-common';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
+import * as fs from 'fs';
 
 const scopes: Array<string> = ['https://www.googleapis.com/auth/tasks'];
 const tokenStorageId = "gatt-v1";
+const credentialsFileName = 'google-tasks-ui.json'
 
 export class GoogleTasksElectronService extends GoogleTasksWebService {
   private tasksAPI: APIEndpoint | undefined;
@@ -15,15 +17,45 @@ export class GoogleTasksElectronService extends GoogleTasksWebService {
   private oAuth2Client: OAuth2Client | undefined;
   private signedInCallback: (isSignedIn: boolean) => void = () => {};
 
+  getCredentials(): OAuthKeys | undefined {
+    const possible = [
+      remote.app.getPath('home') + '/' + credentialsFileName,
+      remote.app.getPath('home') + '/.' + credentialsFileName,
+      remote.app.getPath('documents') + '/' + credentialsFileName,
+      remote.app.getPath('documents') + '/.' + credentialsFileName,
+      remote.app.getPath('desktop') + '/' + credentialsFileName,
+      remote.app.getPath('desktop') + '/.' + credentialsFileName
+    ]
+
+    let credentials: OAuthKeys | undefined = undefined;
+    possible.some((filename) => {
+      if (fs.existsSync(filename)) {
+        const data = fs.readFileSync(filename, 'utf8');
+        credentials = JSON.parse(data);
+        return true;
+      }
+
+      return false;
+    });
+
+    return credentials;
+  }
+
   /**
    * Gets the client authorization to query google's API
    *
    */
   load(callback: (isSignedIn: boolean) => void) {
+    // Look up for the keys
+    const credentials = this.getCredentials();
+
+    if (!credentials)
+      return Promise.reject("Missing credentials file!");
+
     this.oAuth2Client = new google.auth.OAuth2(
-      "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com", // Client Id
-      "SoEHofyXw1fuGgdYBa1IXuAT", // Client Secret Id
-      "https://googletasksui.com"
+      credentials.installed.client_id,
+      credentials.installed.client_secret,
+      credentials.installed.redirect_uris[0]
     );
 
     this.oAuth2Client.on('tokens', (tokens) => {

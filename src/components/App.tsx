@@ -8,6 +8,7 @@ import { ISettings } from '../types';
 import GoogleTasksService from '../services/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
+import { Credentials } from './Error';
 import { CssBaseline } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 
@@ -15,6 +16,7 @@ import { SnackbarProvider } from 'notistack';
 const App: React.FC = () => {
   const [googleLoaded, setGoogleLoaded] = React.useState(false);
   const [isSignedIn, setIsSignedIn] = React.useState(false);
+  const [googleErroed, setGoogleErroed] = React.useState<string | undefined>(undefined);
 
   const [settings, setSettings] = React.useState<ISettings>({
     darkMode: localStorage.getItem("settings.darkMode") === "true",
@@ -24,10 +26,13 @@ const App: React.FC = () => {
 
   // Initialize google gapi only on the first load
   useEffect(() => {
-    GoogleTasksService.load(updateSigninStatus);
-    setGoogleLoaded(true);
-
-    updateSigninStatus(GoogleTasksService.isSignedIn());
+    GoogleTasksService.load(updateSigninStatus).then(() => {
+      setGoogleLoaded(true);
+      updateSigninStatus(GoogleTasksService.isSignedIn());
+    }).catch((error) => {
+      console.error("Error loading google services:", error);
+      setGoogleErroed(error);
+    });
   }, []);
 
   function updateSigninStatus(isSignedIn: boolean) {
@@ -60,7 +65,9 @@ const App: React.FC = () => {
 
   let render;
 
-  if (!googleLoaded) {
+  if (!!googleErroed) {
+    render = (<Credentials errorMessage={googleErroed} />);
+  } else if (!googleLoaded) {
     render = (<div>Loading...</div>);
   } else {
     if (isSignedIn) {

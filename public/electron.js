@@ -59,9 +59,9 @@ electron.ipcMain.on('google-auth-start', async (event, authorizeUrl) => {
   mainWindow.on("closed", () => (mainWindow = null));
 
   const checkNavigation = (windowEvent, url) => {
-    if (url.indexOf("https://googletasksui.com") === 0) {
+    if (url.includes("response=code")) {
+      // https://accounts.google.com/o/oauth2/approval/v2/approvalnativeapp?auto=false&response=code%3D4%2FrAGGV6Hgym-ugQGJcmwBek1SUyc6kJMUn9gYHFJ3ZCpQujU5l6I3q-o%26scope%3Dhttps%3A%2F%2Fwww.googleapis.com%2Fauth%2Ftasks&hl=en&approvalCode=4%2FrAGGV6Hgym-ugQGJcmwBek1SUyc6kJMUn9gYHFJ3ZCpQujU5l6I3q-o
       function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
           results = regex.exec(url);
@@ -70,7 +70,8 @@ electron.ipcMain.on('google-auth-start', async (event, authorizeUrl) => {
         return decodeURIComponent(results[2].replace( /\+/g, ' '));
       }
 
-      const access_token = getParameterByName("code", url);
+      const response = getParameterByName("response", url);
+      const access_token = getParameterByName("code", "http://localhost/?" + response);
       event.sender.send('google-auth-reply', access_token);
 
       event.preventDefault();
