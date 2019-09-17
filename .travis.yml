@@ -16,6 +16,9 @@ matrix:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
+install:
+  - pip install --user awscli
+
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
