@@ -1,13 +1,12 @@
 import React, {ChangeEvent, useEffect, useRef} from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Task, TaskList } from '../../../../types/google';
-import CalendarIcon  from '@material-ui/icons/CalendarToday';
+import CalendarIcon  from '@material-ui/icons/Event';
 import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
 import { KeyboardDatePicker } from '@material-ui/pickers'
 import { Moment } from 'moment'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import { debounce } from 'throttle-debounce'
 import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
@@ -184,16 +183,12 @@ const TaskEdit: React.FC<IProps> = (props) => {
         <Grid item xs={12}>
           <KeyboardDatePicker
             clearable
+            variant="inline"
             label="Due At"
             value={taskEdit.dueAt ? taskEdit.dueAt : null}
+            format="MMM DD, YYYY"
             onChange={handleDueDateChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {due}
-                </InputAdornment>
-              ),
-            }}
+            keyboardIcon={due}
           />
         </Grid>
 
