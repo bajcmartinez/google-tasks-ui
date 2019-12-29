@@ -3,7 +3,7 @@ import 'typeface-roboto';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Button, Container, Typography } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import isMobile  from 'ismobilejs';
+import isMobile from 'ismobilejs';
 
 const useStyles = makeStyles(theme => ({
   logo: {
@@ -35,7 +35,7 @@ const Welcome: React.FC<IProps> = (props) => {
     document.title = "Welcome to Google Tasks UI";
   }, []);
 
-  const links = isMobile.apple.device ?
+  const links = isMobile().apple.device ?
       'https://itunes.apple.com/us/app/google-tasks-get-things-done/id1353634006?mt=8' :
       'https://play.google.com/store/apps/details?id=com.google.android.apps.tasks';
 
@@ -67,7 +67,7 @@ const Welcome: React.FC<IProps> = (props) => {
     </Fragment>
   );
 
-  const message = isMobile.any ? mobileMessage : defaultMessage;
+  const message = isMobile().any ? mobileMessage : defaultMessage;
 
   return (
     <Container component="main" maxWidth="md">

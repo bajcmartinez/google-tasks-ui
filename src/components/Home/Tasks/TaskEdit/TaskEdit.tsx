@@ -5,7 +5,7 @@ import CalendarIcon  from '@material-ui/icons/CalendarToday';
 import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
-import { DatePicker, MaterialUiPickersDate } from '@material-ui/pickers'
+import { KeyboardDatePicker } from '@material-ui/pickers'
 import { Moment } from 'moment'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { debounce } from 'throttle-debounce'
@@ -121,10 +121,10 @@ const TaskEdit: React.FC<IProps> = (props) => {
     updateTask.current(newTask, props.updateTask);
   };
 
-  const handleDueDateChange = (date: MaterialUiPickersDate) => {
+  const handleDueDateChange = (date: Moment | null) => {
     const newTask = {
       ...task,
-      dueAt: date as Moment,
+      dueAt: date || undefined,
       isDirty: true
     };
     setTask(newTask);
@@ -182,7 +182,7 @@ const TaskEdit: React.FC<IProps> = (props) => {
         </Grid>
 
         <Grid item xs={12}>
-          <DatePicker
+          <KeyboardDatePicker
             clearable
             label="Due At"
             value={taskEdit.dueAt ? taskEdit.dueAt : null}

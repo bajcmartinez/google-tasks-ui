@@ -50,7 +50,6 @@ describe("Basic", () => {
     GoogleTasksService.listTaskLists = () => Promise.reject("Error");
     let wrapper: any = undefined;
 
-    // @ts-ignore
     await act(async () => {
       wrapper = await mount(
         <SnackbarProvider>
@@ -108,8 +107,6 @@ describe("Basic", () => {
     const listTaskListsFn = GoogleTasksService.listTaskLists;
     GoogleTasksService.listTaskLists = jest.fn().mockReturnValue(listTaskListsFn());
 
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       jest.advanceTimersByTime(35000); // Advance 35 seconds on the timer
       await wrapper.update();
@@ -129,8 +126,6 @@ describe("Completion", () => {
     GoogleTasksService.reset();
     let wrapper: any = undefined;
 
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       wrapper = await mount(
         <SnackbarProvider>
@@ -153,8 +148,6 @@ describe("Completion", () => {
     wrapper.update();
 
     // Now let's mark the task as completed
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
       const toggleTaskCompletion = wrapper.find('[data-test-id="task-item-1_1"]').first().find(Checkbox).first().props();
@@ -300,8 +293,6 @@ describe("Deletion", () => {
     wrapper.update();
 
     // Now let's mark the task as completed
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       // First select the item
       await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
@@ -310,8 +301,6 @@ describe("Deletion", () => {
       await wrapper.find('[data-test-id="task-delete-button"]').first().simulate('click');
     });
 
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       jest.advanceTimersByTime(1500);
       wrapper.update();
@@ -355,8 +344,6 @@ describe("Updating", () => {
     const expectedTitle = 'New Title Set Here';
 
     // Now let's mark the task as completed
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       // First select the item
       await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
@@ -411,8 +398,6 @@ describe("Updating", () => {
     const expectedTitle = 'Task 1';
 
     // Now let's mark the task as completed
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       // First select the item
       await wrapper.find('[data-test-id="task-item-1_1"]').first().simulate('click');
@@ -432,8 +417,6 @@ describe("Updating", () => {
 
     wrapper.update();
 
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       jest.advanceTimersByTime(1500);
       wrapper.update();
@@ -479,8 +462,6 @@ describe("Insertion", () => {
     expect(wrapper.find(Tasks).props().tasks).toHaveLength(8);
 
     // Now let's insert a task
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       // First select the task list
       await wrapper.find('[data-test-id="menu-tasklist-id=1"]').first().simulate('click');
@@ -534,8 +515,6 @@ describe("Insertion", () => {
     expect(wrapper.find(Tasks).props().tasks).toHaveLength(8);
 
     // Now let's insert a task
-    // @ts-ignore
-    // FIXME: ammend this when react fixes it, this is caused by using react 16.9-alpha.0
     await act(async () => {
       // First select the task list
       await wrapper.find('[data-test-id="menu-tasklist-id=1"]').first().simulate('click');
