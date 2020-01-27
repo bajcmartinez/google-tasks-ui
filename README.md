@@ -2,6 +2,10 @@
 
 Open source UI that connects to your Google Tasks account and it's intended to be an additional interface for the service for desktop applications, and to bring a full web experience over Google Tasks. It's not intended to replace existing Google Tasks solutions but to complement them.
 
+This app is not affiliated, sponsored or developed by Google by any means, it's a hobby project that some people seem to be liking and using. I do not plan on charging, nor collecting metrics or any type of data from the use of this app.
+This app connects to the Google Tasks API which privacy policies can be found here [Google API Privacy Policy](https://developers.google.com/terms/api-services-user-data-policy).
+Our servers only host the front-end application and you browser does not send any of your private information to our servers, all communications are done directly from the browser to the Google APIs.
+
 [View it in action](https://googletasksui.com)
 
 ## Features
