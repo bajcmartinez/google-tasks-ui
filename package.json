@@ -7,7 +7,7 @@
   },
   "build": {
     "appId": "dev.jcmartinez.google-tasks-ui",
-    "productName": "Google Tasks UI",
+    "productName": "GTasks UI",
     "mac": {
       "category": "public.app-category.productivity"
     }

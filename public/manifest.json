@@ -1,6 +1,6 @@
 {
-  "short_name": "google-tasks-ui",
-  "name": "Google Tasks UI",
+  "short_name": "gtasks-ui",
+  "name": "GTasks UI",
   "icons": [
     {
       "src": "favicon.ico",
