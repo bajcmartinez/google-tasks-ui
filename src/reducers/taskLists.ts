@@ -1,4 +1,4 @@
-import { RECEIVE_TASKLISTS, Action } from '../actions/taskLists';
+import { RECEIVE_TASKLISTS, INSERT_TASKLIST, Action, TaskListAction, TaskListsAction } from '../actions/taskLists';
 import { TaskList } from '../types/google';
 
 export type TaskListsState = {
@@ -18,8 +18,14 @@ export function taskListsReducer(
         case RECEIVE_TASKLISTS:
             return {
                 ...state,
-                list: [...action.payload]
+                list: [...(action as TaskListsAction).payload]
             };
+
+        case INSERT_TASKLIST:
+            return {
+                ...state,
+                list: [...state.list, { ...(action as TaskListAction).payload }]
+            }
 
         default:
             return state;

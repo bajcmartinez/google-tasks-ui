@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## 1.0.4
 
-[FEAT]: List management, add, update and delete lists
+[FEAT]: List management, add and update lists
 
 ## 1.0.3
 

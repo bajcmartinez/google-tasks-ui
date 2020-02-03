@@ -178,6 +178,17 @@ export class GoogleTasksWebService {
   }
 
   /**
+   * Creates a task list
+   *
+   * @param taskList: TaskList
+   */
+  async insertTaskList(taskList: TaskList) {
+    return await google.client.tasks.tasklists.insert({
+      title: taskList.title
+    });
+  }
+
+  /**
    * Sets the completion status of a task
    *
    * @param task: string

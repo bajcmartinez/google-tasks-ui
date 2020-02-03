@@ -182,7 +182,6 @@ const TaskEdit: React.FC<IProps> = (props) => {
 
         <Grid item xs={12}>
           <KeyboardDatePicker
-            clearable
             variant="inline"
             label="Due At"
             value={taskEdit.dueAt ? taskEdit.dueAt : null}

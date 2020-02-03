@@ -4,7 +4,6 @@ export type TaskList = {
   id: string,
   title: string,
   updatedAt: Moment,
-  status: string
 }
 
 export type Task = {
