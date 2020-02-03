@@ -24,11 +24,11 @@ before_cache:
 
 cache:
   directories:
-    - node_modules
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 
 before_script:
+  - npm i
   - export NODE_OPTIONS="--max-old-space-size=8192"
 
 script:

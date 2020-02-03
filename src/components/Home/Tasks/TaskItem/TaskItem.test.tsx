@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme'
 import TaskItem from './TaskItem';
 import { Task } from '../../../../services/GoogleTasks';
 import moment from 'moment';
-import CalendarIcon  from '@material-ui/icons/CalendarToday';
+import CalendarIcon  from '@material-ui/icons/Event';
 import { ListItemText } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
 import { act } from 'react-dom/test-utils'

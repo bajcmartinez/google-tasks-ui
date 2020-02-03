@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { TaskList } from '../../../types/google'
+import { Task, TaskList } from '../../../types/google'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -13,10 +13,14 @@ import ListIcon from '@material-ui/icons/List'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdjust } from '@fortawesome/free-solid-svg-icons'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { IconButton } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
+import { NameModal } from '../TaskLists/NameModal'
 
 interface IProps {
   taskLists: TaskList[],
   selectedTaskListChanged: (id: string, title: string) => void
+  insertTaskList: (taskList: TaskList) => void
   switchDarkMode: () => void
 }
 
@@ -35,6 +39,7 @@ const Menu: React.FC<IProps> = (props) => {
   const { taskLists, selectedTaskListChanged, switchDarkMode } = props;
 
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [editingTaskList, setEditingTaskList] = useState(false);
 
   const selectTaskList = (index: number) => {
     setSelectedIndex(index)
@@ -48,9 +53,25 @@ const Menu: React.FC<IProps> = (props) => {
     switchDarkMode();
   };
 
+  const handleInsertTaskList = (): void => {
+    setEditingTaskList(true);
+  };
+
+  const insertTaskList = (name: string): void => {
+    if (name) {
+      props.insertTaskList({
+        title: name,
+      } as Task);
+
+      setEditingTaskList(false);
+    }
+  }
+
   return (
     <div>
       <div className={classes.toolbar}/>
+
+      <NameModal open={editingTaskList} handleClose={() => setEditingTaskList(false)} handleSaveTaskList={insertTaskList} />
 
       <Divider/>
 
@@ -73,6 +94,12 @@ const Menu: React.FC<IProps> = (props) => {
       <List component="nav" aria-label="Task Lists">
         <ListSubheader>
           Task Lists
+
+          <ListItemSecondaryAction>
+            <IconButton onClick={handleInsertTaskList}>
+              <AddIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
         </ListSubheader>
 
         {taskLists.map((taskList: TaskList, index: number) => (

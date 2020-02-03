@@ -3,7 +3,7 @@ import 'typeface-roboto';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Button, Container, Typography } from '@material-ui/core';
 import Grid from "@material-ui/core/Grid";
-import isMobile  from 'ismobilejs';
+import isMobile from 'ismobilejs';
 
 const useStyles = makeStyles(theme => ({
   logo: {
@@ -32,10 +32,10 @@ const Welcome: React.FC<IProps> = (props) => {
 
   // Set the window title
   useEffect(() => {
-    document.title = "Welcome to Google Tasks UI";
+    document.title = "Welcome to GTasks UI";
   }, []);
 
-  const links = isMobile.apple.device ?
+  const links = isMobile().apple.device ?
       'https://itunes.apple.com/us/app/google-tasks-get-things-done/id1353634006?mt=8' :
       'https://play.google.com/store/apps/details?id=com.google.android.apps.tasks';
 
@@ -56,7 +56,7 @@ const Welcome: React.FC<IProps> = (props) => {
   const defaultMessage = (
     <Fragment>
       <Typography variant="body1">
-        Google Tasks UI is an open source, 100% free application built to handle your Google Tasks. It has been built for ease of use and good look and feel.
+        GTasks UI is an open source, 100% free application built to handle your Google Tasks. It has been built for ease of use and good look and feel.
       </Typography>
 
       <br /><br />
@@ -67,7 +67,7 @@ const Welcome: React.FC<IProps> = (props) => {
     </Fragment>
   );
 
-  const message = isMobile.any ? mobileMessage : defaultMessage;
+  const message = isMobile().any ? mobileMessage : defaultMessage;
 
   return (
     <Container component="main" maxWidth="md">
@@ -75,8 +75,8 @@ const Welcome: React.FC<IProps> = (props) => {
         <div>
           <img alt="Google Tasks" src="assets/logo.png" className={classes.logo} />
         </div>
-        <Typography variant="h3" aria-label="Welcome to Google Tasks UI">
-          Welcome to Google Tasks UI
+        <Typography variant="h3" aria-label="Welcome to GTasks UI">
+          Welcome to GTasks UI
         </Typography>
 
         <br />
@@ -100,7 +100,7 @@ const Welcome: React.FC<IProps> = (props) => {
             <br />
 
             <Typography variant="body1">
-              Google Tasks UI is open-sourced on GitHub. Contributions and feedback are welcome!
+              GTasks UI is open-sourced on GitHub. Contributions and feedback are welcome!
             </Typography>
 
             <br />

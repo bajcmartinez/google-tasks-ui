@@ -4,7 +4,7 @@ import { Task } from '../../../../types/google';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import CalendarIcon  from '@material-ui/icons/CalendarToday';
+import CalendarIcon  from '@material-ui/icons/Event';
 import { Checkbox } from '@material-ui/core';
 import Linkify from 'react-linkify';
 import Button from '@material-ui/core/Button';
