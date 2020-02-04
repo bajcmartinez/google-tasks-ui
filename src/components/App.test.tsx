@@ -1,14 +1,14 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme';
 import App from './App';
-import Welcome from './Welcome'
-import { act } from 'react-dom/test-utils'
-import { Button } from '@material-ui/core'
-import { SnackbarProvider } from 'notistack'
-import GoogleTasksService from '../services/GoogleTasks'
-import MomentUtils from '@date-io/moment'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import Home from './Home'
+import Welcome from './Welcome';
+import { act } from 'react-dom/test-utils';
+import { Button } from '@material-ui/core';
+import { SnackbarProvider } from 'notistack';
+import GoogleTasksService from '../services/GoogleTasks';
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import Home from './Home';
 
 jest.mock('../services/GoogleTasks');
 

@@ -1,12 +1,12 @@
 import React, { ChangeEvent } from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import Home from './Home';
 import { SnackbarProvider } from 'notistack';
 import { act } from 'react-dom/test-utils';
 import Tasks from './Tasks'
-import MomentUtils from '@date-io/moment'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import GoogleTasksService from '../../services/GoogleTasks'
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import GoogleTasksService  from '../../services/GoogleTasks';
 import { Checkbox } from '@material-ui/core'
 import ListItemText from "@material-ui/core/ListItemText";
 
