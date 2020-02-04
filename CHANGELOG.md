@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.5
+
+[FEAT]: Make the app a PWA in favor of the electron app
+
 ## 1.0.4
 
 [FEAT]: List management, add and update lists

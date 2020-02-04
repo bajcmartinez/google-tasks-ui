@@ -1,1 +1,1 @@
-export { default as Credentials } from './Credentials'
+export { default as LoadError } from './LoadError'

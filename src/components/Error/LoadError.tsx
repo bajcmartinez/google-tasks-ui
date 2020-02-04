@@ -1,8 +1,8 @@
 import React from 'react';
 import 'typeface-roboto';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Button, Container, Paper, Typography, Link } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid'
+import { Button, Container, Paper, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
 interface IProps {
   errorMessage: string
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Credentials: React.FC<IProps> = (props) => {
+const LoadError: React.FC<IProps> = (props) => {
   const classes = useStyles(props);
 
   return (
@@ -55,16 +55,11 @@ const Credentials: React.FC<IProps> = (props) => {
 
         <Paper className={classes.error}>
           <Typography variant="h5" component="h3">
-            Please review your configuration.
+            Looks like you are offline, GTasks UI requires internet connection to work.
           </Typography>
           <br />
           <Typography variant="body1">
             {props.errorMessage}
-          </Typography>
-
-          <br />
-          <Typography variant="body1">
-            <Link color="inherit" href="https://github.com/bajcmartinez/google-tasks-ui">Please follow the instructions on our readme file on how to properly set up the desktop application.</Link>
           </Typography>
         </Paper>
       </div>
@@ -106,4 +101,4 @@ const Credentials: React.FC<IProps> = (props) => {
   );
 };
 
-export default Credentials;
+export default LoadError;

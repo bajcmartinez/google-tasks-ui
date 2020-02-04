@@ -1,42 +1,15 @@
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode10.2
-      language: node_js
-      node_js: "10"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
-    - os: linux
-      dist: trusty
-      language: node_js
-      node_js: "10"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
 install:
   - pip install --user awscli
 
-before_cache:
-  - rm -rf $HOME/.cache/electron-builder/wine
-
-cache:
-  directories:
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
-
 before_script:
   - npm i
-  - export NODE_OPTIONS="--max-old-space-size=8192"
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run test; fi
+  - npm run test
 
 
 after_script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls; fi
+  - COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN npm run coveralls
 
 before_deploy:
   - >
@@ -44,24 +17,10 @@ before_deploy:
       export BEFORE_DEPLOY_RUN=1;
       git config --local user.name "Juan Cruz Martinez"
       git config --local user.email "bajcmartinez@gmail.com"
-      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build --linux; fi
-      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build --mac --win; fi
+      npm run build
     fi;
 
 deploy:
-  - provider: releases
-    api_key: $GH_TOKEN
-    skip_cleanup: true
-    file_glob: true
-    file:
-      - "dist/*.AppImage"
-      - "dist/*.snap"
-      - "dist/*-mac.zip"
-      - "dist/*.dmg"
-      - "dist/latest-linux.yml"
-      - "dist/latest-mac.yml"
-    on:
-      tags: true
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY_ID
     secret_access_key: $AWS_SECRET_ACCESS_KEY
@@ -69,7 +28,7 @@ deploy:
     local_dir: build
     skip_cleanup: true
     on:
-      tags: true
+      branch: master
 
 after_deploy:
   # Allow `awscli` to make requests to CloudFront.

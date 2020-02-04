@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { Task } from "../../../types/google";
-import { GoogleTasksWebService } from '../Web';
+import { GoogleTasksService } from '../GoogleTasksService';
 
-class Index extends GoogleTasksWebService {
+class Index extends GoogleTasksService {
 
   private _signedIn: boolean = false;
   private _subscription: ((status: boolean) => void) | undefined;

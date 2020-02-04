@@ -5,7 +5,7 @@ import { Task, TaskList } from '../../types/google';
 // @ts-ignore
 let google = window.gapi;
 
-export class GoogleTasksWebService {
+export class GoogleTasksService {
   private readonly clientId: string = "721709625729-0jp536rce8pn3i5ie0pg213d2t55mu55.apps.googleusercontent.com";
   private readonly scopes: string = 'https://www.googleapis.com/auth/tasks';
   private readonly discoveryDocs = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest"];
@@ -21,13 +21,19 @@ export class GoogleTasksWebService {
 
     const self = this;
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
 
       // To load first we need to inject the scripts
       const script = document.createElement("script");
       script.src = "https://apis.google.com/js/api.js";
       script.async = true;
       script.defer = true;
+
+      script.onerror = (event: Event | string, source?: string, lineno?: number, colno?: number, error?: Error) => {
+        console.log("Error loading GAPI");
+        console.error(event);
+        reject(error || "Error loading GAPI");
+      }
       // @ts-ignore
       script.onload = () => {
         // Then we load the API
@@ -56,7 +62,16 @@ export class GoogleTasksWebService {
           }catch (e) {
             console.log("Error initializing GAPI");
             console.error(e);
-            setTimeout(gapiInit, 2000);
+
+            const retry = async () => {
+              try {
+                await gapiInit();
+              }catch (e) {
+                reject(e);
+              }
+            }
+
+            setTimeout(retry, 2000);
           }
         });
       };
@@ -70,12 +85,16 @@ export class GoogleTasksWebService {
    *
    */
   load(callback: (isSignedIn: boolean) => void) {
-    return new Promise(async (resolve) => {
-      await this.loadScript();
-      this.auth = google.auth2.getAuthInstance();
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.loadScript();
+        this.auth = google.auth2.getAuthInstance();
 
-      this.subscribeSigninStatus(callback);
-      resolve();
+        this.subscribeSigninStatus(callback);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
@@ -93,7 +112,7 @@ export class GoogleTasksWebService {
    *
    * @param subscriber
    */
-    subscribeSigninStatus (subscriber: (status: boolean) => void) {
+  subscribeSigninStatus (subscriber: (status: boolean) => void) {
     if (!this.auth) return false;
     subscriber(this.isSignedIn());
     return this.auth.isSignedIn.listen(subscriber);
@@ -259,3 +278,6 @@ export class GoogleTasksWebService {
 
   }
 }
+
+const r = new GoogleTasksService();
+export default r;

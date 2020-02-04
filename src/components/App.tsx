@@ -8,7 +8,7 @@ import { ISettings } from '../types';
 import GoogleTasksService from '../services/GoogleTasks';
 import Home from './Home';
 import Welcome from './Welcome';
-import { Credentials } from './Error';
+import { LoadError } from './Error';
 import { CssBaseline } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 
@@ -66,7 +66,7 @@ const App: React.FC = () => {
   let render;
 
   if (!!googleErroed) {
-    render = (<Credentials errorMessage={googleErroed} />);
+    render = (<LoadError errorMessage={googleErroed} />);
   } else if (!googleLoaded) {
     render = (<div>Loading...</div>);
   } else {
