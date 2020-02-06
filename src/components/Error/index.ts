@@ -1,1 +1,1 @@
-export { default as LoadError } from './LoadError'
+export { default } from './LoadError';

@@ -1,36 +1,34 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import useTheme from '@material-ui/core/styles/useTheme';
 
-import TitleBar from '../TitleBar';
-import Menu from './Menu';
 import { useSnackbar } from 'notistack';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import TitleBar from '../TitleBar';
+import Sidebar from '../Sidebar';
 import { ISettings } from '../../types';
-import {
-  initialTaskListsState,
-  taskListsReducer,
-} from '../../reducers/taskLists'
+import { initialTaskListsState, taskListsReducer } from '../../reducers/taskLists';
 import { receiveTaskLists, insertTaskListAction } from '../../actions/taskLists';
 import GoogleTasksService from '../../services/GoogleTasks';
-import  { Task, TaskList } from '../../types/google';
+import { Task, TaskList } from '../../types/google';
 import { initialTasksState, tasksReducer } from '../../reducers/tasks';
 import {
-  deleteTaskAction, insertTaskAction,
-  receiveTasksAction, updateTaskAction,
+  deleteTaskAction,
+  insertTaskAction,
+  receiveTasksAction,
+  updateTaskAction,
   updateTaskCompletionAction,
-} from '../../actions/tasks'
-import Tasks from './Tasks';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { useInterval } from '../../hooks/useInterval';
-
+} from '../../actions/tasks';
+import Tasks from '../Tasks';
+import useInterval from '../../hooks/useInterval';
 
 interface IProps {
-  settings: ISettings,
-  switchDarkMode: () => void,
-  switchSetting: (key: string, value: any) => void,
-  signOut: () => void
+  settings: ISettings;
+  switchDarkMode: () => void;
+  switchSetting: (key: string, value: any) => void;
+  signOut: () => void;
 }
 
 const drawerWidth = 240;
@@ -38,7 +36,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    flexGrow: 1
+    flexGrow: 1,
   },
 
   drawer: {
@@ -56,16 +54,16 @@ const useStyles = makeStyles(theme => ({
 
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
 }));
 
-const Home: React.FC<IProps> = (props) => {
+const Home: React.FC<IProps> = ({ switchDarkMode, signOut, settings, switchSetting }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [taskListId, setTaskListId] = React.useState("all");
-  const [taskListTitle, setTaskListTitle] = React.useState("All Tasks");
+  const [taskListId, setTaskListId] = React.useState('all');
+  const [taskListTitle, setTaskListTitle] = React.useState('All Tasks');
   const [selectedTask, setSelectedTask] = React.useState<Task>();
   const [loading, setLoading] = React.useState(false);
 
@@ -73,7 +71,7 @@ const Home: React.FC<IProps> = (props) => {
   const [tasksState, tasksDispatch] = useReducer(tasksReducer, initialTasksState);
 
   const { enqueueSnackbar } = useSnackbar();
-  
+
   const refreshData = async () => {
     setLoading(true);
     try {
@@ -92,31 +90,31 @@ const Home: React.FC<IProps> = (props) => {
       taskListsDispatch(receiveTaskLists(taskLists));
       tasksDispatch(receiveTasksAction(allTasks));
       setLoading(false);
-    } catch(error) {
+    } catch (error) {
       setLoading(false);
-      console.error("Error loading tasks", error);
+      console.error('Error loading tasks', error);
       // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
       // and we want to show the user an error before popping up again the item
-      enqueueSnackbar('Error loading tasks, please try again!', {variant: 'error'});
+      enqueueSnackbar('Error loading tasks, please try again!', { variant: 'error' });
     }
   };
 
   async function insertTaskList(taskList: TaskList) {
     try {
       const response = await GoogleTasksService.insertTaskList(taskList);
-      taskList = {
-        ...taskList,
-        id: response.result.id
-      };
-      taskListsDispatch(insertTaskListAction(taskList));
+      taskListsDispatch(
+        insertTaskListAction({
+          ...taskList,
+          id: response.result.id,
+        }),
+      );
 
-      enqueueSnackbar('Task list created!', {variant: 'success'});
-
+      enqueueSnackbar('Task list created!', { variant: 'success' });
     } catch (error) {
-      console.error("Error creating task list", error);
+      console.error('Error creating task list', error);
       // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
       // and we want to show the user an error before popping up again the item
-      enqueueSnackbar('Error creating the task list, please try again!', {variant: 'error'});
+      enqueueSnackbar('Error creating the task list, please try again!', { variant: 'error' });
     }
   }
 
@@ -125,12 +123,11 @@ const Home: React.FC<IProps> = (props) => {
       // We update the UI meanwhile the API is doing it's stuff, we trust it just works
       tasksDispatch(updateTaskCompletionAction(taskId, listId, completed));
       await GoogleTasksService.updateTaskCompletion(taskId, listId, completed);
-
     } catch (error) {
-      console.error("Error updating completion", error);
+      console.error('Error updating completion', error);
       // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
       // and we want to show the user an error before popping up again the item
-      enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
+      enqueueSnackbar('Error updating the task, please try again!', { variant: 'error' });
 
       setTimeout(() => tasksDispatch(updateTaskCompletionAction(taskId, listId, !completed)), 1000);
     }
@@ -142,34 +139,32 @@ const Home: React.FC<IProps> = (props) => {
       // We update the UI meanwhile the API is doing it's stuff, we trust it just works
       tasksDispatch(updateTaskAction(task));
       await GoogleTasksService.updateTask(task);
-      enqueueSnackbar('Task updated!', {variant: 'success'});
-
+      enqueueSnackbar('Task updated!', { variant: 'success' });
     } catch (error) {
-      console.error("Error updating task", error);
+      console.error('Error updating task', error);
       // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
       // and we want to show the user an error before popping up again the item
-      enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
+      enqueueSnackbar('Error updating the task, please try again!', { variant: 'error' });
 
-      setTimeout(() => tasksDispatch(updateTaskAction(current)), 1000);
+      tasksDispatch(updateTaskAction(current));
     }
   }
 
   async function insertTask(task: Task) {
     try {
       const response = await GoogleTasksService.insertTask(task);
-      task = {
+      const updatedTask = {
         ...task,
-        id: response.result.id
+        id: response.result.id,
       };
-      tasksDispatch(insertTaskAction(task));
-      setSelectedTask(task);
-      enqueueSnackbar('Task created!', {variant: 'success'});
-
+      tasksDispatch(insertTaskAction(updatedTask));
+      setSelectedTask(updatedTask);
+      enqueueSnackbar('Task created!', { variant: 'success' });
     } catch (error) {
-      console.error("Error creating task", error);
+      console.error('Error creating task', error);
       // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
       // and we want to show the user an error before popping up again the item
-      enqueueSnackbar('Error creating the task, please try again!', {variant: 'error'});
+      enqueueSnackbar('Error creating the task, please try again!', { variant: 'error' });
     }
   }
 
@@ -179,13 +174,12 @@ const Home: React.FC<IProps> = (props) => {
       // We update the UI meanwhile the API is doing it's stuff, we trust it just works
       tasksDispatch(deleteTaskAction(task.id, task.listId, task.parent));
       await GoogleTasksService.deleteTask(task.id, task.listId);
-      enqueueSnackbar('Task deleted!', {variant: 'success'});
-
+      enqueueSnackbar('Task deleted!', { variant: 'success' });
     } catch (error) {
-      console.error("Error deleting task", error);
+      console.error('Error deleting task', error);
       // but if it fails we need to revert back, we just wait a bit because the UI may still be updating
       // and we want to show the user an error before popping up again the item
-      enqueueSnackbar('Error updating the task, please try again!', {variant: 'error'});
+      enqueueSnackbar('Error updating the task, please try again!', { variant: 'error' });
 
       setTimeout(() => tasksDispatch(insertTaskAction(current)), 1000);
     }
@@ -215,28 +209,26 @@ const Home: React.FC<IProps> = (props) => {
     setTaskListTitle(title);
   }
 
-  const drawer = (<Menu
-    taskLists={taskListsState.list}
-    selectedTaskListChanged={handleSelectedTaskListChanged}
-    insertTaskList={insertTaskList}
-    switchDarkMode={props.switchDarkMode}
-  />);
+  const drawer = (
+    <Sidebar
+      taskLists={taskListsState.list}
+      selectedTaskListChanged={handleSelectedTaskListChanged}
+      insertTaskList={insertTaskList}
+      switchDarkMode={switchDarkMode}
+    />
+  );
 
   // Filter tasks on the screen
-  const tasks = tasksState.list.filter((task: Task) =>
-    !task.parent // Tasks without parents
-    && (taskListId === "all" || taskListId === task.listId) // Tasks for the current list
-    && !task.completed // Show only incompleted tasks
+  const tasks = tasksState.list.filter(
+    (task: Task) =>
+      !task.parent && // Tasks without parents
+      (taskListId === 'all' || taskListId === task.listId) && // Tasks for the current list
+      !task.completed, // Show only incompleted tasks
   );
 
   return (
     <div className={classes.root}>
-      <TitleBar
-        title="GTasks UI"
-        drawerWidth={drawerWidth}
-        handleDrawerToggle={handleDrawerToggle}
-        signOut={props.signOut}
-      />
+      <TitleBar title="GTasks UI" drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle} signOut={signOut} />
       <nav className={classes.drawer}>
         <Hidden smUp implementation="css">
           <Drawer
@@ -273,7 +265,7 @@ const Home: React.FC<IProps> = (props) => {
         {loading && <LinearProgress />}
 
         <Tasks
-          settings={props.settings}
+          settings={settings}
           tasks={tasks}
           title={taskListTitle}
           selectedTask={selectedTask}
@@ -284,11 +276,11 @@ const Home: React.FC<IProps> = (props) => {
           deleteTask={deleteTask}
           selectedTaskListId={taskListId}
           taskLists={taskListsState.list}
-          switchSetting={props.switchSetting}
+          switchSetting={switchSetting}
         />
       </main>
     </div>
   );
-}
+};
 
 export default Home;

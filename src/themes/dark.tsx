@@ -5,16 +5,16 @@ const theme = createMuiTheme({
   palette: {
     primary: grey,
     secondary: pink,
-    type: 'dark'
+    type: 'dark',
   },
   overrides: {
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: "#212121",
-        color: '#fff'
-      }
-    }
-  }
+        backgroundColor: '#212121',
+        color: '#fff',
+      },
+    },
+  },
 });
 
 export default theme;

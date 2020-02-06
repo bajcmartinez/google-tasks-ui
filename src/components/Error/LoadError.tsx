@@ -5,20 +5,20 @@ import { Button, Container, Paper, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 interface IProps {
-  errorMessage: string
+  errorMessage: string;
 }
 
 const useStyles = makeStyles(theme => ({
   logo: {
     maxWidth: 150,
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
 
   main: {
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   error: {
@@ -28,18 +28,18 @@ const useStyles = makeStyles(theme => ({
   },
 
   os: {
-    marginTop: theme.spacing(4)
-  }
+    marginTop: theme.spacing(4),
+  },
 }));
 
-const LoadError: React.FC<IProps> = (props) => {
-  const classes = useStyles(props);
+const LoadError: React.FC<IProps> = ({ errorMessage }) => {
+  const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="md">
       <div className={classes.main}>
         <div>
-          <img alt="Google Tasks" src="assets/logo.png" className={classes.logo} />
+          <img alt="Google Tasks" src={`${process.env.PUBLIC_URL}/assets/logo.png`} className={classes.logo} />
         </div>
         <Typography variant="h3" aria-label="Welcome to GTasks UI">
           Welcome to GTasks UI
@@ -47,9 +47,7 @@ const LoadError: React.FC<IProps> = (props) => {
 
         <br />
 
-        <Typography variant="h6">
-          The unofficial UI application for Google Tasks.
-        </Typography>
+        <Typography variant="h6">The unofficial UI application for Google Tasks.</Typography>
 
         <br />
 
@@ -58,18 +56,14 @@ const LoadError: React.FC<IProps> = (props) => {
             Looks like you are offline, GTasks UI requires internet connection to work.
           </Typography>
           <br />
-          <Typography variant="body1">
-            {props.errorMessage}
-          </Typography>
+          <Typography variant="body1">{errorMessage}</Typography>
         </Paper>
       </div>
 
       <div className={classes.os}>
         <Grid container>
           <Grid item xs={12} sm={6}>
-            <Typography variant="h4">
-              Open Source
-            </Typography>
+            <Typography variant="h4">Open Source</Typography>
 
             <br />
 
@@ -79,20 +73,31 @@ const LoadError: React.FC<IProps> = (props) => {
 
             <br />
 
-            <Button variant="contained" color="secondary" href="https://github.com/bajcmartinez/google-tasks-ui" target="_blank" rel="noopener noreferrer">
+            <Button
+              variant="contained"
+              color="secondary"
+              href="https://github.com/bajcmartinez/google-tasks-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Contribute on GitHub
             </Button>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Typography variant="h4">
-              Suggestions?
-            </Typography>
+            <Typography variant="h4">Suggestions?</Typography>
 
             <br />
 
             <Typography variant="body1">
-              Found any issues? Report them <a href="https://github.com/bajcmartinez/google-tasks-ui/issues" target="_blank" rel="noopener noreferrer">here</a>
+              Found any issues? Report them
+              <a
+                href="https://github.com/bajcmartinez/google-tasks-ui/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                here
+              </a>
             </Typography>
           </Grid>
         </Grid>

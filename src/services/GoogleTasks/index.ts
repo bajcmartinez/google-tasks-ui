@@ -1,1 +1,1 @@
-export { default, GoogleTasksService } from './GoogleTasksService';
+export { default } from './GoogleTasksService';
