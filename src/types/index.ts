@@ -1,5 +1,5 @@
 export type ISettings = {
-  darkMode: boolean,
-  comfortView: boolean,
-  taskView: string
-}
+  darkMode: boolean;
+  comfortView: boolean;
+  taskView: string;
+};

@@ -1,40 +1,44 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import App from './App';
-import Welcome from './Welcome';
 import { act } from 'react-dom/test-utils';
 import { Button } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
-import GoogleTasksService from '../services/GoogleTasks';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import GoogleTasksService from '../services/GoogleTasks';
+import Welcome from './Welcome';
+import App from './App';
 import Home from './Home';
 
 jest.mock('../services/GoogleTasks');
 
-describe('Basic', () => {
+async function getDefaultWrapper() {
+  const wrapper = mount(
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <SnackbarProvider>
+        <App />
+      </SnackbarProvider>
+    </MuiPickersUtilsProvider>,
+  );
 
+  await act(async () => {
+    await wrapper;
+  });
+
+  return wrapper;
+}
+
+describe('Basic', () => {
   it('should render without crashing', () => {
     const wrapper = shallow(<App />);
     expect(wrapper.exists()).toBeTruthy();
   });
-
 });
 
 describe('Events', () => {
-
   it('should render the home if logged in otherwise welcome', async () => {
     GoogleTasksService.reset();
-    let wrapper: any = undefined;
-
-    await act(async () => {
-      wrapper = await mount(
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <SnackbarProvider>
-            <App/>
-          </SnackbarProvider>
-        </MuiPickersUtilsProvider>);
-    });
+    const wrapper = await getDefaultWrapper();
 
     expect(wrapper).toBeDefined();
     wrapper.update();
@@ -45,7 +49,10 @@ describe('Events', () => {
 
     // Now we log in
     await act(async () => {
-      await wrapper.find(Button).first().simulate('click');
+      await wrapper
+        .find(Button)
+        .first()
+        .simulate('click');
     });
 
     wrapper.update();
@@ -54,7 +61,10 @@ describe('Events', () => {
 
     // Now log out
     await act(async () => {
-      await wrapper.find('[data-test-id="menu-sign-out"]').first().simulate('click');
+      await wrapper
+        .find('[data-test-id="menu-sign-out"]')
+        .first()
+        .simulate('click');
     });
 
     wrapper.update();
@@ -62,34 +72,32 @@ describe('Events', () => {
     expect(wrapper.find(Home).exists()).toBeFalsy();
   });
 
-  it("should switch to dark mode", async () => {
+  it('should switch to dark mode', async () => {
     GoogleTasksService.reset();
-    let wrapper: any = undefined;
-
-    await act(async () => {
-      wrapper = await mount(
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <SnackbarProvider>
-            <App/>
-          </SnackbarProvider>
-        </MuiPickersUtilsProvider>);
-    });
+    const wrapper = await getDefaultWrapper();
 
     expect(wrapper).toBeDefined();
     wrapper.update();
     await act(async () => {
-      await wrapper.find(Button).first().simulate('click');
+      await wrapper
+        .find(Button)
+        .first()
+        .simulate('click');
     });
 
     wrapper.update();
 
     // Now we switch to dark mode
     await act(async () => {
-      const toggleDarkMode = await wrapper.find('[data-test-id="menu-dark-mode"]').first().props();
-      toggleDarkMode.onChange && toggleDarkMode.onChange()
+      const toggleDarkMode = await wrapper
+        .find('[data-test-id="menu-dark-mode"]')
+        .first()
+        .props();
+
+      if (toggleDarkMode.onChange) toggleDarkMode.onChange();
     });
 
     wrapper.update();
-    expect(localStorage.getItem("settings.darkMode")).toBeTruthy();
-  })
+    expect(localStorage.getItem('settings.darkMode')).toBeTruthy();
+  });
 });

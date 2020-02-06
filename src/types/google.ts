@@ -1,25 +1,25 @@
-import { Moment } from 'moment'
+import { Moment } from 'moment';
 
 export type TaskList = {
-  id: string,
-  title: string,
-  updatedAt: Moment,
-}
+  id: string;
+  title: string;
+  updatedAt: Moment;
+};
 
 export type Task = {
-  id: string,
-  title: string,
-  notes?: string,
-  completed: boolean,
-  completedAt?: Moment,
-  dueAt?: Moment,
-  parent: string,
-  updatedAt: Moment,
-  status: string,
-  listId: string,
-  subtasks: Task[],
-  isDirty: boolean
-}
+  id: string;
+  title: string;
+  notes?: string;
+  completed: boolean;
+  completedAt?: Moment;
+  dueAt?: Moment;
+  parent: string;
+  updatedAt: Moment;
+  status: string;
+  listId: string;
+  subtasks: Task[];
+  isDirty: boolean;
+};
 
 export interface OAuthKeys {
   installed: {

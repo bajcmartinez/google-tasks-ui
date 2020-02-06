@@ -12,23 +12,23 @@ import Menu from '@material-ui/core/Menu';
 import { version } from '../../../package.json';
 
 interface IProps {
-  title: string,
-  drawerWidth: number,
-  handleDrawerToggle: () => void,
-  signOut: () => void
+  title: string;
+  drawerWidth: number;
+  handleDrawerToggle: () => void;
+  signOut: () => void;
 }
 
 const useStyles = makeStyles(theme => ({
-  appBar: (props: IProps) => ({
-    marginLeft: props.drawerWidth,
+  appBar: (drawerWidth: number) => ({
+    marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${props.drawerWidth}px)`,
+      width: `calc(100% - ${drawerWidth}px)`,
     },
   }),
 
   rightSection: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   menuButton: {
@@ -43,8 +43,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TitleBar: React.FC<IProps> = (props) => {
-  const classes = useStyles(props);
+const TitleBar: React.FC<IProps> = ({ title, drawerWidth, handleDrawerToggle, signOut }) => {
+  const classes = useStyles(drawerWidth);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -57,9 +57,9 @@ const TitleBar: React.FC<IProps> = (props) => {
     setAnchorEl(null);
   }
 
-  function signOut() {
+  function handleSignOut() {
     handleClose();
-    props.signOut();
+    signOut();
   }
 
   return (
@@ -69,21 +69,22 @@ const TitleBar: React.FC<IProps> = (props) => {
           color="inherit"
           aria-label="Open drawer"
           edge="start"
-          onClick={props.handleDrawerToggle}
+          onClick={handleDrawerToggle}
           className={classes.menuButton}
           href="#"
         >
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap>
-          {props.title}
+          {title}
         </Typography>
 
         <div className={classes.grow} />
 
         <div className={classes.rightSection}>
-          <Typography variant='body2' noWrap>
-            App Version: {version}
+          <Typography variant="body2" noWrap>
+            App Version:
+            {version}
           </Typography>
           <IconButton
             aria-label="Account of current user"
@@ -109,7 +110,9 @@ const TitleBar: React.FC<IProps> = (props) => {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem data-test-id="menu-sign-out" onClick={signOut}>Sign Out</MenuItem>
+            <MenuItem data-test-id="menu-sign-out" onClick={handleSignOut}>
+              Sign Out
+            </MenuItem>
           </Menu>
         </div>
       </Toolbar>

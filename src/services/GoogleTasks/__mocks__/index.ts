@@ -1,10 +1,11 @@
+/* eslint-disable class-methods-use-this,@typescript-eslint/no-unused-vars */
 import moment from 'moment';
-import { Task } from "../../../types/google";
+import { Task } from '../../../types/google';
 import { GoogleTasksService } from '../GoogleTasksService';
 
 class Index extends GoogleTasksService {
-
   private _signedIn: boolean = false;
+
   private _subscription: ((status: boolean) => void) | undefined;
 
   load(callback: (isSignedIn: boolean) => void) {
@@ -18,12 +19,12 @@ class Index extends GoogleTasksService {
 
   signIn() {
     this._signedIn = true;
-    this._subscription && this._subscription(this._signedIn);
+    if (this._subscription) this._subscription(this._signedIn);
   }
 
   signOut() {
     this._signedIn = false;
-    this._subscription && this._subscription(this._signedIn);
+    if (this._subscription) this._subscription(this._signedIn);
   }
 
   isSignedIn() {
@@ -33,17 +34,17 @@ class Index extends GoogleTasksService {
   listTaskLists() {
     return Promise.resolve([
       {
-        id: "1",
-        status: "active",
-        title: "Task List 1",
-        updatedAt: moment()
+        id: '1',
+        status: 'active',
+        title: 'Task List 1',
+        updatedAt: moment(),
       },
       {
-        id: "2",
-        status: "active",
-        title: "Task List 2",
-        updatedAt: moment()
-      }
+        id: '2',
+        status: 'active',
+        title: 'Task List 2',
+        updatedAt: moment(),
+      },
     ]);
   }
 
@@ -58,9 +59,9 @@ class Index extends GoogleTasksService {
         isDirty: false,
         dueAt: moment().add(7, 'days'),
         completed: false,
-        status: "needsAction",
+        status: 'needsAction',
         updatedAt: moment(),
-        parent: ""
+        parent: '',
       },
       {
         id: `${taskListId.toString()}_2`,
@@ -70,9 +71,9 @@ class Index extends GoogleTasksService {
         listId: taskListId,
         isDirty: false,
         completed: false,
-        status: "needsAction",
+        status: 'needsAction',
         updatedAt: moment(),
-        parent: ""
+        parent: '',
       },
       {
         id: `${taskListId.toString()}_3`,
@@ -83,9 +84,9 @@ class Index extends GoogleTasksService {
         isDirty: false,
         dueAt: moment().add(-3, 'days'),
         completed: false,
-        status: "needsAction",
+        status: 'needsAction',
         updatedAt: moment(),
-        parent: ""
+        parent: '',
       },
       {
         id: `${taskListId.toString()}_4`,
@@ -96,9 +97,9 @@ class Index extends GoogleTasksService {
         isDirty: false,
         dueAt: moment().add(1, 'days'),
         completed: false,
-        status: "needsAction",
+        status: 'needsAction',
         updatedAt: moment(),
-        parent: ""
+        parent: '',
       },
       {
         id: `${taskListId.toString()}_5`,
@@ -109,10 +110,10 @@ class Index extends GoogleTasksService {
         isDirty: false,
         dueAt: moment().add(1, 'days'),
         completed: false,
-        status: "completed",
+        status: 'completed',
         updatedAt: moment(),
-        parent: `${taskListId.toString()}_4`
-      }
+        parent: `${taskListId.toString()}_4`,
+      },
     ]);
   }
 
@@ -123,8 +124,8 @@ class Index extends GoogleTasksService {
   async insertTask(task: Task) {
     return Promise.resolve({
       result: {
-        id: 999
-      }
+        id: 999,
+      },
     });
   }
 
@@ -136,7 +137,7 @@ class Index extends GoogleTasksService {
     return Promise.resolve();
   }
 
-  subscribeSigninStatus (subscriber: (status: boolean) => void) {
+  subscribeSigninStatus(subscriber: (status: boolean) => void) {
     this._subscription = subscriber;
   }
 

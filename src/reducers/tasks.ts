@@ -1,33 +1,34 @@
 import {
-  DELETE_TASK, INSERT_TASK,
+  DELETE_TASK,
+  INSERT_TASK,
   RECEIVE_TASKS,
   UPDATE_TASK,
   UPDATE_TASK_COMPLETION,
-  Action, TasksAction, TaskAction, UpdateTaskCompletionAction, DeleteTaskAction
-} from '../actions/tasks'
-import { Task } from '../types/google'
+  Action,
+  TasksAction,
+  TaskAction,
+  UpdateTaskCompletionAction,
+  DeleteTaskAction,
+} from '../actions/tasks';
+import { Task } from '../types/google';
 
 export type TasksState = {
-  list: Task[]
-}
-
-export const initialTasksState: TasksState = {
-  list: []
+  list: Task[];
 };
 
-export function tasksReducer(
-  state: TasksState = initialTasksState,
-  action: Action
-): TasksState {
+export const initialTasksState: TasksState = {
+  list: [],
+};
 
+export function tasksReducer(state: TasksState = initialTasksState, action: Action): TasksState {
   switch (action.type) {
     case RECEIVE_TASKS:
       return {
         ...state,
-        list: [...(action as TasksAction).payload]
+        list: [...(action as TasksAction).payload],
       };
 
-    case UPDATE_TASK:
+    case UPDATE_TASK: {
       const updated = (action as TaskAction).payload as Task;
       if (updated.parent) {
         // We are updating a subtask
@@ -38,50 +39,57 @@ export function tasksReducer(
 
         return {
           ...state,
-          list: state.list.map((task: Task): Task => {
-            if (task.id === updatedParent.id) {
-              updatedParent.subtasks = updatedParent.subtasks.map((subtask: Task): Task => {
-                if (subtask.id === updated.id) {
-                  return {...subtask, ...updated};
-                }
+          list: state.list.map(
+            (task: Task): Task => {
+              if (task.id === updatedParent.id) {
+                updatedParent.subtasks = updatedParent.subtasks.map(
+                  (subtask: Task): Task => {
+                    if (subtask.id === updated.id) {
+                      return { ...subtask, ...updated };
+                    }
 
-                return subtask;
-              });
+                    return subtask;
+                  },
+                );
 
-              return {
-                ...updatedParent
+                return {
+                  ...updatedParent,
+                };
               }
-            }
 
-            return task;
-          })
-        };
-      } else {
-        return {
-          ...state,
-          list: state.list.map((task: Task): Task => {
-            if (task.id === updated.id) {
-              return {...task, ...updated};
-            }
-
-            return task;
-          })
+              return task;
+            },
+          ),
         };
       }
+      return {
+        ...state,
+        list: state.list.map(
+          (task: Task): Task => {
+            if (task.id === updated.id) {
+              return { ...task, ...updated };
+            }
 
+            return task;
+          },
+        ),
+      };
+    }
     case UPDATE_TASK_COMPLETION:
       return {
         ...state,
-        list: state.list.map((task: Task): Task => {
-          if (task.id === (action as UpdateTaskCompletionAction).task) {
-            return { ...task, completed: (action as UpdateTaskCompletionAction).completed };
-          }
+        list: state.list.map(
+          (task: Task): Task => {
+            if (task.id === (action as UpdateTaskCompletionAction).task) {
+              return { ...task, completed: (action as UpdateTaskCompletionAction).completed };
+            }
 
-          return task;
-        })
+            return task;
+          },
+        ),
       };
 
-    case DELETE_TASK:
+    case DELETE_TASK: {
       const deleteAction = action as DeleteTaskAction;
       if (deleteAction.parent) {
         // We are deleting a sub task
@@ -93,54 +101,56 @@ export function tasksReducer(
 
         return {
           ...state,
-          list: state.list.map((task: Task): Task => {
-            if (task.id === updatedParent.id) {
-              updatedParent.subtasks = updatedParent.subtasks.filter((subtask: Task) => (subtask.id !== deleteAction.task || subtask.listId !== deleteAction.taskList));
+          list: state.list.map(
+            (task: Task): Task => {
+              if (task.id === updatedParent.id) {
+                updatedParent.subtasks = updatedParent.subtasks.filter(
+                  (subtask: Task) => subtask.id !== deleteAction.task || subtask.listId !== deleteAction.taskList,
+                );
 
-              return {
-                ...updatedParent
+                return {
+                  ...updatedParent,
+                };
               }
-            }
 
-            return task;
-          })
-        };
-      } else {
-        // We are deleting a parent task
-        return {
-          ...state,
-          list: state.list.filter((task: Task) => (task.id !== deleteAction.task || task.listId !== deleteAction.taskList))
+              return task;
+            },
+          ),
         };
       }
-
-    case INSERT_TASK:
+      // We are deleting a parent task
+      return {
+        ...state,
+        list: state.list.filter((task: Task) => task.id !== deleteAction.task || task.listId !== deleteAction.taskList),
+      };
+    }
+    case INSERT_TASK: {
       const insertAction = action as TaskAction;
       if (insertAction.payload.parent) {
         // We are adding a sub-task
         return {
           ...state,
-          list: state.list.map((task: Task): Task => {
-            if (task.id === insertAction.payload.parent) {
-              task.subtasks = [...task.subtasks, insertAction.payload]
-              return {
-                ...task
+          list: state.list.map(
+            (task: Task): Task => {
+              if (task.id === insertAction.payload.parent) {
+                return {
+                  ...task,
+                  subtasks: [...task.subtasks, insertAction.payload],
+                };
               }
-            }
 
-            return task;
-          })
-        };
-      }else {
-        // We are adding a parent task
-        return {
-          ...state,
-          list: [...state.list, { ...(action as TaskAction).payload }]
+              return task;
+            },
+          ),
         };
       }
-
-
+      // We are adding a parent task
+      return {
+        ...state,
+        list: [...state.list, { ...(action as TaskAction).payload }],
+      };
+    }
     default:
       return state;
-
   }
 }
